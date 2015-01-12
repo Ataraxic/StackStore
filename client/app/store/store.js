@@ -8,6 +8,11 @@ angular.module('stackStoreApp')
         templateUrl: 'app/store/store.html',
         controller: 'StoreCtrl'
       })
+      .state('store_admin', {
+        url: '/store/{name}/admin',
+        templateUrl: 'app/store/store_admin/store_admin.html',
+        controller: 'StoreAdminCtrl'
+      })
       .state('create_store', {
         url: '/store/create_store',
         templateUrl: 'app/store/create_store.html',
