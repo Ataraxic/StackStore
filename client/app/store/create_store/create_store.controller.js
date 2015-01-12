@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('StoreCtrl', function ($scope) {
+  .controller('CreateStoreCtrl', function ($scope,$http) {
     $scope.message = 'Hello';
   });

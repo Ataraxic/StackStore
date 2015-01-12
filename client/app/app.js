@@ -7,7 +7,7 @@ angular.module('stackStoreApp', [
   'btford.socket-io',
   'ui.router'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,$resourceProvider) {
     $urlRouterProvider
       .otherwise('/');
 
