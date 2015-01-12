@@ -1,8 +1,12 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('StoreCtrl', function ($scope,$http, socket,$stateParams) {
+  .controller('StoreCtrl', function ($scope,$http, socket,$stateParams,$resourceProvider) {
     $scope.message = 'Hello';
-    $scope.store = $stateParams.name;
-    console.log($scope.store);
+    var Store = $resource('/api/store/:name',{name:'@name'});
+
+    var store = Store.get({name:$stateParams.name},function(){
+    	console.log(store);
+    })
+
   });
