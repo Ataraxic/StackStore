@@ -9,17 +9,17 @@ var PromoSchema = new Schema({
     active: Boolean,
     user: [{
         type: Schema.Types.ObjectId,
-        ref: ‘User’
+        ref: 'User'
     }],
     product: [{
         type: Schema.Types.ObjectId,
-        ref: ‘Products’
+        ref: 'Products'
     }],
     code: String,
     role: String,
     store: {
         type: Schema.Types.ObjectId,
-        ref: ‘Store’
+        ref: 'Store'
     }
 });
 

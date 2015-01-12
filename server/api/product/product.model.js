@@ -13,19 +13,18 @@ var ProductSchema = new Schema({
         ref: 'User'
     },
     price: Number,
-    name: String,
     description: String,
     comments: [{
-        type: String
+        type: String,
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User'
-        }
+        },
         stars: Number
     }],
     tags: [{
         type: Schema.Types.ObjectId,
-        ref: Tags
+        ref: 'Tags'
     }],
     inventory: {
         available: Number,

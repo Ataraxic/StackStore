@@ -14,8 +14,7 @@ var StoreSchema = new Schema({
     products: [{
         type: Schema.Types.ObjectId,
         ref: 'Products'
-    }],
-    name: String
+    }]
 });
 
 module.exports = mongoose.model('Store', StoreSchema);

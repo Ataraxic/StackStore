@@ -19,7 +19,7 @@ var UserSchema = new Schema({
     salt: String,
     favorites: [{
         type: Schema.Types.ObjectId,
-        ref: ‘Products’
+        ref: 'Products'
     }],
     cart: [{
         type: Schema.Types.ObjectId,
@@ -30,7 +30,7 @@ var UserSchema = new Schema({
         ref: 'Stores'
     }],
     contact: {
-        phone: Number
+        phone: Number,
         address: String
     }
 });
