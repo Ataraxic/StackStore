@@ -4,8 +4,8 @@ angular.module('stackStoreApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('store', {
-        url: '/store',
-        templateUrl: 'app/store/store/store.html',
+        url: '/store/{name}',
+        templateUrl: 'app/store/store.html',
         controller: 'StoreCtrl'
       });
   });
