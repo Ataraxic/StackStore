@@ -80,6 +80,22 @@ exports.changePassword = function(req, res, next) {
 };
 
 /**
+  * Admin change a user's password
+*/
+exports.adminChangePassword = function(req, res, next) {
+  var userIDToUpdate = req.params.id;
+  console.log("req.params.newPassword", req.body);
+  User.findById(userIDToUpdate, function(err, user){
+    console.log('userfound?', user);
+    user.password = req.body.newPassword;
+    user.save(function(err, user){
+      if(err) console.log(err);
+      res.send(user);
+    })
+  });
+}
+
+/**
  * Get my info
  */
 exports.me = function(req, res, next) {
