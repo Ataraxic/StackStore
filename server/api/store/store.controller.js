@@ -3,6 +3,22 @@
 var _ = require('lodash');
 var Store = require('./store.model');
 
+
+//Find all products in store
+// exports.findproducts = function(req, res) {
+//   Store.findOne( {name: req.params.name}, function (err, store) {
+//     if(err) { return handleError(res, err); }
+//     if(!store) { return res.send(404); }
+//     }).success(function () {
+//       Product.find({name: req.params.name}, function (err, products) {
+//       if(err) { return handleError(res, err); }
+//       return res.json(200, products);
+//     });
+//   });
+// };
+
+
+
 // Get list of stores
 exports.index = function(req, res) {
   Store.find(function (err, stores) {
@@ -34,7 +50,7 @@ exports.create = function(req, res) {
 // Updates an existing store in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Store.findById(req.params.id, function (err, store) {
+  Store.find({name: req.params.name}, function (err, store) {
     if (err) { return handleError(res, err); }
     if(!store) { return res.send(404); }
     var updated = _.merge(store, req.body);

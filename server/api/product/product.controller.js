@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Product = require('./product.model');
+var Store = require('../store/store.model');
 
 // Get list of products
 exports.index = function(req, res) {
@@ -22,10 +23,30 @@ exports.show = function(req, res) {
 
 // Creates a new product in the DB.
 exports.create = function(req, res) {
-  Product.create(req.body, function(err, product) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, product);
-  });
+
+  var product = new Product({name:req.body.name, info: req.body.info, price:req.body.price, owner: req.body.owner});
+  
+  product.save(
+     function (err, product) {
+        if (err) { return handleError(res, err); }
+        console.log(req.body.storeName);
+
+
+        Store.find( {name: req.body.storeName},function (err, store) {
+          if(err) { return handleError(res, err); }
+          if(!store) { return res.send(404); };
+         
+          store[0].products.push(product._id);
+
+          console.log(store[0].products);
+
+          store[0].save();
+          
+        });
+  }
+
+  );
+
 };
 
 // Updates an existing product in the DB.
