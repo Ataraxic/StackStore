@@ -32,7 +32,11 @@ var UserSchema = new Schema({
     contact: {
         phone: Number,
         address: String
-    }
+    },
+    orders: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Orders'
+    }]
 });
 
 /**

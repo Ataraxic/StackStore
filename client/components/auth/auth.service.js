@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$stateParams) {
     var currentUser = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
@@ -134,6 +134,20 @@ angular.module('stackStoreApp')
        */
       isAdmin: function() {
         return currentUser.role === 'admin';
+      },
+
+      isStoreOwner: function(name,callback){
+      	$http.get('/api/stores/'+name+'/admin').
+				  success(function(data, status, headers, config) {
+				  	callback(true);
+				    // this callback will be called asynchronously
+				    // when the response is available
+				  }).
+				  error(function(data, status, headers, config) {
+				  	callback(false);
+				    // called asynchronously if an error occurs
+				    // or server returns response with an error status.
+				  });
       },
 
       /**
