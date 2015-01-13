@@ -5,13 +5,23 @@ angular.module('stackStoreApp')
 
     $scope.store = {};
 
+    $scope.ownerPresent = false;
+
+
     console.log($stateParams.name);
 
     var Store = $resource('/api/stores/:name',{name:'@name'});
 
     var store = Store.get({name:$stateParams.name},function(data){
-    	$scope.store = data;
-    	console.log($scope.store);
+
+    	console.log(data);
+    	if(data.ownerPresent){
+    		$scope.ownerPresent = true;
+    		$scope.store = data.store;
+    	}
+    	else{
+    		$scope.store = data;
+    	}
     })
 
   });

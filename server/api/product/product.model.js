@@ -15,7 +15,8 @@ var ProductSchema = new Schema({
     price: Number,
     description: String,
     comments: [{
-        type: String,
+        review: Boolean,
+        body: String,
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User'
@@ -29,7 +30,8 @@ var ProductSchema = new Schema({
     inventory: {
         available: Number,
         maximum: Number
-    }
+    },
+    media: [String]
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

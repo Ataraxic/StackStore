@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
+
   .controller('StoreAdminCtrl', function ($scope,$http,$location,Auth, $stateParams) {
     
      $scope.storeName = $stateParams.name;
@@ -47,6 +48,7 @@ angular.module('stackStoreApp')
 
 
     
+
 
 
   });
