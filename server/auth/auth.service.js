@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
 var User = require('../api/user/user.model');
+var Store = require('../api/store/store.model');
 var validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
@@ -28,6 +29,28 @@ function isAuthenticated() {
       User.findById(req.user._id, function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
+
+        req.user = user;
+        next();
+      });
+    });
+}
+
+function isStoreOwner(){
+	return compose()
+    // Validate jwt
+    .use(function(req, res, next) {
+      // allow access_token to be passed through query parameter as well
+      if(req.query && req.query.hasOwnProperty('access_token')) {
+        req.headers.authorization = 'Bearer ' + req.query.access_token;
+      }
+      validateJwt(req, res, next);
+    })
+    // Attach user to request
+    .use(function(req, res, next) {
+      User.findById(req.user._id, function (err, user) {
+        if (err) return next(err);
+        if (!user) return next();
 
         req.user = user;
         next();
@@ -70,6 +93,7 @@ function setTokenCookie(req, res) {
   res.redirect('/');
 }
 
+exports.isStoreOwner = isStoreOwner;
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
