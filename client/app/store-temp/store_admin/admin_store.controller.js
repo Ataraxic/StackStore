@@ -2,10 +2,14 @@
 
 angular.module('stackStoreApp')
 
-.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams) {
+.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams,User) {
 
-						$scope.owner = false;
+            $scope.owner = false;
             $scope.storeName = $stateParams.name;
+
+            $scope.name = '';
+            $scope.info = '';
+            $scope.price = '';
 
             //Get Owner ID of current store
 
@@ -54,8 +58,5 @@ angular.module('stackStoreApp')
                     // or server returns response with an error status.
                     //flash error
                 });
-                $scope.name = '';
-                $scope.info = '';
-                $scope.price = '';
 
-})
+            })
