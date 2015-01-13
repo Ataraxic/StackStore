@@ -51,12 +51,12 @@ async.waterfall([
         var idTwo = users[1]._id;
           Store.find({}).remove(function(){
             Store.create({
-              name: "lindsay\'s Store",
+              name: "StoreOne",
               info: 'b',
               active: true,
               owner: idOne
             }, {
-              name: "Sam\'s Store'",
+              name: "StoreTwo",
               info: 'a',
               active: true,
               owner: idTwo
@@ -80,7 +80,7 @@ async.waterfall([
   },
   function(users,stores,callback){
     var lindsayStoreId = stores.filter(function(obj){
-      if (obj.name==="lindsay\'s Store"){return obj._id;}
+      if (obj.name==="StoreOne"){return obj._id;}
       })[0];
     var lindsayUserId = users.filter(function(obj){
       if (obj.name==="Lindsay"){return obj._id;}
@@ -89,7 +89,7 @@ async.waterfall([
       if (obj.name==="Sam"){return obj._id;}
       })[0];
     var samsStoreId = stores.filter(function(obj){
-      if (obj.name==="Sam\'s Store'"){return obj._id;}
+      if (obj.name==="StoreTwo"){return obj._id;}
     })[0];
     var idObject = {
       'lindsayStoreId': lindsayStoreId,
