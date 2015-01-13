@@ -4,46 +4,73 @@
  */
 
 'use strict';
-
+var async = require('async');
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
+var Order = require('../api/order/order.model')
+var Product = require('../api/product/product.model')
+var Promo = require('../api/promo/promo.model')
+var Store = require('../api/store/store.model')
+var Tag = require('../api/tag/tag.model')
 
-Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
-  }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
-  }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
-  });
-});
 
-User.find({}).remove(function() {
-  User.create({
-    provider: 'local',
-    name: 'Test User',
-    email: 'test@test.com',
-    password: 'test'
-  }, {
-    provider: 'local',
-    role: 'admin',
-    name: 'Admin',
-    email: 'admin@admin.com',
-    password: 'admin'
-  }, function() {
-      console.log('finished populating users');
-    }
-  );
-});
+
+async.waterfall([
+    function(callback){
+      User.find({}).remove(function() {
+      User.create({
+        provider: 'local',
+        name: 'Test User',
+        email: 'test@test.com',
+        password: 'test',
+        role: 'user',
+        contact: {
+          phone: 2011231234,
+          address: '91 Wall Street'
+        }
+      }, {
+        provider: 'local',
+        role: 'admin',
+        name: 'Admin',
+        email: 'admin@admin.com',
+        password: 'admin',
+        contact: {
+          phone: 1938675309,
+          address: '5 Hanover Square'
+        }
+      }, function(err,users) {
+          console.log('this is the firnst console log',users);
+          callback();
+        }
+      );
+    });
+    },
+    function(callback){
+      User.find({},function(err,users){
+        console.log('this is the second console log',users[0]._id.id);
+        var idOne = users[0]._id.toString();
+        var idTwo = users[1]._id.toString();
+        for (var keys in users[0]._id){
+          console.log("this is key",keys);
+        }
+          Store.find({}).remove(function(){
+            Store.create({
+              name: "lindsay\'s Store",
+              info: 'b',
+              active: true,
+              owner: idOne
+            }, {
+              name: "Sam\'s Store'",
+              info: 'a',
+              active: true,
+              owner: idTwo
+            }, function(err,stores){
+              console.error(err);
+              console.log('this is the stores',stores);
+              callback();
+            }
+          );
+      });
+    });
+  }
+]);
