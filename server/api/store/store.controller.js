@@ -63,14 +63,6 @@ exports.show = function(req, res) {
 
 // Creates a new store in the DB.
 exports.create = function(req, res) {
-<<<<<<< HEAD
-	console.log(req.user);
-  var store = new Store({ owner: req.user._id, name: req.body.name, products: []});
-  store.save(function (err, store) {
-    if (err) { return handleError(res, err); }
-    else return res.json(store);
-  });
-=======
     console.log(req.user);
     var store = new Store({
         owner: req.user._id,
@@ -94,22 +86,11 @@ exports.create = function(req, res) {
             })
         });
     });
->>>>>>> master
 
 };
 
 // Updates an existing store in the DB.
 exports.update = function(req, res) {
-<<<<<<< HEAD
-  if(req.body._id) { delete req.body._id; }
-  Store.find({name: req.params.name}, function (err, store) {
-    if (err) { return handleError(res, err); }
-    if(!store) { return res.send(404); }
-    var updated = _.merge(store, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, store);
-=======
     if (!req.owner) return res.send(404);
     if (req.body._id) {
         delete req.body._id;
@@ -128,7 +109,6 @@ exports.update = function(req, res) {
             }
             return res.json(200, store);
         });
->>>>>>> master
     });
 };
 
