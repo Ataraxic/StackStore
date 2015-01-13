@@ -2,21 +2,17 @@
 
 angular.module('stackStoreApp')
 
-.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams,User) {
+.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams,User,Product,socket,Store) {
 
             $scope.owner = false;
             $scope.storeName = $stateParams.name;
+            $scope.store = {};
 
             $scope.name = '';
             $scope.info = '';
             $scope.price = '';
 
             //Get Owner ID of current store
-
-            var Store = $resource('/api/stores/:name', {
-                name: '@name'
-            });
-
             var store = Store.get({
                 name: $stateParams.name
             }, function(store) {
@@ -24,6 +20,7 @@ angular.module('stackStoreApp')
                     .then(function(user) {
                         if (user._id === store.owner) {
                             $scope.owner = true;
+                            $scope.store = store;
                         } else {
                             $location.path('/store/' + $stateParams.name);
                         }
@@ -42,22 +39,16 @@ angular.module('stackStoreApp')
                     return;
                 }
 
-                $http.post('/api/products', {
-                        name: $scope.name,
+                Product.save({
+                	name: $scope.name,
                         info: $scope.info,
                         price: $scope.price,
                         owner: $scope.ownerId,
                         storeName: $scope.storeName
-                    })
-                    .success(function(product, status, headers, config) {
-                        //Update store with new product
-
-                    }).
-                error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    //flash error
-                });
+                },function(store){
+                	console.log(store);
+                	$scope.store = store;
+                })
 
             }
-          });
+});

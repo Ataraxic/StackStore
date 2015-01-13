@@ -44,6 +44,7 @@ exports.show = function(req, res) {
             console.log('no store')
             return res.send(404);
         }
+
         return res.json(store);
     });
 };
