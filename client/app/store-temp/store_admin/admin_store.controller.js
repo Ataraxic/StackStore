@@ -45,9 +45,14 @@ angular.module('stackStoreApp')
                         price: $scope.price,
                         owner: $scope.ownerId,
                         storeName: $scope.storeName
-                },function(store){
-                	console.log(store);
-                	$scope.store = store;
+                },function(product){
+                	console.log(product);
+                	Store.get({
+			                name: $stateParams.name
+			            }, function(store) {
+			            	console.log(store);
+			            	$scope.store = store;
+			            });
                 })
 
             }

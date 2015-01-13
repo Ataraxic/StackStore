@@ -59,7 +59,7 @@ exports.create = function(req, res) {
                 console.log(store.products);
 
                 store.save(function(err, store) {
-                    res.json(store);
+                    res.json(product);
                 });
             });
         }
