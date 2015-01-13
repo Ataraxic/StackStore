@@ -59,4 +59,5 @@ angular.module('stackStoreApp')
                     //flash error
                 });
 
-            })
+            }
+          });
