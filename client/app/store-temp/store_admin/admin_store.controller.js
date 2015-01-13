@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('StoreAdminCtrl', function ($scope,$http,$location,Auth) {
+  .controller('StoreAdminCtrl', function ($scope,$http,$location,Auth,$stateParams) {
+  	Auth.isStoreOwner($stateParams.name,function(isOwner){
+  		if(!isOwner) $location.path('/store/'+$stateParams.name);
+  	});
+
     $scope.message = 'Hello';
     $scope.submit = function () {
     	$http.post('/store', {msg:'hello word!'}).

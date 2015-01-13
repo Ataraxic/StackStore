@@ -17,28 +17,32 @@ exports.index = function(req, res) {
 
 // Get a single store
 exports.show = function(req, res) {
+		console.log('req'+req.owner);
     Store.findOne({
         name: req.params.name
     }, function(err, store) {
         if (err) {
+        		console.log('error')
             return handleError(res, err);
         }
         if (!store) {
+        		console.log('no store')
             return res.send(404);
         }
-        if(req.user){
-        	console.log(req.user._id);
-        	console.log(store.owner);
-        	console.log(store.owner.equals(req.user._id));
-        	if(store.owner.equals(req.user._id)){
-        		var adminObj = {
-        			ownerPresent: true,
-        			store: store
-        		}
-        		return res.json(adminObj);
-        	}
+        if (req.user) {
+        		console.log('user');
+            if (req.owner) {
+            		console.log('owner');
+                var adminObj = {
+                    ownerPresent: true,
+                    store: store
+                }
+                return res.json(adminObj);
+            }
+            else{
+            	return res.json(store);
+            }
         }
-        return res.json(store);
     });
 };
 
@@ -72,6 +76,7 @@ exports.create = function(req, res) {
 
 // Updates an existing store in the DB.
 exports.update = function(req, res) {
+    if (!req.owner) return res.send(404);
     if (req.body._id) {
         delete req.body._id;
     }
@@ -94,6 +99,7 @@ exports.update = function(req, res) {
 
 // Deletes a store from the DB.
 exports.destroy = function(req, res) {
+    if (!req.owner) return res.send(404);
     Store.findById(req.params.id, function(err, store) {
         if (err) {
             return handleError(res, err);
@@ -109,6 +115,13 @@ exports.destroy = function(req, res) {
         });
     });
 };
+
+exports.checkOwner = function (req,res){
+	if(req.owner) return res.send(200);
+	else {
+		return res.send(404);
+	}
+}
 
 function handleError(res, err) {
     return res.send(500, err);
