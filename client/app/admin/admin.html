@@ -8,7 +8,10 @@
         <span class="text-muted">{{user.email}}</span>
         <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
         <div>
-          <input class='changePW' type='text' placeholder='Change password of this user'></input>
+          <form name='passwordForm'>
+            <input id="input{{$index}}" class='changePW' type='text' placeholder='Change password of this user' ng-model='user.newPassword'></input>
+            <button ng-click="changePassword(user, $index)" class='btn btn-primary'>Change Password</button>
+          </form>
         </div>
     </li>
   </ul>

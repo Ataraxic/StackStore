@@ -12,6 +12,9 @@ angular.module('stackStoreApp')
           controller:'password'
         }
       },
+      adminChangePassword: {
+        method: 'PUT'
+      },
       get: {
         method: 'GET',
         params: {

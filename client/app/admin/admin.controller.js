@@ -14,4 +14,9 @@ angular.module('stackStoreApp')
         }
       });
     };
+
+    $scope.changePassword = function(user, idx) {
+      User.adminChangePassword({ id: user._id}, { newPassword: user.newPassword }, function(){});
+      user.newPassword = '';
+    }
   });
