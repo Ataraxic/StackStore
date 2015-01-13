@@ -1,16 +1,11 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('StoreCtrl', function ($scope,$http, socket,$stateParams,$resource,Auth,User) {
+  .controller('StoreCtrl', function ($scope,$http, socket,$stateParams,$resource,Auth,User,Store) {
   	$scope.owner = false;
     $scope.store = {};
 
     $scope.ownerPresent = false;
-
-
-    console.log($stateParams.name);
-
-    var Store = $resource('/api/stores/:name',{name:'@name'});
 
     var store = Store.get({name:$stateParams.name},function(store){
     	console.log(store);
