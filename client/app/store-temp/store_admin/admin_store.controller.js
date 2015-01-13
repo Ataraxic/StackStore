@@ -56,4 +56,18 @@ angular.module('stackStoreApp')
                 })
 
             }
+
+            $scope.deleteProduct = function (id) {
+                Product.remove({id:id, storeName: $scope.storeName},function(product){
+                    console.log(product);
+                    Store.get({
+                            name: $stateParams.name
+                        }, function(store) {
+                            console.log(store);
+                            $scope.store = store;
+
+                        });
+                })
+
+            }
 });
