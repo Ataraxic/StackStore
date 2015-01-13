@@ -33,10 +33,6 @@ exports.index = function(req, res) {
 
 // Get a single store
 exports.show = function(req, res) {
-<<<<<<< HEAD
-=======
-    console.log('req' + req.owner);
->>>>>>> is-store-admin
     Store.findOne({
         name: req.params.name
     }, function(err, store) {
@@ -48,22 +44,7 @@ exports.show = function(req, res) {
             console.log('no store')
             return res.send(404);
         }
-        if (req.user) {
-            console.log('user');
-            if (req.owner) {
-                console.log('owner');
-                var adminObj = {
-                    ownerPresent: true,
-                    store: store
-                }
-                return res.json(adminObj);
-            }
-            else{
-            	res.json(store);
-            }
-        } else {
-            return res.json(store);
-        }
+        return res.json(store);
     });
 };
 
