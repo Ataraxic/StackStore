@@ -80,20 +80,34 @@ exports.changePassword = function(req, res, next) {
 };
 
 /**
+ * admin can promote any user to site admin
+**/
+exports.promote = function(req, res, next) {
+  console.log('are we inside promote');
+  User.findById(req.params.id, function(err, user){
+    user.role = 'admin';
+    user.save(function(err, user){
+      if(err) console.log(err);
+      if(!user) res.send(401);
+      res.send(200, user);
+    })
+  });
+};
+/**
   * Admin change a user's password
 */
 exports.adminChangePassword = function(req, res, next) {
-  var userIDToUpdate = req.params.id;
-  console.log("req.params.newPassword", req.body);
-  User.findById(userIDToUpdate, function(err, user){
-    console.log('userfound?', user);
-    user.password = req.body.newPassword;
-    user.save(function(err, user){
-      if(err) console.log(err);
-      res.send(user);
-    })
-  });
-}
+  // var userIDToUpdate = req.params.id;
+  // User.findById(userIDToUpdate, function(err, user){
+  //   user.password = req.body.newPassword;
+  //   user.save(function(err, user){
+  //     if(err) console.log(err);
+  //     if(!user) res.send(401);
+  //     res.send(200);
+  //   })
+  // });
+  console.log('fk this')
+};
 
 /**
  * Get my info
