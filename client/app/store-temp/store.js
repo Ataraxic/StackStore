@@ -14,7 +14,7 @@ angular.module('stackStoreApp')
         controller: 'StoreAdminCtrl'
       })
       .state('create_store', {
-        url: '/store/create_store',
+        url: '/create_store',
         templateUrl: 'app/store-temp/create_store/create_store.html',
         controller: 'CreateStoreCtrl'
       });

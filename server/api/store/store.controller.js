@@ -22,11 +22,12 @@ exports.show = function(req, res) {
 
 // Creates a new store in the DB.
 exports.create = function(req, res) {
+	console.log(req.user);
   var store = new Store({ owner: req.user._id, name: req.body.name, products: []});
   store.save(function (err, store) {
     if (err) { return handleError(res, err); }
     else return res.json(store);
-  }); 
+  });
 
 };
 
