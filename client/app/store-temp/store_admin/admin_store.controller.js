@@ -40,10 +40,10 @@ angular.module('stackStoreApp')
 
 
     //GET aLL PRODUCTS IN STORE -- WIP
-    // $http.get('/api/stores/'+$scope.storeName+'/products').success(function(products) {
-    // $scope.products = products; 
-    // socket.syncUpdates('product', $scope.products);
-    // });
+    $http.get('/api/products/'+$scope.storeName+'/products').success(function(products) {
+    $scope.products = products; 
+    socket.syncUpdates('product', $scope.products);
+    });
 
 
     
