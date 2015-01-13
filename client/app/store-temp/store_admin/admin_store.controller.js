@@ -1,10 +1,23 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('StoreAdminCtrl', function ($scope,$http,$location,Auth,$stateParams) {
-  	Auth.isStoreOwner($stateParams.name,function(isOwner){
-  		if(!isOwner) $location.path('/store/'+$stateParams.name);
-  	});
+  .controller('StoreAdminCtrl', function ($scope,$http,$location,Auth,$stateParams,$resource,User) {
+
+  	$scope.owner = false;
+
+   	var Store = $resource('/api/stores/:name',{name:'@name'});
+
+    var store = Store.get({name:$stateParams.name},function(store){
+    	  	User.get().$promise
+			  	.then(function(user){
+			  		if(user._id === store.owner){
+			  			$scope.owner = true;
+			  		}
+			  		else{
+			  			$location.path('/store/'+$stateParams.name);
+			  		}
+			  	})
+    })
 
     $scope.message = 'Hello';
     $scope.submit = function () {

@@ -17,22 +17,22 @@ exports.index = function(req, res) {
 
 // Get a single store
 exports.show = function(req, res) {
-		console.log('req'+req.owner);
+    console.log('req' + req.owner);
     Store.findOne({
         name: req.params.name
     }, function(err, store) {
         if (err) {
-        		console.log('error')
+            console.log('error')
             return handleError(res, err);
         }
         if (!store) {
-        		console.log('no store')
+            console.log('no store')
             return res.send(404);
         }
         if (req.user) {
-        		console.log('user');
+            console.log('user');
             if (req.owner) {
-            		console.log('owner');
+                console.log('owner');
                 var adminObj = {
                     ownerPresent: true,
                     store: store
@@ -40,8 +40,10 @@ exports.show = function(req, res) {
                 return res.json(adminObj);
             }
             else{
-            	return res.json(store);
+            	res.json(store);
             }
+        } else {
+            return res.json(store);
         }
     });
 };
@@ -116,11 +118,11 @@ exports.destroy = function(req, res) {
     });
 };
 
-exports.checkOwner = function (req,res){
-	if(req.owner) return res.send(200);
-	else {
-		return res.send(404);
-	}
+exports.checkOwner = function(req, res) {
+    if (req.owner) return res.send(200);
+    else {
+        return res.send(201);
+    }
 }
 
 function handleError(res, err) {
