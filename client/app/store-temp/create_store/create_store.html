@@ -1,0 +1,16 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+	<div class="col-md-12">
+	This is the store view.
+	</div>
+
+  <form ng-submit='submit()' >
+    <h3>Add a new store</h3>
+    <div class='form-group'>
+      <input type='text' class='form-control' placeholder='Name' ng-model="name"></input>
+    </div>
+    <button type='submit' class='btn btn-primary'>Submit</button>
+  </form>
+
+</div>
