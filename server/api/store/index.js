@@ -10,8 +10,7 @@ var router = express.Router();
 // router.get('/:name/products', controller.findproducts);
 
 router.get('/', controller.index);
-
-router.get('/:name', auth.isStoreOwner(),controller.show);
+router.get('/:name',controller.show);
 router.post('/',auth.isAuthenticated(),controller.create);
 router.put('/:name', auth.isStoreOwner(),controller.update);
 router.patch('/:name', controller.update);

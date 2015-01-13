@@ -139,7 +139,14 @@ angular.module('stackStoreApp')
       isStoreOwner: function(name,callback){
       	$http.get('/api/stores/'+name+'/admin').
 				  success(function(data, status, headers, config) {
-				  	callback(true);
+				  	console.log(status);
+				  	if(status === 200){
+				  		callback(true);
+				  	}
+				  	else{
+				  		callback(false);
+				  	}
+
 				    // this callback will be called asynchronously
 				    // when the response is available
 				  }).

@@ -50,27 +50,32 @@ function isStoreOwner() {
         })
         // Attach user to request
         .use(function(req, res, next) {
-            User.findById(req.user._id, function(err, user) {
-                if (err) return next(err);
-                if (!user) return next();
-
-                Store.findOne({
-                    name: req.params.name
-                }, function(err, store) {
+            if (req.user) {
+                User.findById(req.user._id, function(err, user) {
                     if (err) return next(err);
-                    if (!store) return next();
-                    console.log('isStoreOwner:')
-                    console.log(store.owner.equals(req.user._id));
-                    if (store.owner.equals(req.user._id)) {
-                        req.user = user;
-                        req.owner = true;
-                        next();
-                    } else {
-                        req.user = user;
-                        next();
-                    }
+                    if (!user) return next();
+
+                    Store.findOne({
+                        name: req.params.name
+                    }, function(err, store) {
+                        if (err) return next(err);
+                        if (!store) return next();
+                        console.log('isStoreOwner:')
+                        console.log(store.owner.equals(req.user._id));
+                        if (store.owner.equals(req.user._id)) {
+                            req.user = user;
+                            req.owner = true;
+                            next();
+                        } else {
+                            req.user = user;
+                            next();
+                        }
+                    });
                 });
-            });
+            }
+            else{
+            	next();
+            }
         });
 }
 
