@@ -5,6 +5,22 @@ var async = require('async');
 var Store = require('./store.model');
 var User = require('../user/user.model');
 
+
+//Find all products in store
+// exports.findproducts = function(req, res) {
+//   Store.findOne( {name: req.params.name}, function (err, store) {
+//     if(err) { return handleError(res, err); }
+//     if(!store) { return res.send(404); }
+//     }).success(function () {
+//       Product.find({name: req.params.name}, function (err, products) {
+//       if(err) { return handleError(res, err); }
+//       return res.json(200, products);
+//     });
+//   });
+// };
+
+
+
 // Get list of stores
 exports.index = function(req, res) {
     Store.find(function(err, stores) {
@@ -17,32 +33,18 @@ exports.index = function(req, res) {
 
 // Get a single store
 exports.show = function(req, res) {
-		console.log('req'+req.owner);
     Store.findOne({
         name: req.params.name
     }, function(err, store) {
         if (err) {
-        		console.log('error')
+            console.log('error')
             return handleError(res, err);
         }
         if (!store) {
-        		console.log('no store')
+            console.log('no store')
             return res.send(404);
         }
-        if (req.user) {
-        		console.log('user');
-            if (req.owner) {
-            		console.log('owner');
-                var adminObj = {
-                    ownerPresent: true,
-                    store: store
-                }
-                return res.json(adminObj);
-            }
-            else{
-            	return res.json(store);
-            }
-        }
+        return res.json(store);
     });
 };
 
@@ -116,11 +118,11 @@ exports.destroy = function(req, res) {
     });
 };
 
-exports.checkOwner = function (req,res){
-	if(req.owner) return res.send(200);
-	else {
-		return res.send(404);
-	}
+exports.checkOwner = function(req, res) {
+    if (req.owner) return res.send(200);
+    else {
+        return res.send(201);
+    }
 }
 
 function handleError(res, err) {
