@@ -15,6 +15,12 @@ angular.module('stackStoreApp')
       adminChangePassword: {
         method: 'PUT'
       },
+      promote: {
+        method: 'PUT',
+        params: {
+          controller:'promote'
+        }
+      },
       get: {
         method: 'GET',
         params: {

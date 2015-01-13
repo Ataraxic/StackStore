@@ -17,8 +17,14 @@ angular.module('stackStoreApp')
       });
     };
 
-    $scope.changePassword = function(user, idx) {
+    $scope.changePassword = function(user) {
       User.adminChangePassword({ id: user._id}, { newPassword: user.newPassword }, function(){});
       user.newPassword = '';
+    }
+
+    $scope.promoteToAdmin = function(user) {
+      User.promote({ id: user._id }, {}, function(user){
+        console.log('user', user)
+      });
     }
   });
