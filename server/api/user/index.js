@@ -15,5 +15,6 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 router.put('/:id/promote', auth.hasRole('admin'), controller.promote);
 router.put('/:id', auth.hasRole('admin'), controller.adminChangePassword);
+router.put('/:id/email', auth.isAuthenticated(),controller.changeEmail);
 
 module.exports = router;

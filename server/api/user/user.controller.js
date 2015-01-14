@@ -95,19 +95,34 @@ exports.promote = function(req, res, next) {
 };
 /**
   * Admin change a user's password
-*/
+  */
 exports.adminChangePassword = function(req, res, next) {
-  // var userIDToUpdate = req.params.id;
-  // User.findById(userIDToUpdate, function(err, user){
-  //   user.password = req.body.newPassword;
-  //   user.save(function(err, user){
-  //     if(err) console.log(err);
-  //     if(!user) res.send(401);
-  //     res.send(200);
-  //   })
-  // });
-  console.log('fk this')
+  var userIDToUpdate = req.params.id;
+  User.findById(userIDToUpdate, function(err, user){
+    user.password = req.body.newPassword;
+    user.save(function(err, user){
+      if(err) console.log(err);
+      if(!user) res.send(401);
+      res.send(200);
+    })
+  });
 };
+
+/**
+  * change User Email
+  */
+  exports.changeEmail = function(req,res,next){
+    var newEmail = req.body.newEmail;
+    var userId = req.user._id;
+    User.findById(userId,function(err,user){
+      user.email = newEmail;
+      user.save(function(err,user){
+        if (err) console.log(err);
+        if (!user) res.send(401);
+        res.send(200);
+      })
+    })
+  }
 
 /**
  * Get my info
