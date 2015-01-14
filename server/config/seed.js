@@ -6,9 +6,10 @@
 'use strict';
 var async = require('async');
 var Thing = require('../api/thing/thing.model');
+var Product = require('../api/product/product.model')
 var User = require('../api/user/user.model');
 var Order = require('../api/order/order.model')
-var Product = require('../api/product/product.model')
+
 var Promo = require('../api/promo/promo.model')
 var Store = require('../api/store/store.model')
 var Tag = require('../api/tag/tag.model')
@@ -210,7 +211,8 @@ async.waterfall([
         role: 'wat is dis seriously?',
         store: idObject.samsStoreId
       },function(){
-        console.log("this is the IdObject", idObject);
+
+
         callback(null,idObject);
       })
     })
@@ -239,7 +241,7 @@ async.waterfall([
     })
   },
   function(idObject,callback){
-    console.log("inside orders");
+
     Order.find({},function(err,orders){
       var lindsayOrderId = orders.filter(function(obj){
         if (obj.name==='is this a UUID?') {return obj._id;}
@@ -249,7 +251,7 @@ async.waterfall([
         })[0];
       idObject.lindsayOrderId = lindsayOrderId;
       idObject.samOrderId = samOrderId;
-      console.log("this is the objectId",idObject);
+   
       callback(null,idObject);
     });
   },
@@ -275,26 +277,26 @@ async.waterfall([
         product.save();
       })
     })
-  },
-  function(callback){
-    User.find({},function(err,users){
-      console.log('users',users);
-      Store.find({},function(err,stores){
-        console.log('stores',stores);
-        Product.find({},function(err,products){
-          console.log('products',products);
-          Tag.find({},function(err,tags){
-            console.log('tag',tags);
-            Promo.find({},function(err,promos){
-              console.log('promos',promos);
-              Order.find({},function(err,orders){
-                console.log('orders',orders);
-                callback();
-              })
-            })
-          })
-        })
-      })
-    })
   }
+  // function(callback){
+  //   User.find({},function(err,users){
+    
+  //     Store.find({},function(err,stores){
+       
+  //       Product.find({},function(err,products){
+         
+  //         Tag.find({},function(err,tags){
+           
+  //           Promo.find({},function(err,promos){
+              
+  //             Order.find({},function(err,orders){
+                
+  //               callback();
+  //             })
+  //           })
+  //         })
+  //       })
+  //     })
+  //   })
+  // }
 ]);

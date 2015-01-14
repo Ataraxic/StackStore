@@ -4,6 +4,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
+
+
+
+
 var UserSchema = new Schema({
     name: String,
     email: {
@@ -19,11 +23,11 @@ var UserSchema = new Schema({
     salt: String,
     favorites: [{
         type: Schema.Types.ObjectId,
-        ref: 'Products'
+        ref: 'Product'
     }],
     cart: [{
         type: Schema.Types.ObjectId,
-        ref: 'Products'
+        ref: 'Product'
     }],
     stores: [{
         type: Schema.Types.ObjectId,
@@ -34,8 +38,8 @@ var UserSchema = new Schema({
         address: String
     },
     orders: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Orders'
+        type: Schema.Types.ObjectId,
+        ref: 'Orders'
     }]
 });
 
@@ -113,17 +117,17 @@ var validatePresenceOf = function(value) {
 };
 
 /**
- * Pre-save hook
+ * Pre-save hook : ADDED POPULATION OF CART
  */
 UserSchema
-    .pre('save', function(next) {
-        if (!this.isNew) return next();
+       .pre('save', function(next) {
+       if (!this.isNew) return next();
 
-        if (!validatePresenceOf(this.hashedPassword))
-            next(new Error('Invalid password'));
-        else
-            next();
-    });
+       if (!validatePresenceOf(this.hashedPassword))
+           next(new Error('Invalid password'));
+       else
+           next();
+   });
 
 /**
  * Methods
