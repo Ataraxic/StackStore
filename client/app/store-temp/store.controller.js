@@ -8,6 +8,8 @@ angular.module('stackStoreApp')
 
         $scope.ownerPresent = false;
 
+        Cart.get();
+
         Store.get({
                 name: $stateParams.name
             }).$promise

@@ -154,3 +154,20 @@ exports.updateCart = function(req, res) {
         });
     });
 };
+
+//Populate products in user cart
+exports.populate = function(req, res) { 
+      User.findById(req.params.id).populate('products')
+        .exec(function(err, user) {
+            if (err) {
+                console.log('error')
+                return handleError(res, err);
+            }
+            if (!user) {
+                console.log('no user')
+                return res.send(404);
+            }
+            console.log('SUCCESS HIT USER CONTROLLER POPULATE FUNCTION');
+            return res.json(user);
+        })
+}

@@ -19,6 +19,17 @@ angular.module('stackStoreApp')
                 if (Auth.isLoggedIn()) {
                     user = Auth.getCurrentUser();
                     cart.products = user.cart;
+                    $http.put('/api/users/' + user._id + '/populate', {
+                            user: user
+                        }).success(function(user) {
+                              console.log('**********Populated User is :', user )
+                            res.json(user);
+
+                        })
+                        .error(function(err) {
+                            console.log(err);
+                            callback(err);
+                        });
                 }
             },
             add: function(productId, callback) {

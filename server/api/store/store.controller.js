@@ -37,7 +37,6 @@ exports.show = function(req, res) {
 
             console.log(store);
             return res.json(store);
-
         })
 };
 
