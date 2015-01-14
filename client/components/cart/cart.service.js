@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('stackStoreApp')
-    .factory('Cart', function(socket, User, $http, Auth) {
+    .factory('Cart', function(socket, User, $http, Auth, localStorageService) {
 
         var user;
         var cart = {
-            products: [],
-            total: 0
+            products: []
         };
+        cart.products = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
 
         if (Auth.isLoggedIn()) {
             user = Auth.getCurrentUser();
@@ -15,16 +15,13 @@ angular.module('stackStoreApp')
 
         // Public API here
         return {
-            get: function() {
+            get: function(callback) {
                 if (Auth.isLoggedIn()) {
                     user = Auth.getCurrentUser();
                     cart.products = user.cart;
-                    $http.put('/api/users/' + user._id + '/populate', {
-                            user: user
-                        }).success(function(user) {
-                              console.log('**********Populated User is :', user )
-                            res.json(user);
-
+                    $http.get('/api/users/' + user._id + '/populate')
+                        .success(function(user) {
+                            if(callback) callback(null, user);
                         })
                         .error(function(err) {
                             console.log(err);
@@ -46,6 +43,9 @@ angular.module('stackStoreApp')
                             console.log(err);
                             callback(err);
                         });
+                } else {
+                  cart.products.push(productId);
+                  localStorageService.setItem('cart', JSON.stringify(cart.products));
                 }
             },
             update: function() {

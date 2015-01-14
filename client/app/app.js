@@ -5,14 +5,19 @@ angular.module('stackStoreApp', [
   'ngResource',
   'ngSanitize',
   'btford.socket-io',
-  'ui.router'
+  'ui.router',
+  'LocalStorageModule'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,$resourceProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,$resourceProvider, localStorageServiceProvider) {
     $urlRouterProvider
       .otherwise('/');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    localStorageServiceProvider
+    .setPrefix('stackStoreApp');
+    .setStorageType('sessionStorage');
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {

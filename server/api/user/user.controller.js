@@ -144,7 +144,7 @@ exports.updateCart = function(req, res) {
         if (!user) {
             return res.send(404);
         }
-        user.cart.push(req.body._id);
+        if(user.cart) user.cart.push(req.body._id);
 
         user.save(function(err) {
             if (err) {
@@ -156,7 +156,7 @@ exports.updateCart = function(req, res) {
 };
 
 //Populate products in user cart
-exports.populate = function(req, res) { 
+exports.populate = function(req, res) {
       User.findById(req.params.id).populate('products')
         .exec(function(err, user) {
             if (err) {
