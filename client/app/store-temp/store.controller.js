@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('stackStoreApp')
-    .controller('StoreCtrl', function($location,$scope, $http, socket, $stateParams, $resource, Auth, User, Store) {
+    .controller('StoreCtrl', function($location,$scope, $http, socket, $stateParams, $resource, Auth, User, Store,Cart) {
+
         $scope.owner = false;
         $scope.store = {};
 
@@ -24,7 +25,10 @@ angular.module('stackStoreApp')
             })
 
         $scope.addToCart = function(id) {
-            console.log(id);
+            Cart.add(id,function(err,cart){
+            	if(err) console.log(err);
+            	console.log(cart);
+            })
         }
 
     });

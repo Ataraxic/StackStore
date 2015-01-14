@@ -16,4 +16,6 @@ router.post('/', controller.create);
 router.put('/:id/promote', auth.hasRole('admin'), controller.promote);
 router.put('/:id', auth.hasRole('admin'), controller.adminChangePassword);
 
+router.put('/:id/cart',auth.isAuthenticated(),controller.updateCart);
+
 module.exports = router;
