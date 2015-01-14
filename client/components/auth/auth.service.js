@@ -136,27 +136,6 @@ angular.module('stackStoreApp')
         return currentUser.role === 'admin';
       },
 
-      isStoreOwner: function(name,callback){
-      	$http.get('/api/stores/'+name+'/admin').
-				  success(function(data, status, headers, config) {
-				  	console.log(status);
-				  	if(status === 200){
-				  		callback(true);
-				  	}
-				  	else{
-				  		callback(false);
-				  	}
-
-				    // this callback will be called asynchronously
-				    // when the response is available
-				  }).
-				  error(function(data, status, headers, config) {
-				  	callback(false);
-				    // called asynchronously if an error occurs
-				    // or server returns response with an error status.
-				  });
-      },
-
       /**
        * Get auth token
        */
