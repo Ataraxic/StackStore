@@ -32,6 +32,12 @@ angular.module('stackStoreApp')
         params: {
           id:'me'
         }
+      },
+      getUserByName: {
+        method: 'GET',
+        params: {
+          controller: 'profile'
+        }
       }
 	  });
   });

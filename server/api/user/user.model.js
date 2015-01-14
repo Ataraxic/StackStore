@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
+
 var UserSchema = new Schema({
     name: String,
     email: {
@@ -19,15 +20,15 @@ var UserSchema = new Schema({
     salt: String,
     favorites: [{
         type: Schema.Types.ObjectId,
-        ref: 'Products'
+        ref: 'Product'
     }],
     cart: [{
         type: Schema.Types.ObjectId,
-        ref: 'Products'
+        ref: 'Product'
     }],
     stores: [{
         type: Schema.Types.ObjectId,
-        ref: 'Stores'
+        ref: 'Store'
     }],
     contact: {
         phone: Number,
@@ -35,7 +36,7 @@ var UserSchema = new Schema({
     },
     orders: [{
       type: Schema.Types.ObjectId,
-      ref: 'Orders'
+      ref: 'Order'
     }]
 });
 

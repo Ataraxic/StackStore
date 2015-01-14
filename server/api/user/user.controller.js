@@ -4,6 +4,7 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var Product = require('../product/product.model')
 
 var validationError = function(res, err) {
   return res.json(422, err);
@@ -122,6 +123,20 @@ exports.adminChangePassword = function(req, res, next) {
         res.send(200);
       })
     })
+  }
+  /**
+  * Gets user info by name
+  */
+  exports.getUserByName = function(req,res,next){
+    var username = req.params.username;
+    User.findOne({name:username},'-salt -hashedPassword -email -contact -cart -orders')
+        .populate('favorites','-comments -inventory')
+        .exec(function(err,user){
+          if (err) return next(err);
+          if (!user) return res.json(401);
+          console.log('Product',Product);
+          res.json(user);
+        });
   }
 
 /**

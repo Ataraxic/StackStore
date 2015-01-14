@@ -1,11 +1,18 @@
 <div class="jumbotron">
   <div ng-repeat="product in favorites">
-    <div>
-      imagine Picture here
-    </div>
-    <div>
-      <Strong>Description:</strong>
-      {{descriptionSnippet}}
+    <div class="box">
+      <img class="productImage" ng-src="http://lorempixel.com/100/100">
+      </img>
+      <div class="descBox">
+        <h2 class="Name">
+          {{product.name}}
+        </h2>
+        <span>${{product.price}}</span>
+        <div>
+          <Strong>Description:</strong>
+          {{product.description}}
+        </div>
+      </div>
     </div>
   </div>
 </div>

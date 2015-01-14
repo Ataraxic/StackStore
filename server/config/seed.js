@@ -210,7 +210,6 @@ async.waterfall([
         role: 'wat is dis seriously?',
         store: idObject.samsStoreId
       },function(){
-        console.log("this is the IdObject", idObject);
         callback(null,idObject);
       })
     })
@@ -239,7 +238,6 @@ async.waterfall([
     })
   },
   function(idObject,callback){
-    console.log("inside orders");
     Order.find({},function(err,orders){
       var lindsayOrderId = orders.filter(function(obj){
         if (obj.name==='is this a UUID?') {return obj._id;}
@@ -249,7 +247,6 @@ async.waterfall([
         })[0];
       idObject.lindsayOrderId = lindsayOrderId;
       idObject.samOrderId = samOrderId;
-      console.log("this is the objectId",idObject);
       callback(null,idObject);
     });
   },
@@ -257,10 +254,12 @@ async.waterfall([
     User.findOne({name: 'Lindsay'},function(err,user){
       user.stores = [idObject.lindsayStoreId];
       user.orders = [idObject.lindsayOrderId];
+      user.favorites = [idObject.lindsayProductId,idObject.samProductId];
       user.save();
       User.findOne({name:'Sam'},function(err,user){
         user.stores = [idObject.samsStoreId];
         user.orders = [idObject.samOrderId];
+        user.favorites = [idObject.lindsayProductId,idObject.samProductId];
         user.save()
         callback(null,idObject);
       })
@@ -277,24 +276,24 @@ async.waterfall([
     })
   },
   function(callback){
-    User.find({},function(err,users){
-      console.log('users',users);
-      Store.find({},function(err,stores){
-        console.log('stores',stores);
-        Product.find({},function(err,products){
-          console.log('products',products);
-          Tag.find({},function(err,tags){
-            console.log('tag',tags);
-            Promo.find({},function(err,promos){
-              console.log('promos',promos);
-              Order.find({},function(err,orders){
-                console.log('orders',orders);
-                callback();
-              })
-            })
-          })
-        })
-      })
-    })
+    // User.find({},function(err,users){
+    //   console.log('users',users);
+    //   Store.find({},function(err,stores){
+    //     console.log('stores',stores);
+    //     Product.find({},function(err,products){
+    //       console.log('products',products);
+    //       Tag.find({},function(err,tags){
+    //         console.log('tag',tags);
+    //         Promo.find({},function(err,promos){
+    //           console.log('promos',promos);
+    //           Order.find({},function(err,orders){
+    //             console.log('orders',orders);
+    //             callback();
+    //           })
+    //         })
+    //       })
+    //     })
+    //   })
+    // })
   }
 ]);
