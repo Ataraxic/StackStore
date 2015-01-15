@@ -117,6 +117,24 @@ exports.checkOwner = function(req, res) {
     }
 }
 
+exports.search = function(req,res){
+  var storeName = req.params.name;
+  var searchText = req.body.searchtext;
+  console.log(typeof searchText,searchText);
+  Store.findOne({name:storeName},function(err,store){
+    var storeId = store._id;
+    Product.find({$text: {$search:searchText}},{score: {$meta:"textScore"}})
+           .sort({score: {$meta: 'textScore'}})
+           .where({owner:storeId})
+           .exec(function(err,results){
+             if (err) return console.err(err);
+             var sendObj = {};
+             sendObj.data = results;
+             res.json(sendObj);
+           })
+  });
+}
+
 function handleError(res, err) {
     return res.send(500, err);
 }

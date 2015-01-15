@@ -2,10 +2,16 @@
 
 angular.module('stackStoreApp')
   .factory('Store', function ($resource) {
-    return $resource("/api/stores/:name", { name: '@name'}, {
+    return $resource("/api/stores/:name/:controller", { name: '@name'}, {
     	update: {
     		method: 'put'
-    	}
+    	},
+      search: {
+        method: 'POST',
+        params: {
+          controller: 'search'
+        }
+      }
     });
   });
 

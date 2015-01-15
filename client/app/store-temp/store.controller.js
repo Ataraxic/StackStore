@@ -7,11 +7,11 @@ angular.module('stackStoreApp')
         $scope.store = {};
         $scope.storeName = $stateParams.name;
         $scope.currentUser = Auth.getCurrentUser();
-  
+
         $scope.ownerPresent = false;
 
         Cart.get(function(err,data){
-        	
+
         });
 
         Store.get({
@@ -26,17 +26,22 @@ angular.module('stackStoreApp')
                         if (user._id === store.owner) {
                             $scope.owner = true;
                         }
-                    })
+                    });
             })
             .then(null, function(err) {
                 $location.path('/');
-            })
+            });
 
         $scope.addToCart = function(id) {
             Cart.add(id,function(err,data){
             	if(err) console.log(err);
             	console.log(data);
-            })
-        }
-
+            });
+        };
+        $scope.searchStore = function(){
+          Store.search({'name':$stateParams.name},{searchtext:$scope.searchText},function(res){
+            var productsArray = res.data;
+            $scope.store.products = productsArray;
+          });
+        };
     });
