@@ -1,13 +1,18 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <section id="main-content">
-    <section class="wrapper">
-       <h1>You are shopping at {{storeName}}! </h1>
 
+       <h1>You are shopping at {{storeName}}! </h1>
+       <section class="wrapper">
+         <label> Search:
+         <input type="text" ng-model="searchText"></input>
+       </label>
+         <button class="btn btn-primary" ng-click="searchStore()">Search</button>
 <h2>Products</h2>
 <div class="container">
 	<div class="col-md-12">
 		<product ng-repeat="product in store.products"></product>
+    <div ng-show="'noProds'">No Products Found</div>
 	</div>
 </div>
 </section>

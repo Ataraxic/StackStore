@@ -11,7 +11,6 @@ angular.module('stackStoreApp')
         $scope.ownerPresent = false;
 
         Cart.get(function(err,data){
-        	console.log(data);
         });
 
         Store.get({
@@ -26,11 +25,11 @@ angular.module('stackStoreApp')
                         if (user._id === store.owner) {
                             $scope.owner = true;
                         }
-                    })
+                    });
             })
             .then(null, function(err) {
                 $location.path('/');
-            })
+            });
 
         $scope.addToCart = function(id) {
             Cart.add(id,function(err,data){
@@ -38,5 +37,17 @@ angular.module('stackStoreApp')
             	console.log(data);
             })
         }
-
+        $scope.searchStore = function(){
+          if ($scope.searchText){
+            Store.search({'name':$stateParams.name},{searchtext:$scope.searchText},function(res){
+              if (res.data){
+                var productsArray = res.data;
+                $scope.store.products = productsArray;
+                $scope.noProds = false;
+              } else {
+                $scope.noProds = true;
+              }
+            });
+          }
+        };
     });

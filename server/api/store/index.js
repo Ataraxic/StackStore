@@ -15,7 +15,7 @@ router.post('/',auth.isAuthenticated(),controller.create);
 router.put('/:name', auth.isStoreOwner(),controller.update);
 router.patch('/:name', controller.update);
 router.delete('/:name', auth.isStoreOwner(),controller.destroy);
-
+router.post('/:name/search',controller.search);
 router.get('/:name/admin',auth.isStoreOwner(),controller.checkOwner);
 
 
