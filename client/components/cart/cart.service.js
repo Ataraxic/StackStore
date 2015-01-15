@@ -9,15 +9,15 @@ angular.module('stackStoreApp')
             products: []
         };
 
-        cart.ids = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
+        // cart.ids = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
 
         if (Auth.isLoggedIn()) {
             user = Auth.getCurrentUser();
         }
 
         function getProductsFromCache(callback) {
-            $http.post('/api/products/cache',{
-            	products:cart.ids;
+            $http.post('/api/products/cache', {
+            	products:cart.ids
             })
                 .success(function(products) {
                     if (callback) callback(null, products);
