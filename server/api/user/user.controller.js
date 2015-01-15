@@ -26,20 +26,27 @@ exports.index = function(req, res) {
  * Creates a new user
  */
 exports.create = function(req, res, next) {
-    var newUser = new User(req.body);
-    newUser.provider = 'local';
-    newUser.role = 'user';
-    newUser.save(function(err, user) {
+  User.findOne({name: req.body.name},function(err,user){
+    if (err) return validationError(res,err);
+    if (user) return res.json(422,err);
+    if (!user) {
+      var newUser = new User(req.body);
+
+      newUser.provider = 'local';
+      newUser.role = 'user';
+      newUser.save(function(err, user) {
         if (err) return validationError(res, err);
         var token = jwt.sign({
-            _id: user._id
+          _id: user._id
         }, config.secrets.session, {
-            expiresInMinutes: 60 * 5
+          expiresInMinutes: 60 * 5
         });
         res.json({
-            token: token
+          token: token
         });
-    });
+      });
+    }
+  })
 };
 
 /**
