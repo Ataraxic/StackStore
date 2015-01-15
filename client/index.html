@@ -18,6 +18,14 @@
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
+      <link rel="stylesheet" href="app/theme/css/bootstrap.css">
+      <link rel="stylesheet" href="app/theme/css/style-responsive.css">
+      <link rel="stylesheet" href="app/theme/css/style.css">
+      <link rel="stylesheet" href="app/theme/css/table-responsive.css">
+      <link rel="stylesheet" href="app/theme/css/to-do.css">
+      <link rel="stylesheet" href="app/theme/css/zabuto_calendar.css">
+      <link rel="stylesheet" href="app/theme/font-awesome/css/font-awesome.css">
+      <link rel="stylesheet" href="app/theme/lineicons/style.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
@@ -27,7 +35,9 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ui-view=""></div>
+    <section id="container">
+    	<div ui-view=""></div>
+    </section>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -81,6 +91,7 @@
           <script src="app/store-temp/store.controller.js"></script>
           <script src="app/store-temp/store.js"></script>
           <script src="app/store-temp/store_admin/admin_store.controller.js"></script>
+          <script src="app/theme/lineicons/lte-ie7.js"></script>
           <script src="components/Product/Product.service.js"></script>
           <script src="components/Store/Store.service.js"></script>
           <script src="components/auth/auth.service.js"></script>
