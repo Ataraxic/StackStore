@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-    .controller('NavbarCtrl', function($scope, $location, Auth, Store) {
+    .controller('NavbarCtrl', function($scope, $location, Auth, Store,Cart) {
 
         $scope.menu = [{
             'title': 'Home',
@@ -11,8 +11,11 @@ angular.module('stackStoreApp')
        $scope.toggleNav = function (){
         	angular.element('#container').toggleClass('sidebar-closed');
         }
-        $scope.toggleDropdown = function (){
+        $scope.toggleMsgDropdown = function (){
         	angular.element('#header_inbox_bar').toggleClass('open');
+        }
+        $scope.toggleCartDropdown = function (){
+        	angular.element('#header_cart_bar').toggleClass('open');
         }
 
         Store.query({}).$promise
@@ -23,7 +26,6 @@ angular.module('stackStoreApp')
                     var navItem = { title: stores[i].name, link: '/store/'+ stores[i].name}
 
                     $scope.menu.push(navItem);
-
                 }
             })
 
@@ -31,8 +33,9 @@ angular.module('stackStoreApp')
         $scope.isLoggedIn = Auth.isLoggedIn;
         $scope.isAdmin = Auth.isAdmin;
         $scope.getCurrentUser = Auth.getCurrentUser;
-
-        console.log($scope.getCurrentUser());
+        Cart.get(function(err, data) {
+        	$scope.cart_nav = data.cart;
+        });
 
         $scope.logout = function() {
             Auth.logout();

@@ -11,7 +11,6 @@ angular.module('stackStoreApp')
         $scope.ownerPresent = false;
 
         Cart.get(function(err,data){
-
         });
 
         Store.get({
