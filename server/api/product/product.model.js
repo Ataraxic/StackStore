@@ -15,13 +15,8 @@ var ProductSchema = new Schema({
     price: Number,
     description: String,
     comments: [{
-        review: Boolean,
-        body: String,
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        stars: Number
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
     }],
     tags: [{
         type: Schema.Types.ObjectId,

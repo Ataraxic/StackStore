@@ -2,10 +2,19 @@
 
 angular.module('stackStoreApp')
   .factory('Product', function ($resource) {
-    return $resource("/api/products/:id", { id: '@_id'}, {
+    return $resource('/api/products/:id/:option', {
+      id: '@_id'
+      },
+      {
     	update: {
     		method: 'put'
-    	}
+    	},
+      getUserByName: {
+        method: 'GET',
+        params: {
+          option: 'reviews'
+        }
+      }
     });
   });
 

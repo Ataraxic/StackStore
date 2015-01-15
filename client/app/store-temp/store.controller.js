@@ -10,7 +10,7 @@ angular.module('stackStoreApp')
         $scope.ownerPresent = false;
 
         Cart.get(function(err,data){
-        	console.log(arguments);
+        	console.log(data);
         });
 
         Store.get({
@@ -30,9 +30,9 @@ angular.module('stackStoreApp')
             })
 
         $scope.addToCart = function(id) {
-            Cart.add(id,function(err,cart){
+            Cart.add(id,function(err,data){
             	if(err) console.log(err);
-            	console.log(cart);
+            	console.log(data);
             })
         }
 

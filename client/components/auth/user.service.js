@@ -12,6 +12,12 @@ angular.module('stackStoreApp')
           controller:'password'
         }
       },
+      changeEmail: {
+        method: 'PUT',
+        params: {
+          controller: 'email'
+        }
+      },
       adminChangePassword: {
         method: 'PUT'
       },
@@ -25,6 +31,12 @@ angular.module('stackStoreApp')
         method: 'GET',
         params: {
           id:'me'
+        }
+      },
+      getUserByName: {
+        method: 'GET',
+        params: {
+          controller: 'profile'
         }
       }
 	  });
