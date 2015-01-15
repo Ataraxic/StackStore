@@ -14,6 +14,7 @@ module.exports = function(app) {
 
   // });
   app.use('/api/stripes', require('./api/stripe'));
+  app.use('/api/comments', require('./api/comment'));
   app.use('/api/promos', require('./api/promo'));
   app.use('/api/stores', require('./api/store'));
   app.use('/api/orders', require('./api/order'));

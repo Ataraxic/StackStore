@@ -4,6 +4,8 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var Product = require('../product/product.model')
+var Comment = require('../comment/comment.model');
 
 var validationError = function(res, err) {
     return res.json(422, err);
@@ -24,20 +26,27 @@ exports.index = function(req, res) {
  * Creates a new user
  */
 exports.create = function(req, res, next) {
-    var newUser = new User(req.body);
-    newUser.provider = 'local';
-    newUser.role = 'user';
-    newUser.save(function(err, user) {
+  User.findOne({name: req.body.name},function(err,user){
+    if (err) return validationError(res,err);
+    if (user) return res.json(422,err);
+    if (!user) {
+      var newUser = new User(req.body);
+
+      newUser.provider = 'local';
+      newUser.role = 'user';
+      newUser.save(function(err, user) {
         if (err) return validationError(res, err);
         var token = jwt.sign({
-            _id: user._id
+          _id: user._id
         }, config.secrets.session, {
-            expiresInMinutes: 60 * 5
+          expiresInMinutes: 60 * 5
         });
         res.json({
-            token: token
+          token: token
         });
-    });
+      });
+    }
+  })
 };
 
 /**
@@ -100,19 +109,51 @@ exports.promote = function(req, res, next) {
     });
 };
 /**
- * Admin change a user's password
- */
+  * Admin change a user's password
+  */
 exports.adminChangePassword = function(req, res, next) {
-    var userIDToUpdate = req.params.id;
-    User.findById(userIDToUpdate, function(err, user){
-      user.password = req.body.newPassword;
-      user.save(function(err, user){
-        if(err) console.log(err);
-        if(!user) res.send(401);
+  var userIDToUpdate = req.params.id;
+  User.findById(userIDToUpdate, function(err, user){
+    user.password = req.body.newPassword;
+    user.save(function(err, user){
+      if(err) console.log(err);
+      if(!user) res.send(401);
+      res.send(200);
+    })
+  });
+};
+
+/**
+  * change User Email
+  */
+  exports.changeEmail = function(req,res,next){
+    var newEmail = req.body.newEmail;
+    var userId = req.user._id;
+    User.findById(userId,function(err,user){
+      user.email = newEmail;
+      user.save(function(err,user){
+        if (err) console.log(err);
+        if (!user) res.send(401);
         res.send(200);
       })
-    });
-};
+    })
+  }
+  /**
+  * Gets user info by name
+  */
+  exports.getUserByName = function(req,res,next){
+    var username = req.params.username;
+    User.findOne({name:username},'-salt -hashedPassword -email -contact -cart -orders')
+        .populate('favorites','-inventory')
+        .populate('comments')
+        .exec(function(err,user){
+          Comment.populate(user,'product',function(err,user){
+            if (err) return next(err);
+            if (!user) return res.json(401);
+            res.json(user);
+          })
+        });
+  }
 
 /**
  * Get my info
@@ -156,7 +197,7 @@ exports.updateCart = function(req, res) {
 
 //Populate products in user cart
 exports.populate = function(req, res) {
-      User.findById(req.params.id).populate('products')
+      User.findById(req.params.id).populate('cart')
         .exec(function(err, user) {
             if (err) {
                 console.log('error')
@@ -167,6 +208,7 @@ exports.populate = function(req, res) {
                 return res.send(404);
             }
             console.log('SUCCESS HIT USER CONTROLLER POPULATE FUNCTION');
+            console.log(user);
             return res.json(user);
         })
 }

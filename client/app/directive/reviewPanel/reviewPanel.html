@@ -1,0 +1,23 @@
+<div class="jumbotron">
+  <div class="box">
+    <h2 class="PanelTitle">
+      Reviews
+    </h2>
+    <div class="reviewBox" ng-repeat="reviews in comments">
+      <h4 class="reviewTitle">
+        {{reviews.title}}
+      </h4>
+      <div class="upvoteReviewPanel">
+      <div class="vote circle">
+          <div ng-click="addUpvote(reviews)" class="increment up"></div>
+          <div ng-click="minusUpvote(reviews)" class="increment down"></div>
+          <div class="count">{{reviews.upvotes}}</div>
+        </div>
+      </div>
+      <div>
+        {{reviews.body}}
+      </div>
+      <div>{{reviews.product.name}}</div>
+  </div>
+</div>
+</div>

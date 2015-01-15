@@ -132,11 +132,13 @@ exports.destroy = function(req, res) {
 
 //Populate products in user cart
 exports.populateFromCache = function(req, res) {
+	console.log(req.body.products);
     Product.find({
         '_id': {
             $in: req.body.products
         }
     }, function(err, products) {
+    		console.log(products);
         if (err) {
             return res.json(404)
         }
