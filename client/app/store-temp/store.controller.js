@@ -7,11 +7,11 @@ angular.module('stackStoreApp')
         $scope.store = {};
         $scope.storeName = $stateParams.name;
         $scope.currentUser = Auth.getCurrentUser();
-  
+
         $scope.ownerPresent = false;
 
         Cart.get(function(err,data){
-        	
+        	console.log(data);
         });
 
         Store.get({

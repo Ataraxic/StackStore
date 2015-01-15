@@ -42,8 +42,28 @@
             <!--  notification start -->
             <ul class="nav top-menu">
                 <!-- inbox dropdown start-->
+                <li id="header_cart_bar" class="dropdown" ng-show="getCurrentUser()">
+                    <a data-toggle="dropdown" class="dropdown-toggle" ng-click="toggleCartDropdown()">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span class="badge bg-theme">{{getCurrentUser().cart.length}}</span>
+                    </a>
+                    <ul class="dropdown-menu extended inbox">
+                        <li ng-repeat="product in cart_nav">
+                            <a href="/">
+                                <span class="photo"><img alt="avatar" ng-src="{{product.media[0]}}"></span>
+                                <span class="subject">
+                                    <span class="from">{{product.name}}</span>
+                                <span class="time">{{product.price}}</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#">See all messages</a>
+                        </li>
+                    </ul>
+                </li>
                 <li id="header_inbox_bar" class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" ng-click="toggleDropdown()">
+                    <a data-toggle="dropdown" class="dropdown-toggle" ng-click="toggleMsgDropdown()">
                         <i class="fa fa-envelope-o"></i>
                         <span class="badge bg-theme">5</span>
                     </a>
