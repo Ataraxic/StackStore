@@ -3,6 +3,10 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+    //validations?
+    //methods? upvote method?
+    
+
 var ProductSchema = new Schema({
     name: String,
     info: String,

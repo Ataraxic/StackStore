@@ -110,6 +110,8 @@ exports.destroy = function(req, res) {
     });
 };
 
+//what's this about?
+
 exports.checkOwner = function(req, res) {
     if (req.owner) return res.send(200);
     else {

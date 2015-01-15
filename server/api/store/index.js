@@ -18,5 +18,11 @@ router.delete('/:name', auth.isStoreOwner(),controller.destroy);
 
 router.get('/:name/admin',auth.isStoreOwner(),controller.checkOwner);
 
+/*
+	you can have all your non-auth routes first, then say 
+	`app.use(auth.isStoreOwner())`
+	and then have your auth routes
+*/
+
 
 module.exports = router;
