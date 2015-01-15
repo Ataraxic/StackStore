@@ -157,7 +157,7 @@ exports.updateCart = function(req, res) {
 
 //Populate products in user cart
 exports.populate = function(req, res) {
-      User.findById(req.params.id).populate('products')
+      User.findById(req.params.id).populate('cart')
         .exec(function(err, user) {
             if (err) {
                 console.log('error')
@@ -168,6 +168,7 @@ exports.populate = function(req, res) {
                 return res.send(404);
             }
             console.log('SUCCESS HIT USER CONTROLLER POPULATE FUNCTION');
+            console.log(user);
             return res.json(user);
         })
 }
