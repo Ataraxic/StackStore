@@ -1,9 +1,19 @@
 <div class="jumbotron">
+  <h2 class="PanelTitle">
+    Favorites
+  </h2>
   <div ng-repeat="product in favorites">
     <div class="box">
       <img class="productImage" ng-src="http://lorempixel.com/100/100">
       </img>
       <div class="descBox">
+        <div class="upvoteFavoritesPanel">
+          <div class="vote circle">
+            <div ng-click="addUpvote(product)" class="increment up"></div>
+            <div ng-click="minusUpvote(product)" class="increment down"></div>
+            <div class="count">{{product.upvotes}}</div>
+          </div>
+        </div>
         <h2 class="Name">
           {{product.name}}
         </h2>

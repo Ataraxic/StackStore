@@ -5,6 +5,7 @@ var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var Product = require('../product/product.model')
+var Comment = require('../comment/comment.model');
 
 var validationError = function(res, err) {
   return res.json(422, err);
@@ -132,18 +133,13 @@ exports.adminChangePassword = function(req, res, next) {
     User.findOne({name:username},'-salt -hashedPassword -email -contact -cart -orders')
         .populate('favorites','-inventory')
         .populate('comments')
-        .populate({path: 'product',select:'name'},function(err,pop){
-          console.log(pop);
-          res.json(pop);
-        })
-        // .exec(function(err,user){
-        //
-        //   console.log("user",user);
-        //   if (err) return next(err);
-        //   if (!user) return res.json(401);
-        //   console.log('Product',Product);
-        //   res.json(user);
-        // });
+        .exec(function(err,user){
+          Comment.populate(user,'product',function(err,user){
+            if (err) return next(err);
+            if (!user) return res.json(401);
+            res.json(user);
+          })
+        });
   }
 
 /**
