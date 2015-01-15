@@ -8,7 +8,9 @@ angular.module('stackStoreApp')
 
         $scope.ownerPresent = false;
 
-        Cart.get();
+        Cart.get(function(err,data){
+        	console.log(arguments);
+        });
 
         Store.get({
                 name: $stateParams.name

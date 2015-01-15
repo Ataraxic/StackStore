@@ -16,7 +16,7 @@ angular.module('stackStoreApp', [
     $httpProvider.interceptors.push('authInterceptor');
 
     localStorageServiceProvider
-    .setPrefix('stackStoreApp');
+    .setPrefix('stackStoreApp')
     .setStorageType('sessionStorage');
   })
 
