@@ -5,6 +5,7 @@ angular.module('stackStoreApp')
 
         $scope.owner = false;
         $scope.store = {};
+        $scope.storeName = $stateParams.name;
 
         $scope.ownerPresent = false;
 
