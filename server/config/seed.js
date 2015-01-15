@@ -13,6 +13,7 @@ var Order = require('../api/order/order.model')
 var Promo = require('../api/promo/promo.model')
 var Store = require('../api/store/store.model')
 var Tag = require('../api/tag/tag.model')
+var Comment = require('../api/comment/comment.model');
 
 
 
@@ -21,7 +22,7 @@ async.waterfall([
       User.find({}).remove(function() {
       User.create({
         provider: 'local',
-        name: 'Lindsay',
+        name: 'lindsay',
         email: 'test@test.com',
         password: 'test',
         role: 'user',
@@ -32,7 +33,7 @@ async.waterfall([
       }, {
         provider: 'local',
         role: 'admin',
-        name: 'Sam',
+        name: 'sam',
         email: 'admin@admin.com',
         password: 'admin',
         contact: {
@@ -82,14 +83,17 @@ async.waterfall([
       if (obj.name==="StoreOne"){return obj._id;}
       })[0];
     var lindsayUserId = users.filter(function(obj){
-      if (obj.name==="Lindsay"){return obj._id;}
+      if (obj.name==="lindsay"){return obj._id;}
       })[0];
     var samsUserId = users.filter(function(obj){
-      if (obj.name==="Sam"){return obj._id;}
+      if (obj.name==="sam"){return obj._id;}
       })[0];
     var samsStoreId = stores.filter(function(obj){
       if (obj.name==="StoreTwo"){return obj._id;}
     })[0];
+    console.log("this is stores",stores);
+    console.log("this is users",users[0]._id);
+    console.log("lindsay's user Id",lindsayUserId);
     var idObject = {
       'lindsayStoreId': lindsayStoreId,
       'samsStoreId': samsStoreId,
@@ -104,18 +108,6 @@ async.waterfall([
       owner: lindsayStoreId,
       price: 19.99,
       description: 'tp is love',
-      comments: [{
-        review: true,
-        body: 'this is the best item ever',
-        user: lindsayUserId,
-        stars: 5
-      },
-      {
-        review: false,
-        body: 'dis item is teh sux',
-        user: samsUserId,
-        stars: 1
-      }],
       inventory: {
         available: 12,
         maximum: 42
@@ -128,23 +120,79 @@ async.waterfall([
       owner: samsStoreId,
       price: 23.36,
       description: 'sams description',
-      comments: [{
-        review: true,
-        body: 'mediocre item asdfasdfa asdfa ',
-        user: lindsayUserId,
-        stars: 3
-      },{
-        review: false,
-        body: 'stop shitposting in my store',
-        user: samsStoreId,
-        stars: 5
-      }],
       inventory: {
         available: 101,
         maximum: 20123
       }
     },function(){
       callback(null,idObject);
+    })
+  },
+  function(idObject,callback){
+    Product.find({},function(err,products){
+      var lindsayProductId = products.filter(function(obj){
+        if (obj.name==='lindsay\'s Product') {return obj._id;}
+        })[0];
+        var samProductId = products.filter(function(obj){
+          if (obj.name==='sam\'s Product') {return obj._id;}
+          })[0];
+          idObject.lindsayProductId = lindsayProductId;
+          idObject.samProductId = samProductId;
+          callback(null,idObject);
+    })
+  },
+  function(idObject,callback){
+    Comment.find({}).remove(function(){
+      Comment.create({
+        title: 'Worst Product Ever',
+        body: 'this is so bad blah blah blah. FIELRSASDFASDF ',
+        owner: idObject.lindsayUserId,
+        product: idObject.samProductId,
+        upvotes: 101,
+        stars: 0,
+        active: true
+      },{
+        title: 'Best Product Ever',
+        body: 'this product is great',
+        owner: idObject.samsUserId,
+        product: idObject.lindsayProductId,
+        upvotes: 55,
+        stars: 4,
+        active: true
+      },function(){
+        callback(null,idObject);
+      })
+    })
+  },
+  function(idObject,callback){
+    Comment.findOne({upvotes: 101},function(err,comment){
+      idObject.lindsayReviewId = comment._id;
+      Comment.findOne({upvotes: 55},function(err,comment){
+        idObject.samReviewId = comment._id;
+        callback(null,idObject);
+      })
+    })
+  },
+  function(idObject,callback){
+    Product.findOne({upvotes: 1200},function(err,product){
+      product.comments = [idObject.lindsayReviewId];
+      product.save();
+      Product.findOne({upvotes:1010},function(err,product){
+        product.comments = [idObject.samReviewId];
+        product.save();
+        callback(null,idObject);
+      })
+    })
+  },
+  function(idObject,callback){
+    User.findOne({name:'lindsay'},function(err,user){
+      user.comments = [idObject.lindsayReviewId];
+      user.save();
+      User.findOne({name:'sam'},function(err,user){
+        user.comments = [idObject.samReviewId];
+        user.save()
+        callback(null,idObject);
+      })
     })
   },
   function(idObject,callback){
@@ -211,8 +259,6 @@ async.waterfall([
         role: 'wat is dis seriously?',
         store: idObject.samsStoreId
       },function(){
-
-
         callback(null,idObject);
       })
     })
@@ -241,7 +287,6 @@ async.waterfall([
     })
   },
   function(idObject,callback){
-
     Order.find({},function(err,orders){
       var lindsayOrderId = orders.filter(function(obj){
         if (obj.name==='is this a UUID?') {return obj._id;}
@@ -251,18 +296,19 @@ async.waterfall([
         })[0];
       idObject.lindsayOrderId = lindsayOrderId;
       idObject.samOrderId = samOrderId;
-   
       callback(null,idObject);
     });
   },
   function(idObject,callback){
-    User.findOne({name: 'Lindsay'},function(err,user){
+    User.findOne({name: 'lindsay'},function(err,user){
       user.stores = [idObject.lindsayStoreId];
       user.orders = [idObject.lindsayOrderId];
+      user.favorites = [idObject.lindsayProductId,idObject.samProductId];
       user.save();
-      User.findOne({name:'Sam'},function(err,user){
+      User.findOne({name:'sam'},function(err,user){
         user.stores = [idObject.samsStoreId];
         user.orders = [idObject.samOrderId];
+        user.favorites = [idObject.lindsayProductId,idObject.samProductId];
         user.save()
         callback(null,idObject);
       })
@@ -275,28 +321,32 @@ async.waterfall([
       Product.findOne({name: 'sam\'s Product'},function(err,product){
         product.tags = [idObject.samTagId];
         product.save();
+        callback();
       })
     })
+  },
+  function(callback){
+    Comment.find({},function(err,comments){
+      console.log("this is all the comments",comments);
+    })
+    // User.find({},function(err,users){
+    //   console.log('users',users);
+    //   Store.find({},function(err,stores){
+    //     console.log('stores',stores);
+    //     Product.find({},function(err,products){
+    //       console.log('products',products);
+    //       Tag.find({},function(err,tags){
+    //         console.log('tag',tags);
+    //         Promo.find({},function(err,promos){
+    //           console.log('promos',promos);
+    //           Order.find({},function(err,orders){
+    //             console.log('orders',orders);
+    //             callback();
+    //           })
+    //         })
+    //       })
+    //     })
+    //   })
+    // })
   }
-  // function(callback){
-  //   User.find({},function(err,users){
-    
-  //     Store.find({},function(err,stores){
-       
-  //       Product.find({},function(err,products){
-         
-  //         Tag.find({},function(err,tags){
-           
-  //           Promo.find({},function(err,promos){
-              
-  //             Order.find({},function(err,orders){
-                
-  //               callback();
-  //             })
-  //           })
-  //         })
-  //       })
-  //     })
-  //   })
-  // }
 ]);
