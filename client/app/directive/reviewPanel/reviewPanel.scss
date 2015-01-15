@@ -75,15 +75,6 @@ $red : #C15044;
   30% { transform: scale(1.2); }
 }
 
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $bg;
-}
-
 .PanelTitle {
   text-align:center;
 }
