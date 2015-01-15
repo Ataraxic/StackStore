@@ -25,10 +25,10 @@ var UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Product'
     }],
-    cart: [{
+    cart: {
         type: Schema.Types.ObjectId,
-        ref: 'Product'
-    }],
+        ref: 'Cart'
+    },
     stores: [{
         type: Schema.Types.ObjectId,
         ref: 'Stores'

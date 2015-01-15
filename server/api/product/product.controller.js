@@ -104,7 +104,7 @@ exports.destroy = function(req, res) {
                 return handleError(res, err);
             }
 
-             Store.findOne({
+            Store.findOne({
                 name: req.query.storeName
             }, function(err, store) {
                 if (err) {
@@ -116,19 +116,33 @@ exports.destroy = function(req, res) {
 
                 var index = store.products.lastIndexOf(product._id);
 
-                store.products.splice(index,1);
+                store.products.splice(index, 1);
 
                 console.log(store.products);
 
                 store.save(function(err, store) {
                     return res.send(204);
-                   
+
                 });
             });
-            
+
         });
     });
 };
+
+//Populate products in user cart
+exports.populateFromCache = function(req, res) {
+    Product.find({
+        '_id': {
+            $in: req.body.products
+        }
+    }, function(err, products) {
+        if (err) {
+            return res.json(404)
+        }
+        return res.json(products);
+    })
+}
 
 function handleError(res, err) {
     return res.send(500, err);

@@ -1,35 +1,56 @@
 'use strict';
 
 angular.module('stackStoreApp')
-    .factory('Cart', function(socket, User, $http, Auth) {
+    .factory('Cart', function(socket, User, $http, Auth, localStorageService) {
 
         var user;
         var cart = {
-            products: [],
-            total: 0
+        		ids: [],
+            products: []
         };
+
+        cart.ids = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
 
         if (Auth.isLoggedIn()) {
             user = Auth.getCurrentUser();
         }
 
+        function getProductsFromCache(callback) {
+            $http.post('/api/products/cache',{
+            	products:cart.ids;
+            })
+                .success(function(products) {
+                    if (callback) callback(null, products);
+                })
+                .error(function(err) {
+                    console.log(err);
+                    callback(err);
+                });
+        }
+
         // Public API here
         return {
-            get: function() {
+        		getProductsFromCache: getProductsFromCache,
+            get: function(callback) {
                 if (Auth.isLoggedIn()) {
                     user = Auth.getCurrentUser();
                     cart.products = user.cart;
-                    $http.put('/api/users/' + user._id + '/populate', {
-                            user: user
-                        }).success(function(user) {
-                              console.log('**********Populated User is :', user )
-                            res.json(user);
-
+                    $http.get('/api/users/' + user._id + '/populate')
+                        .success(function(user) {
+                            if (callback) callback(null, user);
                         })
                         .error(function(err) {
                             console.log(err);
                             callback(err);
                         });
+                }
+                else{
+                	getProductsFromCache(function(err,products){
+                		if(err) console.log(err);
+                		else{
+                			callback(null,{products:products});
+                		}
+                	})
                 }
             },
             add: function(productId, callback) {
@@ -46,6 +67,11 @@ angular.module('stackStoreApp')
                             console.log(err);
                             callback(err);
                         });
+                } else {
+                		console.log(cart.ids);
+                    cart.ids.push(productId);
+                    localStorageService.setItem('cart', JSON.stringify(cart.ids));
+                    callback();
                 }
             },
             update: function() {
