@@ -6,11 +6,12 @@ angular.module('stackStoreApp')
         $scope.owner = false;
         $scope.store = {};
         $scope.storeName = $stateParams.name;
-
+        $scope.currentUser = Auth.getCurrentUser();
+  
         $scope.ownerPresent = false;
 
         Cart.get(function(err,data){
-        	console.log(data);
+        	
         });
 
         Store.get({
@@ -18,6 +19,8 @@ angular.module('stackStoreApp')
             }).$promise
             .then(function(store) {
                 $scope.store = store;
+
+                console.log(store);
                 User.get().$promise
                     .then(function(user) {
                         if (user._id === store.owner) {
