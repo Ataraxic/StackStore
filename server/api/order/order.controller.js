@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Order = require('./order.model');
+var User = require('../user/user.model');
 
 // Get list of orders
 exports.index = function(req, res) {
@@ -22,10 +23,52 @@ exports.show = function(req, res) {
 
 // Creates a new order in the DB.
 exports.create = function(req, res) {
-  Order.create(req.body, function(err, order) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, order);
+  var userId = req.user._id;
+  var cart, user;
+  User.findById(userId, function(err, user){
+    cart = user.cart, user = user;
+    if(!cart) res.send(404, "No cart...");
+    if(cart.length == 0) res.send(404, "Cart is empty!");
+    var newOrder = new Order();
+    newOrder.buyer = req.user._id;
+    newOrder.products = cart;
+    newOrder.status = "Pending";
+    newOrder.stripeToken = req.body.stripeToken;
+
+    //build hash of storeowners key: storeOwnerId, obj { products: [] }
+    var storeHash = {};
+    cart.forEach(function(item){
+      console.log('item in cart', item)
+      // if(storeHash.hasOwnProperty(item.owner)) {
+      //   if(storeHash[item.owner].products) {
+      //     storeHash[item.owner].products.push(item);
+      //   } else {
+      //     storeHash[item.owner].products = [];
+      //     storeHash[item.owner].products.push(item);
+      //   }
+      // } else {
+      //   storeHash[item.owner] = { products: [] };
+      //   storeHash[item.owner].products.push(item);
+      // }
+      // if(!storeHash[item].products) storeHash[item].products = [];
+      // storeHash[item].products.push(item);
+    })
+
+    for(var owner in storeHash) {
+      newOrder.storeOwner.push(owner);
+    }
+
+    newOrder.save(function(err, order){
+      user.orders.push(order);
+      user.cart = []; //empty cart after order is fulfilled
+      user.save(function(err, user) {
+        console.log('user after fulfilled', user);
+        console.log('order after fulfilled', order);
+        return res.json(order);
+      })
+    })
   });
+
 };
 
 // Updates an existing order in the DB.

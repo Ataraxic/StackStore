@@ -7,7 +7,7 @@ var OrderSchema = new Schema({
     name: String,
     info: String,
     active: Boolean,
-    user: {
+    buyer: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
@@ -16,10 +16,11 @@ var OrderSchema = new Schema({
         ref: 'Products'
     }],
     status: String,
-    owner: {
+    total: Number,
+    storeOwner: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
-    },
+    }],
     stripeToken: String
 });
 
