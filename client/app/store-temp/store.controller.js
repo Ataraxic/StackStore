@@ -1,22 +1,38 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('StoreCtrl', function ($scope,$http, socket,$stateParams,$resource,Auth,User,Store) {
-  	$scope.owner = false;
-    $scope.store = {};
+    .controller('StoreCtrl', function($location,$scope, $http, socket, $stateParams, $resource, Auth, User, Store,Cart) {
 
-    $scope.ownerPresent = false;
+        $scope.owner = false;
+        $scope.store = {};
 
-    var store = Store.get({name:$stateParams.name},function(store){
-    	console.log(store);
-    	  	User.get().$promise
-			  	.then(function(user){
-			  		console.log(user._id)
-			  		console.log(store.owner)
-			  		if(user._id == store.owner){
-			  			$scope.owner = true;
-			  		}
-			  	})
-    })
+        $scope.ownerPresent = false;
 
-  });
+        Cart.get(function(err,data){
+        	console.log(arguments);
+        });
+
+        Store.get({
+                name: $stateParams.name
+            }).$promise
+            .then(function(store) {
+                $scope.store = store;
+                User.get().$promise
+                    .then(function(user) {
+                        if (user._id === store.owner) {
+                            $scope.owner = true;
+                        }
+                    })
+            })
+            .then(null, function(err) {
+                $location.path('/');
+            })
+
+        $scope.addToCart = function(id) {
+            Cart.add(id,function(err,cart){
+            	if(err) console.log(err);
+            	console.log(cart);
+            })
+        }
+
+    });

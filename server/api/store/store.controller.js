@@ -3,21 +3,8 @@
 var _ = require('lodash');
 var async = require('async');
 var Store = require('./store.model');
+var Product = require('../product/product.model');
 var User = require('../user/user.model');
-
-
-//Find all products in store
-// exports.findproducts = function(req, res) {
-//   Store.findOne( {name: req.params.name}, function (err, store) {
-//     if(err) { return handleError(res, err); }
-//     if(!store) { return res.send(404); }
-//     }).success(function () {
-//       Product.find({name: req.params.name}, function (err, products) {
-//       if(err) { return handleError(res, err); }
-//       return res.json(200, products);
-//     });
-//   });
-// };
 
 
 
@@ -33,20 +20,24 @@ exports.index = function(req, res) {
 
 // Get a single store
 exports.show = function(req, res) {
-    Store.findOne({
-        name: req.params.name
-    }, function(err, store) {
-        if (err) {
-            console.log('error')
-            return handleError(res, err);
-        }
-        if (!store) {
-            console.log('no store')
-            return res.send(404);
-        }
 
-        return res.json(store);
-    });
+    Store.findOne({
+            name: req.params.name
+        })
+        .populate('products')
+        .exec(function(err, store) {
+            if (err) {
+                console.log('error')
+                return handleError(res, err);
+            }
+            if (!store) {
+                console.log('no store')
+                return res.send(404);
+            }
+
+            console.log(store);
+            return res.json(store);
+        })
 };
 
 // Creates a new store in the DB.

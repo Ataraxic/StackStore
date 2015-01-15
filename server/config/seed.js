@@ -6,9 +6,10 @@
 'use strict';
 var async = require('async');
 var Thing = require('../api/thing/thing.model');
+var Product = require('../api/product/product.model')
 var User = require('../api/user/user.model');
 var Order = require('../api/order/order.model')
-var Product = require('../api/product/product.model')
+
 var Promo = require('../api/promo/promo.model')
 var Store = require('../api/store/store.model')
 var Tag = require('../api/tag/tag.model')

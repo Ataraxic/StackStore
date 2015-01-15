@@ -59,7 +59,7 @@ exports.create = function(req, res) {
                 console.log(store.products);
 
                 store.save(function(err, store) {
-                    res.json(store);
+                    res.json(product);
                 });
             });
         }
@@ -99,14 +99,50 @@ exports.destroy = function(req, res) {
         if (!product) {
             return res.send(404);
         }
-        product.remove(function(err) {
+        product.remove(function(err, product) {
             if (err) {
                 return handleError(res, err);
             }
-            return res.send(204);
+
+            Store.findOne({
+                name: req.query.storeName
+            }, function(err, store) {
+                if (err) {
+                    return handleError(res, err);
+                }
+                if (!store) {
+                    return res.send(404);
+                };
+
+                var index = store.products.lastIndexOf(product._id);
+
+                store.products.splice(index, 1);
+
+                console.log(store.products);
+
+                store.save(function(err, store) {
+                    return res.send(204);
+
+                });
+            });
+
         });
     });
 };
+
+//Populate products in user cart
+exports.populateFromCache = function(req, res) {
+    Product.find({
+        '_id': {
+            $in: req.body.products
+        }
+    }, function(err, products) {
+        if (err) {
+            return res.json(404)
+        }
+        return res.json(products);
+    })
+}
 
 function handleError(res, err) {
     return res.send(500, err);

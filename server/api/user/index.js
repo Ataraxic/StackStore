@@ -18,4 +18,9 @@ router.put('/:id', auth.hasRole('admin'), controller.adminChangePassword);
 router.put('/:id/email', auth.isAuthenticated(),controller.changeEmail);
 router.get('/:username/profile',controller.getUserByName);
 
+router.put('/:id/cart',auth.isAuthenticated(),controller.updateCart);
+
+//Populate products in cart
+router.get('/:id/populate',auth.isAuthenticated(),controller.populate);
+
 module.exports = router;

@@ -5,14 +5,19 @@ angular.module('stackStoreApp', [
   'ngResource',
   'ngSanitize',
   'btford.socket-io',
-  'ui.router'
+  'ui.router',
+  'LocalStorageModule'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,$resourceProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,$resourceProvider, localStorageServiceProvider) {
     $urlRouterProvider
       .otherwise('/');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    localStorageServiceProvider
+    .setPrefix('stackStoreApp')
+    .setStorageType('sessionStorage');
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
@@ -29,7 +34,9 @@ angular.module('stackStoreApp', [
       // Intercept 401s and redirect you to login
       responseError: function(response) {
         if(response.status === 401) {
-          $location.path('/login');
+          //MAYBE FIX LATER
+          //$location.path('/login');
+
           // remove any stale tokens
           $cookieStore.remove('token');
           return $q.reject(response);

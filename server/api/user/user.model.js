@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
-
 var UserSchema = new Schema({
     name: String,
     email: {
@@ -118,17 +117,17 @@ var validatePresenceOf = function(value) {
 };
 
 /**
- * Pre-save hook
+ * Pre-save hook : ADDED POPULATION OF CART
  */
 UserSchema
-    .pre('save', function(next) {
-        if (!this.isNew) return next();
+       .pre('save', function(next) {
+       if (!this.isNew) return next();
 
-        if (!validatePresenceOf(this.hashedPassword))
-            next(new Error('Invalid password'));
-        else
-            next();
-    });
+       if (!validatePresenceOf(this.hashedPassword))
+           next(new Error('Invalid password'));
+       else
+           next();
+   });
 
 /**
  * Methods
