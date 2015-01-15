@@ -91,9 +91,6 @@ async.waterfall([
     var samsStoreId = stores.filter(function(obj){
       if (obj.name==="StoreTwo"){return obj._id;}
     })[0];
-    console.log("this is stores",stores);
-    console.log("this is users",users[0]._id);
-    console.log("lindsay's user Id",lindsayUserId);
     var idObject = {
       'lindsayStoreId': lindsayStoreId,
       'samsStoreId': samsStoreId,
@@ -139,6 +136,18 @@ async.waterfall([
           idObject.lindsayProductId = lindsayProductId;
           idObject.samProductId = samProductId;
           callback(null,idObject);
+    })
+  },
+    function(idObject,callback){
+    Store.findOne({name:'StoreOne'},function(err,store){
+      console.log("store",store);
+      store.products = [idObject.lindsayProductId];
+      store.save();
+      Store.findOne({name:'StoreTwo'},function(err,store){
+        store.products=[idObject.samProductId];
+        store.save();
+        callback(null,idObject);
+      })
     })
   },
   function(idObject,callback){

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-    .controller('StoreCtrl', function($location,$scope, $http, socket, $stateParams, $resource, Auth, User, Store,Cart) {
+    .controller('StoreCtrl', function($location,$scope, $http, socket, $stateParams, $resource, Auth, User, Store,Cart, Product) {
 
         $scope.owner = false;
         $scope.store = {};
