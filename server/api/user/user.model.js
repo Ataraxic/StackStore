@@ -30,6 +30,10 @@ var UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Store'
     }],
+    comments: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
+    }],
     contact: {
         phone: Number,
         address: String

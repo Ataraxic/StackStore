@@ -130,13 +130,20 @@ exports.adminChangePassword = function(req, res, next) {
   exports.getUserByName = function(req,res,next){
     var username = req.params.username;
     User.findOne({name:username},'-salt -hashedPassword -email -contact -cart -orders')
-        .populate('favorites','-comments -inventory')
-        .exec(function(err,user){
-          if (err) return next(err);
-          if (!user) return res.json(401);
-          console.log('Product',Product);
-          res.json(user);
-        });
+        .populate('favorites','-inventory')
+        .populate('comments')
+        .populate({path: 'product',select:'name'},function(err,pop){
+          console.log(pop);
+          res.json(pop);
+        })
+        // .exec(function(err,user){
+        //
+        //   console.log("user",user);
+        //   if (err) return next(err);
+        //   if (!user) return res.json(401);
+        //   console.log('Product',Product);
+        //   res.json(user);
+        // });
   }
 
 /**
