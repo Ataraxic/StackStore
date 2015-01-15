@@ -8,15 +8,22 @@ angular.module('stackStoreApp')
             'link': '/'
         }];
 
+       $scope.toggleNav = function (){
+        	angular.element('#container').toggleClass('sidebar-closed');
+        }
+        $scope.toggleDropdown = function (){
+        	angular.element('#header_inbox_bar').toggleClass('open');
+        }
+
         Store.query({}).$promise
             .then(function(stores) {
- 
+
                 for (var i = 0; i < stores.length; i++) {
                     var storeName = stores[i].name;
                     var navItem = { title: stores[i].name, link: '/store/'+ stores[i].name}
-                  
+
                     $scope.menu.push(navItem);
-                  
+
                 }
             })
 
@@ -24,6 +31,8 @@ angular.module('stackStoreApp')
         $scope.isLoggedIn = Auth.isLoggedIn;
         $scope.isAdmin = Auth.isAdmin;
         $scope.getCurrentUser = Auth.getCurrentUser;
+
+        console.log($scope.getCurrentUser());
 
         $scope.logout = function() {
             Auth.logout();
