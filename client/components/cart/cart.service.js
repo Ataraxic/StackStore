@@ -5,28 +5,52 @@ angular.module('stackStoreApp')
 
         var user;
         var cart = {
+        		ids: [],
             products: []
         };
-        cart.products = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
+
+        cart.ids = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
 
         if (Auth.isLoggedIn()) {
             user = Auth.getCurrentUser();
         }
 
+        function getProductsFromCache(callback) {
+            $http.post('/api/products/cache',{
+            	products:cart.ids;
+            })
+                .success(function(products) {
+                    if (callback) callback(null, products);
+                })
+                .error(function(err) {
+                    console.log(err);
+                    callback(err);
+                });
+        }
+
         // Public API here
         return {
+        		getProductsFromCache: getProductsFromCache,
             get: function(callback) {
                 if (Auth.isLoggedIn()) {
                     user = Auth.getCurrentUser();
                     cart.products = user.cart;
                     $http.get('/api/users/' + user._id + '/populate')
                         .success(function(user) {
-                            if(callback) callback(null, user);
+                            if (callback) callback(null, user);
                         })
                         .error(function(err) {
                             console.log(err);
                             callback(err);
                         });
+                }
+                else{
+                	getProductsFromCache(function(err,products){
+                		if(err) console.log(err);
+                		else{
+                			callback(null,{products:products});
+                		}
+                	})
                 }
             },
             add: function(productId, callback) {
@@ -44,8 +68,10 @@ angular.module('stackStoreApp')
                             callback(err);
                         });
                 } else {
-                  cart.products.push(productId);
-                  localStorageService.setItem('cart', JSON.stringify(cart.products));
+                		console.log(cart.ids);
+                    cart.ids.push(productId);
+                    localStorageService.setItem('cart', JSON.stringify(cart.ids));
+                    callback();
                 }
             },
             update: function() {
