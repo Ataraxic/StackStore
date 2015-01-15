@@ -5,8 +5,7 @@ angular.module('stackStoreApp')
 
         var user;
         var cart = {
-        		ids: [],
-            products: []
+            ids: []
         };
 
         cart.ids = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
@@ -16,11 +15,11 @@ angular.module('stackStoreApp')
         }
 
         function getProductsFromCache(callback) {
-            $http.post('/api/products/cache',{
-            	products:cart.ids;
-            })
+            $http.post('/api/products/cache', {
+                    products: cart.ids
+                })
                 .success(function(products) {
-                    if (callback) callback(null, products);
+                    callback(null, products);
                 })
                 .error(function(err) {
                     console.log(err);
@@ -28,31 +27,33 @@ angular.module('stackStoreApp')
                 });
         }
 
+        function get(callback) {
+            if (Auth.isLoggedIn()) {
+                user = Auth.getCurrentUser();
+                $http.get('/api/users/' + user._id + '/populate')
+                    .success(function(user) {
+                        if (callback) callback(null, user);
+                    })
+                    .error(function(err) {
+                        console.log(err);
+                        callback(err);
+                    });
+            } else {
+                getProductsFromCache(function(err, products) {
+                    if (err) console.log(err);
+                    else {
+                        callback(null, {
+                            products: products
+                        });
+                    }
+                })
+            }
+        }
+
         // Public API here
         return {
-        		getProductsFromCache: getProductsFromCache,
-            get: function(callback) {
-                if (Auth.isLoggedIn()) {
-                    user = Auth.getCurrentUser();
-                    cart.products = user.cart;
-                    $http.get('/api/users/' + user._id + '/populate')
-                        .success(function(user) {
-                            if (callback) callback(null, user);
-                        })
-                        .error(function(err) {
-                            console.log(err);
-                            callback(err);
-                        });
-                }
-                else{
-                	getProductsFromCache(function(err,products){
-                		if(err) console.log(err);
-                		else{
-                			callback(null,{products:products});
-                		}
-                	})
-                }
-            },
+            getProductsFromCache: getProductsFromCache,
+            get: get,
             add: function(productId, callback) {
                 if (Auth.isLoggedIn()) {
                     user = Auth.getCurrentUser();
@@ -60,18 +61,19 @@ angular.module('stackStoreApp')
                             _id: productId
                         })
                         .success(function(user) {
-                            cart.products = user.cart;
-                            callback(null, cart);
+                            callback(null, user);
                         })
                         .error(function(err) {
                             console.log(err);
                             callback(err);
                         });
                 } else {
-                		console.log(cart.ids);
+                    console.log(cart.ids);
                     cart.ids.push(productId);
                     localStorageService.setItem('cart', JSON.stringify(cart.ids));
-                    callback();
+                    get(function(err,data){
+                    	callback(err,data);
+                    });
                 }
             },
             update: function() {
