@@ -11,6 +11,8 @@ angular.module('stackStoreApp')
     $scope.name = '';
     $scope.info = '';
     $scope.price = '';
+    $scope.tag = '';
+    $scope.tags = [];
 
     //Get Owner ID of current store
     User.get().$promise
@@ -30,6 +32,12 @@ angular.module('stackStoreApp')
             $location.path('/store/' + $stateParams.name);
         })
 
+
+    $scope.addTag = function(tag) {
+      $scope.tags.push(tag);
+      console.log($scope.tags);
+    }
+
     //Add a new product
     $scope.addProduct = function() {
         if ($scope.name === '') {
@@ -41,12 +49,16 @@ angular.module('stackStoreApp')
         if ($scope.price === '') {
             return;
         }
+        if ($scope.tag === '') {
+            return;
+        }
 
         Product.save({
             name: $scope.name,
             info: $scope.info,
             price: $scope.price,
             owner: $scope.ownerId,
+            // $push: {"tags": {: title, msg: msg}},
             storeName: $scope.storeName
         }, function(product) {
             console.log(product);
