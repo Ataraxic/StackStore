@@ -1,3 +1,69 @@
-<div class="col-md-12">
-This is the checkout view.
+<style>
+  .ng-invalid {
+    color: red;
+  }
+</style>
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="col-md-4 col-md-offset-4">
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Qty.</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="lineItem in orderItems">
+            <td>{{lineItem.item[0].title}}</td>
+            <td style="text-align:center;">{{lineItem.quantity}}</td>
+            <td>{{lineItem.value | currency : $ : 2}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="font-weight:bold;">Subtotal</td>
+            <td style="font-weight:bold;">{{cartTotal | currency : $ : 2}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <form stripe-form="stripeCallback" name="checkoutForm" ng-submit="onCheckout()" id="form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-credit-card"></span></span>
+            <input payments-format="card" payments-validate="card" id="card-num" ng-model="number" class="form-control" type="text" size="16" placeholder="Card number" autofocus="autofocus" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-6">
+          <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            <input payments-validate="expiry" payments-format="expiry" id="card-exp" ng-model="expiry" class="form-control" size="5" placeholder="MM/YY"/>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+            <input payments-validate="cvc" id="card-cvc" payments-format="cvc" ng-model="cvc" class="form-control" type="text" size="4" placeholder="CVC" />
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary col-sm-12"
+        data-progress-text="<span class='glyphicon glyphicon-refresh fa-spin'></span>"
+        data-success-text="<span class='glyphicon glyphicon-ok'></span>">
+        Pay
+      </button>
+    </form>
+
+
+    {{EXP}}
+    {{CARDNUM}}
+    {{CVC}}
 </div>

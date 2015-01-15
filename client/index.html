@@ -18,6 +18,14 @@
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
+      <link rel="stylesheet" href="app/theme/css/bootstrap.css">
+      <link rel="stylesheet" href="app/theme/css/style-responsive.css">
+      <link rel="stylesheet" href="app/theme/css/style.css">
+      <link rel="stylesheet" href="app/theme/css/table-responsive.css">
+      <link rel="stylesheet" href="app/theme/css/to-do.css">
+      <link rel="stylesheet" href="app/theme/css/zabuto_calendar.css">
+      <link rel="stylesheet" href="app/theme/font-awesome/css/font-awesome.css">
+      <link rel="stylesheet" href="app/theme/lineicons/style.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
@@ -27,7 +35,9 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ui-view=""></div>
+    <section id="container">
+    	<div ui-view=""></div>
+    </section>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -55,8 +65,16 @@
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+      <script src="bower_components/angular-payments/lib/angular-payments.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
+      <script src="https://js.stripe.com/v2/"></script>
+      <script type="text/javascript"
+        src="bower_components/angular-payments/lib/angular-payments.js">
+      </script>
+      <!--<script type='text/javascript'>
+        Stripe.setPublishableKey('pk_test_D5vWHkz0NEx0wAP2eut3LZxm');
+      </script>-->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,client}) app/app.js -->
@@ -81,6 +99,7 @@
           <script src="app/store-temp/store.controller.js"></script>
           <script src="app/store-temp/store.js"></script>
           <script src="app/store-temp/store_admin/admin_store.controller.js"></script>
+          <script src="app/theme/lineicons/lte-ie7.js"></script>
           <script src="components/Product/Product.service.js"></script>
           <script src="components/Store/Store.service.js"></script>
           <script src="components/auth/auth.service.js"></script>
