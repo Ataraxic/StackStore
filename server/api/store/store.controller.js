@@ -128,6 +128,7 @@ exports.search = function(req,res){
            .where({owner:storeId})
            .exec(function(err,results){
              if (err) return console.err(err);
+             if (!results) return res.send(440);
              var sendObj = {};
              sendObj.data = results;
              res.json(sendObj);

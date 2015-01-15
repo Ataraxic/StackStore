@@ -36,12 +36,19 @@ angular.module('stackStoreApp')
             Cart.add(id,function(err,data){
             	if(err) console.log(err);
             	console.log(data);
-            });
-        };
+            })
+        }
         $scope.searchStore = function(){
-          Store.search({'name':$stateParams.name},{searchtext:$scope.searchText},function(res){
-            var productsArray = res.data;
-            $scope.store.products = productsArray;
-          });
+          if ($scope.searchText){
+            Store.search({'name':$stateParams.name},{searchtext:$scope.searchText},function(res){
+              if (res.data){
+                var productsArray = res.data;
+                $scope.store.products = productsArray;
+                $scope.noProds = false;
+              } else {
+                $scope.noProds = true;
+              }
+            });
+          }
         };
     });
