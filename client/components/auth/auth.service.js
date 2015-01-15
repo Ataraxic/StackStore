@@ -91,6 +91,21 @@ angular.module('stackStoreApp')
           return cb(err);
         }).$promise;
       },
+      /**
+      * Checks if user is authenticated
+      *
+      * @return {Object} user
+      */
+      changeEmail: function(password,newEmail,callback){
+        var cb = callback || angular.noop;
+        return User.changeEmail({ id: currentUser._id}, {
+          'newEmail': newEmail,
+        }, function(user) {
+          return cb(user);
+        }, function(err) {
+          return cb(err);
+        }).$promise;
+      },
 
       /**
        * Gets all available info on authenticated user

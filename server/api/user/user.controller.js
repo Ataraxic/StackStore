@@ -4,6 +4,8 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var Product = require('../product/product.model')
+var Comment = require('../comment/comment.model');
 
 var validationError = function(res, err) {
     return res.json(422, err);
@@ -100,20 +102,51 @@ exports.promote = function(req, res, next) {
     });
 };
 /**
- * Admin change a user's password
- */
+  * Admin change a user's password
+  */
 exports.adminChangePassword = function(req, res, next) {
-    // var userIDToUpdate = req.params.id;
-    // User.findById(userIDToUpdate, function(err, user){
-    //   user.password = req.body.newPassword;
-    //   user.save(function(err, user){
-    //     if(err) console.log(err);
-    //     if(!user) res.send(401);
-    //     res.send(200);
-    //   })
-    // });
-    console.log('fk this')
+  var userIDToUpdate = req.params.id;
+  User.findById(userIDToUpdate, function(err, user){
+    user.password = req.body.newPassword;
+    user.save(function(err, user){
+      if(err) console.log(err);
+      if(!user) res.send(401);
+      res.send(200);
+    })
+  });
 };
+
+/**
+  * change User Email
+  */
+  exports.changeEmail = function(req,res,next){
+    var newEmail = req.body.newEmail;
+    var userId = req.user._id;
+    User.findById(userId,function(err,user){
+      user.email = newEmail;
+      user.save(function(err,user){
+        if (err) console.log(err);
+        if (!user) res.send(401);
+        res.send(200);
+      })
+    })
+  }
+  /**
+  * Gets user info by name
+  */
+  exports.getUserByName = function(req,res,next){
+    var username = req.params.username;
+    User.findOne({name:username},'-salt -hashedPassword -email -contact -cart -orders')
+        .populate('favorites','-inventory')
+        .populate('comments')
+        .exec(function(err,user){
+          Comment.populate(user,'product',function(err,user){
+            if (err) return next(err);
+            if (!user) return res.json(401);
+            res.json(user);
+          })
+        });
+  }
 
 /**
  * Get my info
