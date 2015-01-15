@@ -8,10 +8,11 @@ angular.module('stackStoreApp')
             ids: []
         };
 
-        cart.ids = JSON.parse(localStorageService.getItem('cart')) || []; //an arr of products objects
-
         if (Auth.isLoggedIn()) {
             user = Auth.getCurrentUser();
+        }
+        else{
+        	cart.ids = localStorageService.get('cart') ? localStorageService.get('cart') : [];
         }
 
         function getProductsFromCache(callback) {
@@ -32,7 +33,7 @@ angular.module('stackStoreApp')
                 user = Auth.getCurrentUser();
                 $http.get('/api/users/' + user._id + '/populate')
                     .success(function(user) {
-                        if (callback) callback(null, user);
+                        callback(null, user);
                     })
                     .error(function(err) {
                         console.log(err);
@@ -43,7 +44,7 @@ angular.module('stackStoreApp')
                     if (err) console.log(err);
                     else {
                         callback(null, {
-                            products: products
+                            cart: products
                         });
                     }
                 })
@@ -61,7 +62,9 @@ angular.module('stackStoreApp')
                             _id: productId
                         })
                         .success(function(user) {
-                            callback(null, user);
+                            get(function(err,user){
+                            	callback(err, user);
+                            });
                         })
                         .error(function(err) {
                             console.log(err);
@@ -70,7 +73,7 @@ angular.module('stackStoreApp')
                 } else {
                     console.log(cart.ids);
                     cart.ids.push(productId);
-                    localStorageService.setItem('cart', JSON.stringify(cart.ids));
+                    localStorageService.set('cart', cart.ids);
                     get(function(err,data){
                     	callback(err,data);
                     });
