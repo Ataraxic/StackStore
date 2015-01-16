@@ -98,12 +98,13 @@ async.waterfall([
       'lindsayUserId': lindsayUserId,
       'samsUserId': samsUserId
     }
+
     Product.create({
       name: 'lindsay\'s Product',
       info: 'tp is life',
       active: true,
       upvotes: 1200,
-      owner: lindsayStoreId,
+      owner: lindsayUserId,
       price: 19.99,
       description: 'tp is love',
       inventory: {
@@ -115,7 +116,7 @@ async.waterfall([
       info: 'wat is info',
       active: true,
       upvotes: 1010,
-      owner: samsStoreId,
+      owner: samsUserId,
       price: 23.36,
       description: 'sams description',
       inventory: {
@@ -128,6 +129,8 @@ async.waterfall([
   },
   function(idObject,callback){
     Product.find({},function(err,products){
+
+      console.log('WEEEEEEEEEE',products)
       var lindsayProductId = products.filter(function(obj){
         if (obj.name==='lindsay\'s Product') {return obj._id;}
         })[0];
