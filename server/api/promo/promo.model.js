@@ -15,7 +15,7 @@ var PromoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Products'
     }],
-    code: String,
+    code: {type: String, unique: true},
     role: String,
     store: {
         type: Schema.Types.ObjectId,
