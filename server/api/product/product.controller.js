@@ -34,7 +34,8 @@ exports.create = function(req, res) {
         name: req.body.name,
         info: req.body.info,
         price: req.body.price,
-        owner: req.body.owner
+        owner: req.body.owner,
+        media: req.body.media
     });
 
     product.save(
