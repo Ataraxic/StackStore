@@ -3,19 +3,21 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var statuses = 'Created Processing Cancelled Complete'.split(' ');
+
 var OrderSchema = new Schema({
-    name: String,
-    info: String,
-    active: Boolean,
+    name: {type: String},
+    status: {type: String, enum: statuses},
+    createdTime: { type: Date,default: Date.now },
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     products: [{
         type: Schema.Types.ObjectId,
-        ref: 'Products'
+        ref: 'Product'
     }],
-    status: String,
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'

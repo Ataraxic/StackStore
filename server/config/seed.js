@@ -62,7 +62,7 @@ async.waterfall([
               active: true,
               owner: idTwo
             }, function(err,stores){
-              console.error(err);
+              if (err) console.error(err);
               callback();
             }
           );
@@ -80,7 +80,7 @@ async.waterfall([
   },
   function(users,stores,callback){
     var lindsayStoreId = stores.filter(function(obj){
-      if (obj.name==="StoreOne"){return obj._id;}
+      if (obj.name==="storeone"){return obj._id;}
       })[0];
     var lindsayUserId = users.filter(function(obj){
       if (obj.name==="lindsay"){return obj._id;}
@@ -89,8 +89,9 @@ async.waterfall([
       if (obj.name==="sam"){return obj._id;}
       })[0];
     var samsStoreId = stores.filter(function(obj){
-      if (obj.name==="StoreTwo"){return obj._id;}
+      if (obj.name==="storetwo"){return obj._id;}
     })[0];
+
     var idObject = {
       'lindsayStoreId': lindsayStoreId,
       'samsStoreId': samsStoreId,
@@ -130,26 +131,26 @@ async.waterfall([
       var lindsayProductId = products.filter(function(obj){
         if (obj.name==='lindsay\'s Product') {return obj._id;}
         })[0];
-        var samProductId = products.filter(function(obj){
-          if (obj.name==='sam\'s Product') {return obj._id;}
-          })[0];
-          idObject.lindsayProductId = lindsayProductId;
-          idObject.samProductId = samProductId;
-          callback(null,idObject);
-    })
-  },
-    function(idObject,callback){
-    Store.findOne({name:'StoreOne'},function(err,store){
-      console.log("store",store);
-      store.products = [idObject.lindsayProductId];
-      store.save();
-      Store.findOne({name:'StoreTwo'},function(err,store){
-        store.products=[idObject.samProductId];
-        store.save();
+      var samProductId = products.filter(function(obj){
+        if (obj.name==='sam\'s Product') {return obj._id;}
+        })[0];
+        idObject.lindsayProductId = lindsayProductId;
+        idObject.samProductId = samProductId;
         callback(null,idObject);
-      })
     })
   },
+  //   function(idObject,callback){
+  //   Store.findOne({name:'StoreOne'},function(err,store){
+  //     console.log("store",store);
+  //     store.products = [idObject.lindsayProductId];
+  //     store.save();
+  //     Store.findOne({name:'StoreTwo'},function(err,store){
+  //       store.products=[idObject.samProductId];
+  //       store.save();
+  //       callback(null,idObject);
+  //     })
+  //   })
+  // },
   function(idObject,callback){
     Comment.find({}).remove(function(){
       Comment.create({
@@ -280,7 +281,7 @@ async.waterfall([
         active: true,
         user: idObject.lindsayUserId,
         product: [idObject.samProductId],
-        status: 'processing',
+        status: 'Created',
         owner: idObject.samsUserId
       },{
         name: 'necessary field?',
@@ -288,7 +289,7 @@ async.waterfall([
         active: true,
         user: idObject.samsUserId,
         products: [idObject.lindsayProductId],
-        status: 'shipped',
+        status: 'Processing',
         owner: idObject.lindsayUserId
       },function(){
         callback(null,idObject);
@@ -311,7 +312,7 @@ async.waterfall([
   function(idObject,callback){
     User.findOne({name: 'lindsay'},function(err,user){
       user.stores = [idObject.lindsayStoreId];
-      user.orders = [idObject.lindsayOrderId];
+      user.orders = [idObject.lindsayOrderId._id];
       user.favorites = [idObject.lindsayProductId,idObject.samProductId];
       user.save();
       User.findOne({name:'sam'},function(err,user){
@@ -336,7 +337,7 @@ async.waterfall([
   },
   function(callback){
     Comment.find({},function(err,comments){
-      console.log("this is all the comments",comments);
+      // console.log("this is all the comments",comments);
     })
     // User.find({},function(err,users){
     //   console.log('users',users);

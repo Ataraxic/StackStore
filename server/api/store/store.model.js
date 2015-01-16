@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var StoreSchema = new Schema({
-    name: String,
+    name: {type: String, required: true, lowercase: true, unique: true},
     info: String,
     active: Boolean,
     owner: {
