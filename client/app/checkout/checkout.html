@@ -2,31 +2,33 @@
   .ng-invalid {
     color: red;
   }
+  #blankSpace {
+    height: 150px;
+  }
+  #thanks {
+    text-align: center;
+    font-size: 60px;
+  }
 </style>
 <div ng-include="'components/navbar/navbar.html'"></div>
-
-<section id="main-content">
-    <section class="wrapper">
-<div class="col-md-4 col-md-offset-4">
+<div id="blankSpace"></div>
+<div ng-hide="paid || cartEmpty" class="col-md-4 col-md-offset-4">
     <div>
       <table>
         <thead>
           <tr>
             <th>Title</th>
-            <th>Qty.</th>
             <th>Price</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="lineItem in orderItems">
-            <td>{{lineItem.item[0].title}}</td>
-            <td style="text-align:center;">{{lineItem.quantity}}</td>
-            <td>{{lineItem.value | currency : $ : 2}}</td>
+          <tr ng-repeat="item in cart">
+            <td>{{item.name}}</td>
+            <td>{{item.price | currency : $ : 2}}</td>
           </tr>
           <tr>
-            <td></td>
-            <td style="font-weight:bold;">Subtotal</td>
-            <td style="font-weight:bold;">{{cartTotal | currency : $ : 2}}</td>
+            <td style="font-weight:bold;">Total</td>
+            <td style="font-weight:bold;">{{total | currency : $ : 2}}</td>
           </tr>
         </tbody>
       </table>
@@ -65,10 +67,7 @@
       </button>
     </form>
 
-
-    {{EXP}}
-    {{CARDNUM}}
-    {{CVC}}
 </div>
-</section>
-</section>
+<p id="thanks" ng-show='cartEmpty'>Your cart's empty! No checkin' out for you.</p>
+
+<p id="thanks" ng-show='paid'>Thanks for your payment! Your order is being processed.</p>

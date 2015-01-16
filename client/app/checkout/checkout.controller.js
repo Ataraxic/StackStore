@@ -3,28 +3,47 @@
 angular.module('stackStoreApp')
   .controller('CheckoutCtrl', function ($scope, Cart, User, Auth, $http, $location) {
 
+    $scope.paid = false;
     if(Auth.isLoggedIn()) {
-      console.log('current user: ', Auth.getCurrentUser())
+      Cart.get(function(err, data){
+        $scope.cart = data.cart;
+        if(data.cart.length == 0) $scope.cartEmpty = true;
+        $scope.total = 0;
+        $scope.cart.forEach(function(item){
+          $scope.total += item.price;
+        })
+        console.log('Logged in! Cart: ', $scope.cart, $scope.total)
+      });
     } else {
-      console.log('uh not logged in')
+      console.log('Not logged in.')
       $location.path('/');
     }
     $scope.onCheckout = function () {
-      console.log("working?");
-      // $http.post("/api/stripes", { email: 'email@email.com' })
+      //this function will also run when pay btn is click, use it if needed
     }
     $scope.stripeCallback = function (code, result) {
       if (result.error) {
-        window.alert('it failed! error: ' + result.error.message);
+        window.alert("Error: please enter valid credit card info!")
       } else {
         $http.post("/api/stripes", {
           token: result.id,
-          email: 'lindslev.ll@gmail.com',
-          amount: 10
+          name: Auth.getCurrentUser().name,
+          amount: $scope.total,
+          userId: Auth.getCurrentUser()._id
+        })
+        .then(function(response){
+          var stripeCharge = response.data;
+          //post to server-side order controller and make the order for the buyer and all the store owners
+          return $http.post("/api/orders", { stripeToken: result.id, chargeId: stripeCharge.id })
+        })
+        .then(function(response) {
+          var order = response.data;
+          $scope.paid = true;
+        })
+        .catch(function(err) {
+          console.error('oh snap:', err);
         });
-        //will need to post to users as well and make the order
 
-        window.alert('success! token: ' + result.id);
       }
     };
 

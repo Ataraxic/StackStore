@@ -72,8 +72,7 @@ angular.module('stackStoreApp')
             name: $scope.name,
             description: $scope.description,
             price: $scope.price,
-            owner: $scope.ownerId,
-            // $push: {"tags": {: title, msg: msg}},
+            owner: $scope.store.owner,
             storeName: $scope.storeName,
             media: $scope.product_images
         }, function(product) {
