@@ -8,18 +8,21 @@
                 <h3>CART</h3>
 
                 <!-- First Action -->
-                <div class="desc" ng-repeat="product in cart_page">
+                <div class="desc" ng-repeat="(key, value) in cart_page">
                     <div class="thumb">
                         <span class="badge bg-theme"><i class="fa fa-dot-circle-o"></i></span>
                     </div>
                     <div class="details">
-                    		<h4>{{product.name}} &nbsp;- &nbsp;${{product.price}}</h4>
+                    		<h4>{{cart_page[key].name}} &nbsp;- &nbsp;${{cart_page[key].price}}</h4>
                         <p>
-                            <muted>{{product.info}}</muted>
+                            <muted>{{cart_page[key].info}}</muted>
 <!--                             <br>
                             <a href="#">James Brown</a> subscribed to your newsletter.
                             <br> -->
                         </p>
+                        <h4>Quantity: {{cart_page[key].quantity}}</h4>
+                        <h5 ng-click="subtractQuantity(key)">-</h5>
+                        <h5 ng-click="addQuantity(key)">+</h5>
                     </div>
                 </div>
 
