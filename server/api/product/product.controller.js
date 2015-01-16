@@ -32,21 +32,22 @@ exports.create = function(req, res) {
 
     var product = new Product({
         name: req.body.name,
-        info: req.body.info,
+        description: req.body.description,
         price: req.body.price,
         owner: req.body.owner,
         media: req.body.media
     });
 
+
     product.save(
         function(err, product) {
+       
             if (err) {
                 return handleError(res, err);
             }
-            console.log(req.body.storeName);
 
             Store.findOne({
-                name: req.body.storeName
+                owner: product.owner
             }, function(err, store) {
                 if (err) {
                     return handleError(res, err);
@@ -55,10 +56,8 @@ exports.create = function(req, res) {
                     return res.send(404);
                 };
 
-                store.products.push(product._id);
-
-                console.log(store.products);
-
+                product.owner = store.owner;
+                console.log('product owner is ', product.owner,'store owner is', store.owner)
                 store.save(function(err, store) {
                     res.json(product);
                 });
@@ -114,17 +113,6 @@ exports.destroy = function(req, res) {
                 if (!store) {
                     return res.send(404);
                 };
-
-                var index = store.products.lastIndexOf(product._id);
-
-                store.products.splice(index, 1);
-
-                console.log(store.products);
-
-                store.save(function(err, store) {
-                    return res.send(204);
-
-                });
             });
 
         });
@@ -133,13 +121,13 @@ exports.destroy = function(req, res) {
 
 //Populate products in user cart
 exports.populateFromCache = function(req, res) {
-	console.log(req.body.products);
+
     Product.find({
         '_id': {
             $in: req.body.products
         }
     }, function(err, products) {
-    		console.log(products);
+
         if (err) {
             return res.json(404)
         }

@@ -207,8 +207,7 @@ exports.populate = function(req, res) {
                 console.log('no user')
                 return res.send(404);
             }
-            console.log('SUCCESS HIT USER CONTROLLER POPULATE FUNCTION');
-            console.log(user);
+         
             return res.json(user);
         })
 }
