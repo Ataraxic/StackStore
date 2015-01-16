@@ -10,8 +10,12 @@
                 </div>
 
                 <div class="col-md-12">
+                		<div ng-repeat="image_url in product_images">
+                			<img src="{{image_url}}">
+                		</div>
                     <form ng-submit='addProduct()'>
                         <h3>Add products to store</h3>
+                        <input id="file-upload" type="file" class="form-control" onchange="angular.element(this).scope().upload()"></input>
                         <div class='form-group'>
                             <input type='text' class='form-control' placeholder='Name' ng-model="name"></input>
                             <input type='text' class='form-control' placeholder='Info' ng-model="info"></input>
