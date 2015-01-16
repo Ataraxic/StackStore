@@ -98,6 +98,7 @@ async.waterfall([
       'lindsayUserId': lindsayUserId,
       'samsUserId': samsUserId
     }
+
     Product.create({
       name: 'lindsay\'s Product',
       info: 'tp is life',
@@ -128,6 +129,8 @@ async.waterfall([
   },
   function(idObject,callback){
     Product.find({},function(err,products){
+
+      console.log('WEEEEEEEEEE',products)
       var lindsayProductId = products.filter(function(obj){
         if (obj.name==='lindsay\'s Product') {return obj._id;}
         })[0];

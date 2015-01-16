@@ -8,5 +8,10 @@ module.exports = {
     uri: 'mongodb://localhost/stackstore-dev'
   },
 
-  seedDB: true
+  seedDB: true,
+
+  aws: {
+  	access: 'AKIAJHTVFP5SB6JCJ5NA',
+  	secret: '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'
+  }
 };
