@@ -45,7 +45,7 @@
                 <li id="header_cart_bar" class="dropdown" ng-show="getCurrentUser()">
                     <a data-toggle="dropdown" class="dropdown-toggle" ng-click="toggleCartDropdown()">
                         <i class="fa fa-shopping-cart"></i>
-                        <span class="badge bg-theme">{{getCurrentUser().cart.length}}</span>
+                        <span class="badge bg-theme" ng-show="getCurrentUser().cart.length > 0">{{getCurrentUser().cart.length}}</span>
                     </a>
                     <ul class="dropdown-menu extended inbox">
                         <li ng-repeat="product in cart_nav">
