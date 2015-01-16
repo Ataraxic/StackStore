@@ -3,6 +3,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var Product = require('../product/product.model');
+
 var StoreSchema = new Schema({
     name: String,
     info: String,
@@ -12,5 +14,15 @@ var StoreSchema = new Schema({
         ref: 'User'
     }
 });
+
+StoreSchema.statics.getProducts = function(name, cb) {
+   this.findOne({
+        name: name
+    }, function(err, store) {
+        console.log('STORE OWNER IS ISSIS',store.owner);
+        Product.find({}, cb);
+    });
+
+}
 
 module.exports = mongoose.model('Store', StoreSchema);

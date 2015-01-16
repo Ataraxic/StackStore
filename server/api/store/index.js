@@ -19,4 +19,7 @@ router.post('/:name/search',controller.search);
 router.get('/:name/admin',auth.isStoreOwner(),controller.checkOwner);
 
 
+router.get('/:name/getproducts',controller.getproducts);
+
+
 module.exports = router;
