@@ -18,7 +18,7 @@
                         <input id="file-upload" type="file" class="form-control" onchange="angular.element(this).scope().upload()"></input>
                         <div class='form-group'>
                             <input type='text' class='form-control' placeholder='Name' ng-model="name"></input>
-                            <input type='text' class='form-control' placeholder='Info' ng-model="info"></input>
+                            <input type='text' class='form-control' placeholder='Description' ng-model="description"></input>
                             <input type='text' class='form-control' placeholder='Price' ng-model="price"></input>
                             <input type='text' placeholder='Tag' ng-model="tag"></input>
                             <button type='submit' class='btn btn-primary' ng-click='addTag(tag)'>Add tag</button>
@@ -40,7 +40,7 @@
                             <div class="col-lg-12">
                                 <h1 class="page-header">Products in Store:</h1>
                                 <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
-                                    <li ng-repeat="product in store.products"><a href="#">{{product.name}}<button type="button" class="close" ng-click="deleteProduct(product._id)">&times;</button></a>
+                                    <li ng-repeat="product in products"><a href="#">{{product.name}}<button type="button" class="close" ng-click="deleteProduct(product._id)">&times;</button></a>
                                         <span><a href="/products/{{product._id}}">More Info on Product</a></span>
                                     </li>
                                 </ul>

@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
 
 var ProductSchema = new Schema({
     name: {type: String, required: true},
-    info: String,
     active: Boolean,
     upvotes: Number,
     owner: {
