@@ -4,16 +4,15 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var ProductSchema = new Schema({
-    name: String,
-    info: String,
+    name: {type: String, required: true},
     active: Boolean,
     upvotes: Number,
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    price: Number,
-    description: String,
+    price:{type: Number, required: true} ,
+    description:{type: String,required: true},
     comments: [{
       type: Schema.Types.ObjectId,
       ref: 'Comment'
@@ -28,5 +27,7 @@ var ProductSchema = new Schema({
     },
     media: [String]
 });
+
+ProductSchema.index({name: 'text',info: 'text',description: 'text'});
 
 module.exports = mongoose.model('Product', ProductSchema);

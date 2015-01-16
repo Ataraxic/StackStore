@@ -6,7 +6,15 @@ var Store = require('./store.model');
 var Product = require('../product/product.model');
 var User = require('../user/user.model');
 
+// Get list of products from a given store
+exports.getproducts = function(req, res) {
 
+    Store.getProducts(req.params.name, function(err, products) {
+        console.log("-----------------", products);
+      if(err) { return handleError(res, err); }
+      return res.json(200, products);
+    });
+};
 
 // Get list of stores
 exports.index = function(req, res) {
@@ -115,6 +123,25 @@ exports.checkOwner = function(req, res) {
     else {
         return res.send(201);
     }
+}
+
+exports.search = function(req,res){
+  var storeName = req.params.name;
+  var searchText = req.body.searchtext;
+  console.log(typeof searchText,searchText);
+  Store.findOne({name:storeName},function(err,store){
+    var storeId = store._id;
+    Product.find({$text: {$search:searchText}},{score: {$meta:"textScore"}})
+           .sort({score: {$meta: 'textScore'}})
+           .where({owner:storeId})
+           .exec(function(err,results){
+             if (err) return console.err(err);
+             if (!results) return res.send(440);
+             var sendObj = {};
+             sendObj.data = results;
+             res.json(sendObj);
+           })
+  });
 }
 
 function handleError(res, err) {
