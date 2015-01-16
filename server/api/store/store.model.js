@@ -10,11 +10,7 @@ var StoreSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    },
-    products: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Product'
-    }]
+    }
 });
 
 module.exports = mongoose.model('Store', StoreSchema);
