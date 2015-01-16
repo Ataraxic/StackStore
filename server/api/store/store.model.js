@@ -19,7 +19,7 @@ StoreSchema.statics.getProducts = function(name, cb) {
    this.findOne({
         name: name
     }, function(err, store) {
-        console.log('STORE OWNER IS ISSIS',store.owner);
+   
         Product.find({}, cb);
     });
 
