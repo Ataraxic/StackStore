@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var Product = require('../product/product.model');
 
 var StoreSchema = new Schema({
-    name: String,
+    name: {type: String, required: true, lowercase: true, unique: true},
     info: String,
     active: Boolean,
     owner: {

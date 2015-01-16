@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var ProductSchema = new Schema({
-    name: String,
+    name: {type: String, required: true},
     info: String,
     active: Boolean,
     upvotes: Number,
@@ -12,8 +12,8 @@ var ProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    price: Number,
-    description: String,
+    price:{type: Number, required: true} ,
+    description:{type: String,required: true},
     comments: [{
       type: Schema.Types.ObjectId,
       ref: 'Comment'
