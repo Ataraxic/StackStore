@@ -46,7 +46,7 @@ angular.module('stackStoreApp')
             name: $scope.name,
             info: $scope.info,
             price: $scope.price,
-            owner: $scope.ownerId,
+            owner: $scope.store.owner,
             storeName: $scope.storeName
         }, function(product) {
             console.log(product);
