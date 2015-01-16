@@ -103,7 +103,7 @@ async.waterfall([
       info: 'tp is life',
       active: true,
       upvotes: 1200,
-      owner: lindsayStoreId,
+      owner: lindsayUserId,
       price: 19.99,
       description: 'tp is love',
       inventory: {
@@ -115,7 +115,7 @@ async.waterfall([
       info: 'wat is info',
       active: true,
       upvotes: 1010,
-      owner: samsStoreId,
+      owner: samsUserId,
       price: 23.36,
       description: 'sams description',
       inventory: {
