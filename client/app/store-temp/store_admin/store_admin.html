@@ -57,10 +57,28 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <h1 class="page-header">Create a promo:</h1>
-
+                                <p>Enter the promo code, i.e. "NY123", the discount as '20' if you want 20% off the customer's total, and the date when the promotion will expire.</p>
+                                <input ng-model="promoDescription" type="text" maxlength="10" placeholder="Description"></input>
+                                <input ng-model="promoCode" type="text" maxlength="8" placeholder="Promo code"></input>
+                                <input ng-model="promoDiscount" type="number" maxlength="3" placeholder="Discount"></input>
+                                <input ng-model="promoExpiry" type="date" placeholder="Expiry for promotion"></input>
+                                <button class='btn btn-primary' ng-click="createPromo()">Submit Promo</button>
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h1 class="page-header">Current promotions running for this store:</h1>
+                                <ul> <!--ng repeat over promos attached to this store -->
+                                  <li ng-repeat="promo in currentPromos">
+                                    Code: {{promo.code}}<br>
+                                    Description: {{promo.description}}<br>
+                                    Discount: {{promo.discount}}<br>
+                                    Expiry: {{promo.expiry.toDateString()}}
+                                  </li>
+                                </ul>
+                            </div>
+                        </div>
 
                     </div>
 

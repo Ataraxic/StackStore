@@ -14,7 +14,7 @@ angular.module('stackStoreApp')
     $scope.tag = '';
     $scope.tags = [];
     $scope.product_images = [];
-
+    $scope.currentPromos = [];
 
 
     //Get Owner ID of current store
@@ -27,7 +27,18 @@ angular.module('stackStoreApp')
                     $scope.owner = true;
                     $scope.store = store;
                     $scope.ownerId = store.owner;
-
+                    console.log('scope.store._id', $scope.store._id)
+                    $http.get('/api/promos/' + $scope.store._id)
+                    .then(function(response){
+                      console.log('inside promos get?', response.data)
+                      $scope.currentPromos = response.data;
+                      $scope.currentPromos.forEach(function(promo){
+                        promo.expiry = new Date(promo.expiry);
+                      })
+                    })
+                    .catch(function(err){
+                     console.log('err in promos get', err);
+                    })
                 } else {
                     $location.path('/store/' + $stateParams.name);
                 }
@@ -153,5 +164,22 @@ angular.module('stackStoreApp')
                 console.log('Upload error: ' + status);
             }
         });
+    }
+
+    $scope.createPromo = function() {
+      if(!$scope.promoCode || !$scope.promoExpiry || !$scope.promoDiscount || !$scope.promoDescription) {
+        window.alert('Fill out all categories!');
+      } else {
+        $http.post('/api/promos', { description: $scope.promoDescription, code: $scope.promoCode, expiry: $scope.promoExpiry, discount: $scope.promoDiscount, store: $scope.store._id })
+        .then(function(response){
+          $scope.promoCode = $scope.prompExpiry = $scope.promoDiscount = $scope.promoDescription = '';
+          var promo = response.data;
+          promo.expiry = new Date(promo.expiry);
+          $scope.currentPromos.push(promo);
+        })
+        .catch(function(err){
+          console.log('oh snap:', err);
+        })
+      }
     }
 });

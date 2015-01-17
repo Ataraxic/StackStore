@@ -13,19 +13,30 @@ exports.index = function(req, res) {
 
 // Get a single promo
 exports.show = function(req, res) {
-  Promo.findById(req.params.id, function (err, promo) {
-    if(err) { return handleError(res, err); }
-    if(!promo) { return res.send(404); }
-    return res.json(promo);
-  });
+  console.log("ISJDJFIDJFIJDIF store id?", req.params.id)
+  var storeId = req.params.id;
+  Promo.find({store: storeId}, function(err, promos){
+    if(err) return handleError(res, err);
+    if(!promos) return res.send(404);
+    console.log('promos!?!?!?!?..', promos)
+    return res.json(promos);
+  })
 };
 
 // Creates a new promo in the DB.
 exports.create = function(req, res) {
-  Promo.create(req.body, function(err, promo) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, promo);
-  });
+  var promo = new Promo();
+  console.log('req', req.body)
+  promo.description = req.body.description;
+  promo.code = req.body.code;
+  promo.expiry = req.body.expiry;
+  promo.discount = req.body.discount;
+  promo.store = req.body.store;
+
+  promo.save(function(err, newPromo){
+    if(err) res.json(404);
+    res.json(200, newPromo);
+  })
 };
 
 // Updates an existing promo in the DB.
