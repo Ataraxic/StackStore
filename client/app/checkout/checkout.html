@@ -2,6 +2,15 @@
   .ng-invalid {
     color: red;
   }
+  table {
+    width:100%;
+    border: 1px solid red;
+  }
+  td {
+    border: 1px solid black;
+    font-size: 18px;
+    text-align: center;
+  }
   #blankSpace {
     height: 150px;
   }
@@ -17,8 +26,8 @@
       <table>
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Price</th>
+            <td style="font-style:italic">Item</td>
+            <td style="font-style:italic">Price</td>
           </tr>
         </thead>
         <tbody>
@@ -27,13 +36,14 @@
             <td>{{item.price | currency : $ : 2}}</td>
           </tr>
           <tr>
-            <td style="font-weight:bold;">Total</td>
-            <td style="font-weight:bold;">{{total | currency : $ : 2}}</td>
+            <td style="font-style:italic">Total</td>
+            <td style="font-weight:bold">{{total | currency : $ : 2}}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
+    <br>
 
     <form stripe-form="stripeCallback" name="checkoutForm" ng-submit="onCheckout()" id="form" class="form-horizontal">
       <div class="form-group">
@@ -60,6 +70,16 @@
           </div>
         </div>
       </div>
+
+      <div class="col-sm-12">
+        <div class="input-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+          <input id="promo" ng-model="promo" class="form-control" type="text" placeholder="Promotion Code"/>
+        </div>
+      </div>
+
+      <br>
+
       <button type="submit" class="btn btn-primary col-sm-12"
         data-progress-text="<span class='glyphicon glyphicon-refresh fa-spin'></span>"
         data-success-text="<span class='glyphicon glyphicon-ok'></span>">

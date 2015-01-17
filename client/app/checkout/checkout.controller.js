@@ -25,6 +25,11 @@ angular.module('stackStoreApp')
       if (result.error) {
         window.alert("Error: please enter valid credit card info!")
       } else {
+        if($scope.promo !== '') {
+          //query the db for relevant promo, if it exists and they can use it,
+          //apply it $scope.total before posting to stripe and making the order
+          // $scope.total
+        }
         $http.post("/api/stripes", {
           token: result.id,
           name: Auth.getCurrentUser().name,

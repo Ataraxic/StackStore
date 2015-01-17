@@ -24,7 +24,7 @@ var OrderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    stripeToken: String
+    chargeId: String
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

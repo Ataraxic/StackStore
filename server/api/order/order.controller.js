@@ -40,7 +40,7 @@ exports.create = function(req, res) {
         newOrder.buyer = req.user._id;
         newOrder.products = [];
         newOrder.status = "Processing";
-        newOrder.stripeToken = req.body.stripeToken;
+        newOrder.chargeId = req.body.chargeId;
 
         //build hash of storeowners key: storeOwnerId, obj { products: [] }
         var storeHash = {};
@@ -64,7 +64,7 @@ exports.create = function(req, res) {
             tempOrder.storeOwner.push(owner); //him/herself
             tempOrder.products = storeHash[owner].products;
             tempOrder.status = "Processing";
-            tempOrder.stripeToken = req.body.stripeToken; //might want this to be req.body.chargeId....
+            tempOrder.chargeId = req.body.chargeId;
             tempOrder.buyerOrder = order._id;
             storeOwnerOrders.push(tempOrder);
           }

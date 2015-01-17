@@ -262,7 +262,6 @@ async.waterfall([
         user: [idObject.lindsayUserId],
         product: [idObject.lindsayProductId],
         code: 'TPTPTP',
-        role: 'wat is dis role?',
         store: idObject.lindsayStoreId
       },{
         name: 'samPromo',
@@ -271,7 +270,6 @@ async.waterfall([
         user: [idObject.lindsayUserId,idObject.samsUserId],
         product: [idObject.samProductId],
         code: 'coffee',
-        role: 'wat is dis seriously?',
         store: idObject.samsStoreId
       },function(){
         callback(null,idObject);
