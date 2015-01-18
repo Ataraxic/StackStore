@@ -34,6 +34,7 @@ angular.module('stackStoreApp')
         $scope.isAdmin = Auth.isAdmin;
         $scope.getCurrentUser = Auth.getCurrentUser;
         Cart.get(function(err, data) {
+        	Cart.formatCartObj(data.cart);
         	$scope.cart_nav = data.cart;
         });
 

@@ -20,24 +20,19 @@ exports.show = function(req, res) {
   });
 };
 
-// Creates a new stripe in the DB.
+//creates a stripe charge on stripe
 exports.create = function(req, res) {
   console.log('testing the stripe call', req.body)
-  stripe.customers.create({
-    email: req.body.email,
-    card: req.body.token
-    })
-  .then(function(customer) {
-    return stripe.charges.create({
-      amount: req.body.amount + "00",
-      currency: 'usd',
-      customer: customer.id
-    });
-  })
-  .then(function(charge) {
-    console.log('Charged successfully!', charge);
-  }, function(err) {
-    console.log('Not charged, error: ', err);
+  stripe.charges.create({
+    amount: req.body.amount + "00", // amount in cents, again
+    currency: "usd",
+    card: req.body.token,
+    description: "User making order: " + req.body.name + ". UUID: " + req.body.userId + "."
+  }, function(err, charge) {
+    if (err && err.type === 'StripeCardError') {
+      res.json(404)
+    }
+    res.json(200, charge);
   });
 };
 

@@ -19,11 +19,7 @@
 
                 <h1 class="page-header">Products in {{storeName}}</h1>
                 <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="product in products">
-                    <li><a href="#">{{product.name}} <br>
-                    ${{product.price}}<br>
-                    {{product.description}}<button type="button" class="close" ng-click="deleteTag(tag)">&times;</button></a>
-                        <span><a href="tags/{{tag.name}}">More Info</a></span>
-                    </li>
+                		<product ng-repeat="product in products"></product>
                 </ul>
 
                 <div ng-show="'noProds'">No Products Found</div>

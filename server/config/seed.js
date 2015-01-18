@@ -218,6 +218,8 @@ async.waterfall([
       })[0];
       idObject.lindsayProductId = lindsayProductId;
       idObject.samProductId = samProductId;
+      idObject.actualLindsayProduct = products[0];
+      idObject.actualSamProduct = products[1];
       Tag.find({}).remove(function(){
         callback(null,idObject);
       })
@@ -260,7 +262,6 @@ async.waterfall([
         user: [idObject.lindsayUserId],
         product: [idObject.lindsayProductId],
         code: 'TPTPTP',
-        role: 'wat is dis role?',
         store: idObject.lindsayStoreId
       },{
         name: 'samPromo',
@@ -269,7 +270,6 @@ async.waterfall([
         user: [idObject.lindsayUserId,idObject.samsUserId],
         product: [idObject.samProductId],
         code: 'coffee',
-        role: 'wat is dis seriously?',
         store: idObject.samsStoreId
       },function(){
         callback(null,idObject);
@@ -280,20 +280,16 @@ async.waterfall([
     Order.find({}).remove(function(){
       Order.create({
         name: 'is this a UUID?',
-        info: 'needed field?',
-        active: true,
-        user: idObject.lindsayUserId,
-        product: [idObject.samProductId],
+        buyer: idObject.lindsayUserId,
+        products: [idObject.actualLindsayProduct],
         status: 'Created',
-        owner: idObject.samsUserId
+        storeOwner: [idObject.samsUserId]
       },{
         name: 'necessary field?',
-        info: 'maybe custom comment field for delivery instructions?',
-        active: true,
-        user: idObject.samsUserId,
-        products: [idObject.lindsayProductId],
+        buyer: idObject.samsUserId,
+        products: [idObject.actualSamProduct],
         status: 'Processing',
-        owner: idObject.lindsayUserId
+        storeOwner: [idObject.lindsayUserId]
       },function(){
         callback(null,idObject);
       })
@@ -304,6 +300,7 @@ async.waterfall([
       var lindsayOrderId = orders.filter(function(obj){
         if (obj.name==='is this a UUID?') {return obj._id;}
         })[0];
+      console.log('orders', orders)
       var samOrderId = orders.filter(function(obj){
         if (obj.name==='necessary field?') {return obj._id;}
         })[0];
