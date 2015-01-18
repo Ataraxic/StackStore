@@ -9,9 +9,9 @@ angular.module('stackStoreApp')
     $scope.store = {};
     $scope.storeId = '';
 
-    $scope.name = '';
-    $scope.description = '';
-    $scope.price = '';
+    $scope.name = null;
+    $scope.description = null;
+    $scope.price = null;
     $scope.tag = '';
     $scope.tags = [];
     $scope.product_images = [];
@@ -55,6 +55,8 @@ angular.module('stackStoreApp')
 
     //Add a new product
     $scope.addProduct = function() {
+
+        $scope.products = [];
         
         if ($scope.name === '') {
             return;
@@ -79,29 +81,26 @@ angular.module('stackStoreApp')
         // }
 
         Product.save({
-            name: $scope.name,
+            name: $scope.name, 
             description: $scope.description,
             price: $scope.price,
             // tags: $scope.tags,
             storeId: $scope.storeId,
             media: $scope.product_images
-        });
-
-        // , function(product) {
-        //     if (err) {
-        //         console.log(err)
-        //     }
-        //     console.log('Hitting Product.save callback... product should be -->', product);
-        //     $scope.products.push(product);
-        //     // Get all products in store
-        //     // store.getProducts({
-        //     //         name: $scope.storeName
-        //     //     }).$promise
-        //     //     .then(function(products) {
-        //     //         $scope.products = products;
-        //     //         console.log('PRODUCTS HSOULD BE LOADING', $scope.products)
-        //     //     })
-        // })
+        }, function() {
+            // if (err) {console.log(err)};
+            console.log('Hitting Product.save callback..');
+            // $scope.products.push(product);
+            //  socket.syncUpdates('Product', $scope.products);
+            // Get all products in store
+            Store.getProducts({
+                    name: $scope.storeName
+                }).$promise
+                .then(function(products) {
+                    $scope.products = products;
+                    console.log('PRODUCTS HSOULD BE LOADING', $scope.products)
+                })
+        })
     }
 
     $scope.deleteProduct = function(id) {

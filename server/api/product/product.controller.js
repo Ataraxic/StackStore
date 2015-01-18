@@ -45,29 +45,8 @@ exports.create = function(req, res) {
             if (err) {
                 return handleError(res, err);
             }
-
-          
-
-            Store.findOne({
-                owner: product.owner
-            }, function(err, store) {
-                if (err) {
-                    return handleError(res, err);
-                }
-                if (!store) {
-                    return res.send(404);
-                };
-
-
-                product.owner = store.owner;
-                console.log('product owner is ', product.owner,'store owner is', store.owner)
-                store.save(function(err, store) {
-                    res.json(product);
-                });
-            });
-        }
-
-    );
+res.json(product);
+});
 
 };
 
