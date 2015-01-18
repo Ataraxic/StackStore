@@ -25,6 +25,7 @@ angular.module('stackStoreApp')
                     .then(function(user) {
                         if (user._id === store.owner) {
                             $scope.owner = true;
+                            $scope.ownerPresent = true;
                         }
                     });
             })
@@ -37,6 +38,7 @@ angular.module('stackStoreApp')
         Store.getProducts({name: $scope.storeName}).$promise
             .then(function(products) {
                 $scope.products = products;
+                // console.log('THERE SHOULD BE NO PRODS -->',$scope.products);
             })
 
         $scope.addToCart = function(id) {
