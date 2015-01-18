@@ -3,7 +3,7 @@
 angular.module('stackStoreApp')
   .factory('Tags', function ($resource) {
 
-    return $resource("/api/tags/:name", { name: '@name'}, {
+    return $resource("/api/tags/:id", { id: '@id'}, {
       update: {
         method: 'put'
       }

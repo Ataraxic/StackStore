@@ -68,37 +68,47 @@ angular.module('stackStoreApp')
             return;
         }
 
-        console.log('Adding product.. params are: ', $scope.name, $scope.description, $scope.price,  $scope.storeId);
         //CREATING NEW TAG OBJECTS
 
-        // for (var k = 0; k<$scope.tags.length; k++)
-        // {
-        //     console.log('$scope.tag is...', $scope.tags[k]);
-        //   Tags.save({name: $scope.tags[k]}, function(tag) {
-        //     console.log('pushing into tagscollection')
-        //     $scope.tags.push(tag)
+        for (var k = 0; k<$scope.tags.length; k++)
+        {
+           // Check if tag exists already
+           // Tags.query({name: $scope.tags[k]}).$promise
+           // .then(function(tags) {
+           //  console.log('Tag already exists and is: ', tags);
+           // })
+           // .then(null, function(err) {
+            Tags.save({name: $scope.tags[k]}, function (tag) {
+              console.log('Saved new tag! its -->', $scope.tags[k]);
+          })
         // })
-        // }
+
+          // if ( ) {
+          //   alert('Tag already exists');
+          // }
+
+         
+          
+        
+        }
 
         Product.save({
             name: $scope.name, 
             description: $scope.description,
             price: $scope.price,
-            // tags: $scope.tags,
+            tags: $scope.tags,
             storeId: $scope.storeId,
             media: $scope.product_images
         }, function() {
-            // if (err) {console.log(err)};
-            console.log('Hitting Product.save callback..');
-            // $scope.products.push(product);
-            //  socket.syncUpdates('Product', $scope.products);
-            // Get all products in store
+            if (err) {console.log(err)};
+
+    
             Store.getProducts({
                     name: $scope.storeName
                 }).$promise
                 .then(function(products) {
                     $scope.products = products;
-                    console.log('PRODUCTS HSOULD BE LOADING', $scope.products)
+                    console.log('PRODUCTS SHOULD BE LOADING', $scope.products)
                 })
         })
     }
