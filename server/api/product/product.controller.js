@@ -33,38 +33,20 @@ exports.create = function(req, res) {
     var product = new Product({
         name: req.body.name,
         description: req.body.description,
+        storeId: req.body.storeId,
         price: req.body.price,
-        owner: req.body.owner,
-        media: req.body.media
+        media: req.body.media,
+        tags: req.body.tags
     });
 
 
     product.save(
         function(err, product) {
-       
             if (err) {
                 return handleError(res, err);
             }
-
-            Store.findOne({
-                owner: product.owner
-            }, function(err, store) {
-                if (err) {
-                    return handleError(res, err);
-                }
-                if (!store) {
-                    return res.send(404);
-                };
-
-                product.owner = store.owner;
-                console.log('product owner is ', product.owner,'store owner is', store.owner)
-                store.save(function(err, store) {
-                    res.json(product);
-                });
-            });
-        }
-
-    );
+res.json(product);
+});
 
 };
 

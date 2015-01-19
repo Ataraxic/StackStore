@@ -22,10 +22,18 @@ exports.show = function(req, res) {
 
 // Creates a new tag in the DB.
 exports.create = function(req, res) {
+
+
+
+
   Tag.create(req.body, function(err, tag) {
     if(err) { return handleError(res, err); }
     return res.json(201, tag);
   });
+
+
+
+  
 };
 
 // Updates an existing tag in the DB.

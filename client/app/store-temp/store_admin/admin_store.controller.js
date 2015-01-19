@@ -2,22 +2,24 @@
 
 angular.module('stackStoreApp')
 
-.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams, User, Product, socket, Store) {
+.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {
 
     $scope.owner = false;
     $scope.storeName = $stateParams.name;
     $scope.store = {};
+    $scope.storeId = '';
 
-    $scope.name = '';
-    $scope.description = '';
-    $scope.price = '';
+    $scope.name = null;
+    $scope.description = null;
+    $scope.price = null;
     $scope.tag = '';
     $scope.tags = [];
     $scope.product_images = [];
     $scope.currentPromos = [];
 
 
-    //Get Owner ID of current store
+
+    //Get Owner ID and storeId of current store
     User.get().$promise
         .then(function(user) {
             var store = Store.get({
@@ -26,6 +28,7 @@ angular.module('stackStoreApp')
                 if (user._id === store.owner) {
                     $scope.owner = true;
                     $scope.store = store;
+                    $scope.storeId = store._id;
                     $scope.ownerId = store.owner;
                     $http.get('/api/promos/' + $scope.store._id)
                     .then(function(response){
@@ -56,16 +59,15 @@ angular.module('stackStoreApp')
 
     $scope.addTag = function(tag) {
         $scope.tags.push(tag);
-        console.log($scope.tags);
+
     }
 
     //Add a new product
     $scope.addProduct = function() {
 
+        $scope.products = [];
+        
         if ($scope.name === '') {
-            return;
-        }
-        if ($scope.info === '') {
             return;
         }
         if ($scope.price === '') {
@@ -75,31 +77,38 @@ angular.module('stackStoreApp')
             return;
         }
 
+        console.log('Adding product.. params are: ', $scope.name, $scope.description, $scope.price,  $scope.storeId);
+        //CREATING NEW TAG OBJECTS
 
+        // for (var k = 0; k<$scope.tags.length; k++)
+        // {
+        //     console.log('$scope.tag is...', $scope.tags[k]);
+        //   Tags.save({name: $scope.tags[k]}, function(tag) {
+        //     console.log('pushing into tagscollection')
+        //     $scope.tags.push(tag)
+        // })
+        // }
 
         Product.save({
-            name: $scope.name,
+            name: $scope.name, 
             description: $scope.description,
             price: $scope.price,
-            owner: $scope.store.owner,
-            storeName: $scope.storeName,
+            // tags: $scope.tags,
+            storeId: $scope.storeId,
             media: $scope.product_images
-        }, function(product) {
-
-            Store.get({
-                name: $stateParams.name
-            }, function(store) {
-
-                $scope.store = store;
-                //Get all products in store
-                Store.getProducts({
-                        name: $scope.storeName
-                    }).$promise
-                    .then(function(products) {
-                        $scope.products = products;
-                    })
-
-            });
+        }, function() {
+            // if (err) {console.log(err)};
+            console.log('Hitting Product.save callback..');
+            // $scope.products.push(product);
+            //  socket.syncUpdates('Product', $scope.products);
+            // Get all products in store
+            Store.getProducts({
+                    name: $scope.storeName
+                }).$promise
+                .then(function(products) {
+                    $scope.products = products;
+                    console.log('PRODUCTS HSOULD BE LOADING', $scope.products)
+                })
         })
     }
 

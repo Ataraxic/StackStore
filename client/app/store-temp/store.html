@@ -3,22 +3,36 @@
 <section id="main-content">
 
     <h1>You are shopping at {{storeName}}! </h1>
+
+
     <section class="wrapper">
+
+
         <label> Search:
             <input type="text" ng-model="searchText"></input>
         </label>
         <button class="btn btn-primary" ng-click="searchStore()">Search</button>
 
+
         <div class="container">
             <div class="col-md-12">
 
                 <h1 class="page-header">Products in {{storeName}}</h1>
-                <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="product in products">
-                		<product ng-repeat="product in products"></product>
+                <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
+                		<product ng-repeat="product in products track by $index"></product>
                 </ul>
 
                 <div ng-show="'noProds'">No Products Found</div>
             </div>
         </div>
+        <div ng-show='ownerPresent'>
+
+        </div>
     </section>
+
+    <div ng-show="ownerPresent">
+
+            <a href="/store/{{storeName}}/admin">Edit your store</a>
+    </div>
+    <center></center>
 </section>
