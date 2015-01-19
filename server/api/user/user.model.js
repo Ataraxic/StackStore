@@ -11,6 +11,7 @@ var UserSchema = new Schema({
         lowercase: true,
         unique: true
     },
+    profilePic: String,
     role: {
         type: String,
         default: 'user',
