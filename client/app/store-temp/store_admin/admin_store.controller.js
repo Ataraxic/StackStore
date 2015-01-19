@@ -27,10 +27,8 @@ angular.module('stackStoreApp')
                     $scope.owner = true;
                     $scope.store = store;
                     $scope.ownerId = store.owner;
-                    console.log('scope.store._id', $scope.store._id)
                     $http.get('/api/promos/' + $scope.store._id)
                     .then(function(response){
-                      console.log('inside promos get?', response.data)
                       $scope.currentPromos = response.data;
                       $scope.currentPromos.forEach(function(promo){
                         promo.expiry = new Date(promo.expiry);
