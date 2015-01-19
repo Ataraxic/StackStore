@@ -115,7 +115,7 @@
 
                 <div ng-show="isLoggedIn()">
                     <p class="centered">
-                        <a href="/profile/{{ getCurrentUser().name.toLowerCase() }}"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60">
+                        <a href="/profile/{{ getCurrentUser().name.toLowerCase() }}"><img src="{{getCurrentUser().profilePic}}" class="img-circle" width="60">
                         </a>
                     </p>
                     <h5 class="centered">{{ getCurrentUser().name }}</h5>
