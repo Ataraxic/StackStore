@@ -256,21 +256,17 @@ async.waterfall([
   function(idObject,callback){
     Promo.find({}).remove(function(){
       Promo.create({
-        name: 'lindsayPromo',
-        info: 'because it\'s a good day',
-        active: true,
-        user: [idObject.lindsayUserId],
-        product: [idObject.lindsayProductId],
+        description: 'lindsayPromo',
+        expiry: Date.now,
         code: 'TPTPTP',
-        store: idObject.lindsayStoreId
+        store: idObject.lindsayStoreId,
+        discount: 10
       },{
-        name: 'samPromo',
-        info: 'because reddit',
-        active: true,
-        user: [idObject.lindsayUserId,idObject.samsUserId],
-        product: [idObject.samProductId],
+        description: 'samPromo',
+        expiry: Date.now,
         code: 'coffee',
-        store: idObject.samsStoreId
+        store: idObject.samsStoreId,
+        discount: 10
       },function(){
         callback(null,idObject);
       })

@@ -101,27 +101,29 @@ angular.module('stackStoreApp')
         function get(callback) {
             if (Auth.isLoggedIn()) {
                 user = Auth.getCurrentUser();
-                if (localStorageService.get('cart').length > 0) {
-                    mergeCarts(user.cart, function() {
-                        $http.get('/api/users/' + user._id + '/populate')
-                            .success(function(user) {
-                                callback(null, user);
-                            })
-                            .error(function(err) {
-                                console.log(err);
-                                callback(err);
-                            });
-                    })
-                } else {
-                    $http.get('/api/users/' + user._id + '/populate')
-                        .success(function(user) {
-                            callback(null, user);
-                        })
-                        .error(function(err) {
-                            console.log(err);
-                            callback(err);
-                        });
-                }
+                if(localStorageService.get('cart')) {
+                  if (localStorageService.get('cart').length > 0) {
+                      mergeCarts(user.cart, function() {
+                          $http.get('/api/users/' + user._id + '/populate')
+                              .success(function(user) {
+                                  callback(null, user);
+                              })
+                              .error(function(err) {
+                                  console.log(err);
+                                  callback(err);
+                              });
+                      })
+                  } else {
+                      $http.get('/api/users/' + user._id + '/populate')
+                          .success(function(user) {
+                              callback(null, user);
+                          })
+                          .error(function(err) {
+                              console.log(err);
+                              callback(err);
+                          });
+                  }
+              }
             } else {
                 getProductsFromCache(function(err, products) {
                     if (err) console.log(err);
