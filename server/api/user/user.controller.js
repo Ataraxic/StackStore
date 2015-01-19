@@ -128,6 +128,20 @@ exports.adminChangePassword = function(req, res, next) {
 /**
  * change User Email
  */
+
+ exports.changeProfilePic = function(req, res, next) {
+        var newPic = req.body.profilePic;
+        var userId = req.user._id;
+        User.findById(userId, function(err, user) {
+            user.profilePic = newPic;
+            user.save(function(err, user) {
+                if (err) console.log(err);
+                if (!user) res.send(401);
+                res.send(200);
+            })
+        })
+    }
+
 exports.changeEmail = function(req, res, next) {
         var newEmail = req.body.newEmail;
         var userId = req.user._id;

@@ -63,7 +63,7 @@ angular.module('stackStoreApp')
                 console.log('Upload completed. Uploaded to: ' + public_url)
                 console.log(public_url)
                 $scope.$apply(function() {
-                    $scope.user.profilePic;
+                    $scope.user.profilePic = public_url;
                 });
 
             },
