@@ -27,6 +27,12 @@ angular.module('stackStoreApp')
           controller:'promote'
         }
       },
+      demote: {
+        method: 'PUT',
+        params: {
+          controller:'demote'
+        }
+      },
       get: {
         method: 'GET',
         params: {

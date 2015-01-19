@@ -15,7 +15,8 @@
             <button ng-click="changePassword(user)" class='btn btn-primary'>Change Password</button>
           </form>
         </div>
-        <button ng-click="promoteToAdmin(user)" id="promoteBtn" class="btn btn-secondary">Promote to Admin</button>
+        <p>Role: {{user.role.toUpperCase()}}</p>
+        <button ng-hide="user._id == userId" ng-click="changeAdminStatus(user)" id="promoteBtn" class="btn btn-secondary">Change Admin Status</button>
     </li>
   </ul>
 </div>
