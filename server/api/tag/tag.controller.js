@@ -34,6 +34,7 @@ exports.create = function(req, res) {
     }, function(err, tag) {
         if (err) {
                console.log(err.name);
+               return;
         }
         if (!tag) {
           console.log('Tag doesnt exist yet, saving in db')
@@ -46,8 +47,11 @@ exports.create = function(req, res) {
                     console.log('hitting tags controller, tag.save-->', tag )
                     res.json(tag);
                 });
+            return;
         }
-        console.log('Tag already exists')
+        else {
+        console.log('Tag already exists', tag.name)
+      }
     })
 
 

@@ -2,7 +2,7 @@
 
 angular.module('stackStoreApp')
 
-.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {
+.controller('StoreAdminCtrl', function($q, $scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {
 
     $scope.owner = false;
     $scope.storeName = $stateParams.name;
@@ -15,9 +15,6 @@ angular.module('stackStoreApp')
     $scope.tag = '';
     $scope.tags = [];
     $scope.product_images = [];
-
-
-
 
     //Get Owner ID and storeId of current store
     User.get().$promise
@@ -40,24 +37,36 @@ angular.module('stackStoreApp')
             $location.path('/store/' + $stateParams.name);
         })
 
-    //Get all products in store
+    //Retrieve all products in store and put them in scope
     Store.getProducts({
             name: $scope.storeName
         }).$promise
         .then(function(products) {
             $scope.products = products;
         })
-
+        // Adding tags to scope 
     $scope.addTag = function(tag) {
         $scope.tags.push(tag);
-
     }
+
+    // Deleting tags from scope
+    $scope.deleteTag = function(tag) {
+        angular.forEach($scope.tags, function(t, i) {
+            if (t === tag) {
+                $scope.tags.splice(i, 1);
+            }
+        });
+    }
+
+
+
 
     //Add a new product
     $scope.addProduct = function() {
 
+        $scope.tagObjects = [];
         $scope.products = [];
-        
+
         if ($scope.name === '') {
             return;
         }
@@ -68,49 +77,53 @@ angular.module('stackStoreApp')
             return;
         }
 
+
+
         //CREATING NEW TAG OBJECTS
 
-        for (var k = 0; k<$scope.tags.length; k++)
-        {
-           // Check if tag exists already
-           // Tags.query({name: $scope.tags[k]}).$promise
-           // .then(function(tags) {
-           //  console.log('Tag already exists and is: ', tags);
-           // })
-           // .then(null, function(err) {
-            Tags.save({name: $scope.tags[k]}, function (tag) {
-              console.log('Saved new tag! its -->', $scope.tags[k]);
-          })
-        // })
+        //For each tag in scope, call Tags.save and create an array of $q promises.
+        var promises = [];
+        angular.forEach($scope.tags, function(tag) {
+            var promise = Tags.save({
+                name: tag
+            });
+            promises.push(promise);
+        });
 
-          // if ( ) {
-          //   alert('Tag already exists');
-          // }
+        var tagsPromise = $q.all(promises);
 
-         
-          
-        
-        }
-
-        Product.save({
-            name: $scope.name, 
-            description: $scope.description,
-            price: $scope.price,
-            tags: $scope.tags,
-            storeId: $scope.storeId,
-            media: $scope.product_images
-        }, function() {
-            if (err) {console.log(err)};
-
-    
-            Store.getProducts({
-                    name: $scope.storeName
-                }).$promise
-                .then(function(products) {
-                    $scope.products = products;
-                    console.log('PRODUCTS SHOULD BE LOADING', $scope.products)
+        tagsPromise.then(function(tags) {
+            tags.forEach(function(tag) {
+                tag.$promise.then(function(tag) {
+                     console.log('*****tag._id is -->', tag._id);
+                    $scope.tagObjects.push(tag._id);
                 })
-        })
+            });
+        }).then(function() {
+            console.log('**************tagObjects is', $scope.tagObjects);
+            //Saving new product in DB
+            Product.save({
+                name: $scope.name,
+                description: $scope.description,
+                price: $scope.price,
+                tags: $scope.tagObjects,
+                storeId: $scope.storeId,
+                media: $scope.product_images,
+            }, function(err, product) {
+                if (err) {
+                    console.log(err)
+                };
+
+                Store.getProducts({
+                        name: $scope.storeName
+                    }).$promise
+                    .then(function(products) {
+                        $scope.products = products;
+                    })
+            })
+        });
+
+
     }
 
     $scope.deleteProduct = function(id) {
