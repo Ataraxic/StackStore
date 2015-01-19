@@ -20,6 +20,7 @@ angular.module('stackStoreApp')
         }
 
         Cart.get(function(err, data) {
+        	console.log(data);
         	$scope.cart_page = Cart.formatCartObj(data.cart)
         });
     });

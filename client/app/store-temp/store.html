@@ -19,7 +19,7 @@
 
                 <h1 class="page-header">Products in {{storeName}}</h1>
                 <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
-                		<product ng-repeat="product in products"></product>
+                		<product ng-repeat="product in products track by $index"></product>
                 </ul>
 
                 <div ng-show="'noProds'">No Products Found</div>
