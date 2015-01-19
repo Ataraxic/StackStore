@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$stateParams) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$stateParams,Product) {
     var currentUser = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
@@ -157,5 +157,19 @@ angular.module('stackStoreApp')
       getToken: function() {
         return $cookieStore.get('token');
       }
+
+      // //Check if user can add Reviews
+      // canAddReview: function(productId){
+      //   console.log("currentUserpls", currentUser);
+      //   if (currentUser){
+      //     console.log("have a user");
+      //     Product.canAddReview({id:productId},{userId: currentUser._id},function(result){
+      //       console.log("this should be the userId",currentUser);
+      //       return result;
+      //     });
+      //   } else {
+      //     return false;
+      //   }
+      // }
     };
   });

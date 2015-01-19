@@ -3,6 +3,9 @@
 var _ = require('lodash');
 var Product = require('./product.model');
 var Store = require('../store/store.model');
+var Order = require('../order/order.model');
+var async = require('async');
+var User = require('../user/user.model');
 
 // Get list of products
 exports.index = function(req, res) {
@@ -111,6 +114,25 @@ exports.getReviews = function(req,res){
          })
 }
 
+//Save reviews and authenticate
+exports.addReview = function(req,res){
+  res.json(200);
+}
+
+//Check if able to add reviews
+exports.reviewAuth = function(req,res){
+  var productId = req.params.id;
+  console.log('hitting This!!',req.body);
+  var userId = req.body.userId;
+  console.log('userId',userId);
+  User.findById(userId)
+      .populate('comments')
+      .exec(function(err,user){
+        // var userComments = user[0].comments;
+        console.log(user);
+      })
+
+}
 
 //Populate products in user cart
 exports.populateFromCache = function(req, res) {

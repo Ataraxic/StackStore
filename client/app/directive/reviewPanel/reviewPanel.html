@@ -4,19 +4,19 @@
       Reviews
     </h2>
     <hr>
-    <div class="reviewBox" ng-repeat="review in comments">
-      <h4 class="reviewTitle">
-        {{review.title}}
-      </h4>
-      <div class="upvoteReviewPanel">
-      <div class="vote circle">
+    <div class="media" ng-repeat="review in comments">
+      <div class="media-left">
+        <div class="vote circle">
           <div ng-click="addUpvote(review)" class="increment up"></div>
           <div ng-click="minusUpvote(review)" class="increment down"></div>
           <div class="count">{{review.upvotes}}</div>
         </div>
       </div>
-      <div>
-        {{review.body}}
+      <div class="media-body">
+        <h4 class="media-heading">
+          {{review.title}}
+        </h4>
+        <p class="reviewText">{{review.body}}</p>
       </div>
       <div ng-show="review.product.name">{{review.product.name}}</div>
   </div>

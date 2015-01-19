@@ -8,6 +8,8 @@ var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
 var User = require('../api/user/user.model');
 var Store = require('../api/store/store.model');
+var Order = require('../api/order/order.model');
+var Product = require('../api/product/product.model');
 var validateJwt = expressJwt({
     secret: config.secrets.session
 });
@@ -79,6 +81,23 @@ function isStoreOwner() {
         });
 }
 
+//Checks if the user has bought the product
+function canAddReview(){
+  return compose()
+    //validate jwt
+    .use(function(req,res,next){
+      // allow access_token to be passed through query parameter as well
+      if (req.query && req.query.hasOwnProperty('access_token')) {
+        req.headers.authorization = 'Bearer ' + req.query.access_token;
+      }
+      validateJwt(req, res, next);
+    })
+    //
+    .use(function(req,res,next){
+      next();
+    });
+}
+
 /**
  * Checks if the user role meets the minimum requirements of the route
  */
@@ -124,3 +143,4 @@ exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
 exports.setTokenCookie = setTokenCookie;
+exports.canAddReview = canAddReview

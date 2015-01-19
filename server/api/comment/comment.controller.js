@@ -22,7 +22,10 @@ exports.show = function(req, res) {
 
 // Creates a new comment in the DB.
 exports.create = function(req, res) {
+  console.log("creating");
   Comment.create(req.body, function(err, comment) {
+    console.log(err)
+    console.log('comment',comment);
     if(err) { return handleError(res, err); }
     return res.json(201, comment);
   });

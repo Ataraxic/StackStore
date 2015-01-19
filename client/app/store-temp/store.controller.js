@@ -44,11 +44,12 @@ angular.module('stackStoreApp')
         $scope.addToCart = function(id) {
             Cart.add(id,function(err,data){
             	if(err) console.log(err)
-              Cart.get(function(err, data) {
-                console.log("data",data);
-                console.log("formated objecT",Cart.formatCartObj(data.cart));
-                $scope.cart_nav = Cart.formatCartObj(data.cart);
-              });
+              // Cart.get(function(err, data) { This Still needs work. Not sure how to update cart
+              //   console.log("data",data);
+              //   console.log("formated objecT",Cart.formatCartObj(data.cart));
+              //   console.log($scope.cart_nav);
+              //   $scope.cart_nav = Cart.formatCartObj(data.cart);
+              // });
             });
         };
         $scope.searchStore = function(){
