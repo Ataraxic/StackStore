@@ -231,11 +231,6 @@ exports.populate = function(req, res) {
                 console.log('no user')
                 return res.send(404);
             }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 32-localstorage-improvements
             return res.json(user);
         })
 }
