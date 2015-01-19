@@ -101,6 +101,17 @@ exports.destroy = function(req, res) {
     });
 };
 
+//Get Product and populated reviews
+exports.getReviews = function(req,res){
+  Product.findById(req.params.id)
+         .populate('comments')
+         .exec(function(err,results){
+           if (err) console.log(err);
+           res.json(200,results);
+         })
+}
+
+
 //Populate products in user cart
 exports.populateFromCache = function(req, res) {
 

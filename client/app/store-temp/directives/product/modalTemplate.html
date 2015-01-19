@@ -1,0 +1,15 @@
+<div class="row">
+  <div>
+    <h1>{{products}}</h1>
+    <h1><a>{{modalProduct.name}}</a></h1>
+    <img src="{{modalProduct.media[0]}}">
+    <h3>{{modalProduct.price}}</h3>
+    <p>{{modalProduct.description}}</p>
+  </div>
+  <button class="btn btn-default" ng-click="addToCart(product._id)">Add to cart</button>
+</div>
+
+<div>
+  <button class="btn btn-primary" ng-click="addReview()">Add a Review</button>
+  <review-panel></review-panel>
+<div>

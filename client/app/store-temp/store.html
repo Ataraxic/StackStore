@@ -16,10 +16,9 @@
 
         <div class="container">
             <div class="col-md-12">
-
                 <h1 class="page-header">Products in {{storeName}}</h1>
-                <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="product in products">
-                		<product ng-repeat="product in products"></product>
+                <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
+                		<li><product ng-repeat="product in products"></product></li>
                 </ul>
 
                 <div ng-show="'noProds'">No Products Found</div>
@@ -31,9 +30,9 @@
     </section>
 
     <div ng-show="ownerPresent">
-        
+
             <a href="/store/{{storeName}}/admin">Edit your store</a>
-        
+
     </div>
     <center></center>
 </section>

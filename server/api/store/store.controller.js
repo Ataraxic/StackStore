@@ -12,7 +12,7 @@ exports.getproducts = function(req, res) {
     Store.getProducts(req.params.name, function(err, products) {
       if(err) { console.log(err) }
          if(!products) { console.log('No store found!') }
-
+           console.log("products",products,err)
       return res.json(200, products);
     });
 };
@@ -49,7 +49,7 @@ exports.show = function(req, res) {
 
 // Creates a new store in the DB.
 exports.create = function(req, res) {
- 
+
     var store = new Store({
         owner: req.user._id,
         name: req.body.name,
@@ -65,7 +65,7 @@ exports.create = function(req, res) {
                 return handleError(res, err);
             }
 
-        
+
             user.stores.push(store._id)
             user.save(function(err, user) {
                 return res.json(store);

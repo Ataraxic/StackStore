@@ -17,7 +17,7 @@ var Comment = require('../api/comment/comment.model');
 
 
 
-async.waterfall([
+async.waterfall([                       //create Users
     function(callback){
       User.find({}).remove(function() {
       User.create({
@@ -47,7 +47,7 @@ async.waterfall([
     });
     },
     function(callback){
-      User.find({},function(err,users){
+      User.find({},function(err,users){ //Create Stores
         var idOne = users[0]._id;
         var idTwo = users[1]._id;
           Store.find({}).remove(function(){
@@ -78,7 +78,7 @@ async.waterfall([
       })
     })
   },
-  function(users,stores,callback){
+  function(users,stores,callback){ //Create Users
     var lindsayStoreId = stores.filter(function(obj){
       if (obj.name==="storeone"){return obj._id;}
       })[0];
@@ -101,10 +101,9 @@ async.waterfall([
 
     Product.create({
       name: 'lindsay\'s Product',
-      info: 'tp is life',
       active: true,
       upvotes: 1200,
-      owner: lindsayUserId,
+      storeId: lindsayStoreId,
       price: 19.99,
       description: 'tp is love',
       inventory: {
@@ -113,10 +112,9 @@ async.waterfall([
       }
     },{
       name: 'sam\'s Product',
-      info: 'wat is info',
       active: true,
       upvotes: 1010,
-      owner: samsUserId,
+      storeId: samsStoreId,
       price: 23.36,
       description: 'sams description',
       inventory: {
@@ -129,8 +127,6 @@ async.waterfall([
   },
   function(idObject,callback){
     Product.find({},function(err,products){
-
-      console.log('WEEEEEEEEEE',products)
       var lindsayProductId = products.filter(function(obj){
         if (obj.name==='lindsay\'s Product') {return obj._id;}
         })[0];
