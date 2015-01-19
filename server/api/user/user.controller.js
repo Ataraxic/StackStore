@@ -110,6 +110,22 @@ exports.promote = function(req, res, next) {
         })
     });
 };
+
+/**
+ * admin can demote any user from site admin
+ **/
+exports.demote = function(req, res, next) {
+    console.log('are we inside promote');
+    User.findById(req.params.id, function(err, user) {
+        user.role = 'user';
+        user.save(function(err, user) {
+            if (err) console.log(err);
+            if (!user) res.send(401);
+            res.send(200, user);
+        })
+    });
+};
+
 /**
  * Admin change a user's password
  */

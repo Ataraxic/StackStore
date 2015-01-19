@@ -5,9 +5,8 @@ angular.module('stackStoreApp')
 
     // Use the User $resource to fetch all users
     $scope.users = User.query();
-
-
-
+    console.log('scope users', $scope.users);
+    $scope.userId = Auth.getCurrentUser()._id;
     $scope.delete = function(user) {
       User.remove({ id: user._id });
       angular.forEach($scope.users, function(u, i) {
@@ -22,8 +21,15 @@ angular.module('stackStoreApp')
       user.newPassword = '';
     };
 
-    $scope.promoteToAdmin = function(user) {
-      User.promote({ id: user._id }, {}, function(user){
-      });
+    $scope.changeAdminStatus = function(user) {
+      if(user.role == 'user') {
+        User.promote({ id: user._id }, {}, function(user){
+          $scope.users = User.query();
+        });
+      } else {
+        User.demote({ id: user._id }, {}, function(user){
+          $scope.users = User.query();
+        });
+      }
     };
   });
