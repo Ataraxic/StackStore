@@ -22,7 +22,13 @@
                 		<product ng-repeat="product in products track by $index"></product>
                 </ul>
 
-                <div ng-show="'noProds'">No Products Found</div>
+                <div ng-show="noProds">No Products Found</div>
+                <div ng-hide="noProds">
+                  <p>Search Results:</p>
+                  <ul>
+                    <li ng-repeat="product in store.products">{{product}}</li>
+                  </ul>
+                </div>
             </div>
         </div>
         <div ng-show='ownerPresent'>

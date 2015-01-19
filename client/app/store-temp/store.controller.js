@@ -21,6 +21,7 @@ angular.module('stackStoreApp')
             }).$promise
             .then(function(store) {
                 $scope.store = store;
+                $scope.store.products = [];
                 User.get().$promise
                     .then(function(user) {
                         if (user._id === store.owner) {
@@ -48,11 +49,15 @@ angular.module('stackStoreApp')
             })
         }
         $scope.searchStore = function(){
+          $scope.store.products = []
           if ($scope.searchText){
             Store.search({'name':$stateParams.name},{searchtext:$scope.searchText},function(res){
               if (res.data){
                 var productsArray = res.data;
-                $scope.store.products = productsArray;
+                productsArray.forEach(function(product){
+                  if(product.storeId == $scope.store._id && !(exist(product))) $scope.store.products.push(product);
+                })
+                // $scope.store.products = productsArray;
                 $scope.noProds = false;
               } else {
                 $scope.noProds = true;
@@ -60,4 +65,14 @@ angular.module('stackStoreApp')
             });
           }
         };
+
+        function exist(prod) {
+          var exist = false;
+          $scope.store.products.forEach(function(product){
+            if(prod._id == product._id) {
+              exist = true;
+            }
+          });
+          return exist;
+        }
     });
