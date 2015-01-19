@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$stateParams) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$stateParams,localStorageService) {
     var currentUser = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
@@ -28,7 +28,7 @@ angular.module('stackStoreApp')
           $cookieStore.put('token', data.token);
           currentUser = User.get();
           deferred.resolve(data);
-          return cb();
+          return cb(currentUser);
         }).
         error(function(err) {
           this.logout();

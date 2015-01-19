@@ -48,7 +48,7 @@
                         <span class="badge bg-theme" ng-show="getCurrentUser().cart.length > 0">{{getCurrentUser().cart.length}}</span>
                     </a>
                     <ul class="dropdown-menu extended inbox">
-                        <li ng-repeat="product in cart_nav">
+                        <li ng-repeat="product in cart_nav track by $index">
                             <a href="/">
                                 <span class="photo"><img alt="avatar" ng-src="{{product.media[0]}}"></span>
                                 <span class="subject">

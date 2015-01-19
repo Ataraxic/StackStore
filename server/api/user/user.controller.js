@@ -202,7 +202,11 @@ exports.updateCart = function(req, res) {
             	})
             	user.cart = cart;
             }
-        } else {
+            else if(req.body.action === "update"){
+            	user.cart = req.body.cart;
+            }
+        }
+        else {
         	if (user.cart) user.cart.push(req.body._id);
         }
 
@@ -227,7 +231,11 @@ exports.populate = function(req, res) {
                 console.log('no user')
                 return res.send(404);
             }
-         
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> 32-localstorage-improvements
             return res.json(user);
         })
 }
