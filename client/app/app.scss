@@ -18,9 +18,19 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // Component styles are injected through grunt
 // injector
 @import 'account/login/login.scss';
+@import 'account/profile/favorites/favorites.scss';
+@import 'account/profile/profile.scss';
 @import 'admin/admin.scss';
+@import 'cart/cart.scss';
 @import 'checkout/checkout.scss';
+@import 'directive/reviewPanel/reviewPanel.scss';
+@import 'directive/tags/tags.scss';
 @import 'main/main.scss';
 @import 'store-temp/directives/product/product.scss';
 @import 'store-temp/store.scss';
 // endinjector
+
+.sidebar-closed #sidebar {
+	margin-left: -210px !important;
+}
+

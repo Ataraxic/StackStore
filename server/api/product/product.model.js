@@ -4,28 +4,22 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var ProductSchema = new Schema({
-    name: String,
-    info: String,
+    name: {type: String, required: true},
     active: Boolean,
     upvotes: Number,
-    owner: {
+    storeId: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Store'
     },
-    price: Number,
-    description: String,
+    price:{type: Number, required: true} ,
+    description:{type: String},
     comments: [{
-        review: Boolean,
-        body: String,
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        stars: Number
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
     }],
     tags: [{
         type: Schema.Types.ObjectId,
-        ref: 'Tags'
+        ref: 'Tag'
     }],
     inventory: {
         available: Number,
@@ -33,5 +27,7 @@ var ProductSchema = new Schema({
     },
     media: [String]
 });
+
+ProductSchema.index({name: 'text',info: 'text',description: 'text'});
 
 module.exports = mongoose.model('Product', ProductSchema);

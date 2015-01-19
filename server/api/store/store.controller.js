@@ -6,7 +6,16 @@ var Store = require('./store.model');
 var Product = require('../product/product.model');
 var User = require('../user/user.model');
 
+// Get list of products from a given store
+exports.getproducts = function(req, res) {
 
+    Store.getProducts(req.params.name, function(err, products) {
+      if(err) { console.log(err) }
+         if(!products) { console.log('No store found!') }
+
+      return res.json(200, products);
+    });
+};
 
 // Get list of stores
 exports.index = function(req, res) {
@@ -34,15 +43,13 @@ exports.show = function(req, res) {
                 console.log('no store')
                 return res.send(404);
             }
-
-            console.log(store);
             return res.json(store);
         })
 };
 
 // Creates a new store in the DB.
 exports.create = function(req, res) {
-    console.log(req.user);
+ 
     var store = new Store({
         owner: req.user._id,
         name: req.body.name,
@@ -58,7 +65,7 @@ exports.create = function(req, res) {
                 return handleError(res, err);
             }
 
-            console.log(store._id);
+        
             user.stores.push(store._id)
             user.save(function(err, user) {
                 return res.json(store);
@@ -115,6 +122,25 @@ exports.checkOwner = function(req, res) {
     else {
         return res.send(201);
     }
+}
+
+exports.search = function(req,res){
+  var storeName = req.params.name;
+  var searchText = req.body.searchtext;
+
+  Store.findOne({name:storeName},function(err,store){
+    var storeId = store._id;
+    Product.find({$text: {$search:searchText}},{score: {$meta:"textScore"}})
+           .sort({score: {$meta: 'textScore'}})
+           .where({owner:storeId})
+           .exec(function(err,results){
+             if (err) return console.err(err);
+             if (!results) return res.send(440);
+             var sendObj = {};
+             sendObj.data = results;
+             res.json(sendObj);
+           })
+  });
 }
 
 function handleError(res, err) {

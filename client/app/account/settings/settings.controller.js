@@ -18,4 +18,22 @@ angular.module('stackStoreApp')
         });
       }
 		};
+
+    $scope.changeEmail = function(emailForm){
+      $scope.emailSubmitted = true;
+      if (emailForm.$valid){
+        Auth.changeEmail($scope.user.password, $scope.user.newEmail)
+        .then(function(){
+          $scope.emailMessage = 'Email successfully changed.';
+        })
+        .catch (function(){
+          emailForm.pasword.$setValidity('mongoose',false);
+          $scope.errors.password = 'Incorrect password';
+          $scope.emailMessage = '';
+        });
+      }
+      $scope.user.password = '';
+      $scope.user.newEmail = '';
+    };
+
   });

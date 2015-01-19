@@ -6,7 +6,8 @@ angular.module('stackStoreApp', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'LocalStorageModule'
+  'LocalStorageModule',
+  'angularPayments'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,$resourceProvider, localStorageServiceProvider) {
     $urlRouterProvider
@@ -14,6 +15,8 @@ angular.module('stackStoreApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    window.Stripe.setPublishableKey('pk_test_D5vWHkz0NEx0wAP2eut3LZxm');
 
     localStorageServiceProvider
     .setPrefix('stackStoreApp')

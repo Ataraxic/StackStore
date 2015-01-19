@@ -15,13 +15,28 @@ angular.module('stackStoreApp')
         	cart.ids = localStorageService.get('cart') ? localStorageService.get('cart') : [];
         }
 
+        function formatCartObj(cart) {
+        	var formatted;
+        	if(user){
+        		formatted = cart.reduce(function(prev,curr,index,array){
+        			if(!prev[curr._id]){
+        				prev[curr._id] = curr;
+        				prev[curr._id].quantity = 1;
+        			}
+        			else{
+        				prev[curr._id].quantity += 1;
+        			}
+        			return prev;
+        		},{});
+        	}
+        	return formatted;
+        }
+
         function getProductsFromCache(callback) {
-        		console.log(cart.ids);
             $http.post('/api/products/cache', {
                     products: cart.ids
                 })
                 .success(function(products) {
-	                	console.log(products);
                     callback(null, products);
                 })
                 .error(function(err) {
@@ -45,6 +60,7 @@ angular.module('stackStoreApp')
                 getProductsFromCache(function(err, products) {
                     if (err) console.log(err);
                     else {
+
                         callback(null, {
                             cart: products
                         });
@@ -55,6 +71,7 @@ angular.module('stackStoreApp')
 
         // Public API here
         return {
+        		formatCartObj: formatCartObj,
             getProductsFromCache: getProductsFromCache,
             get: get,
             add: function(productId, callback) {
@@ -84,8 +101,30 @@ angular.module('stackStoreApp')
             update: function() {
                 return true;
             },
-            delete: function() {
-                return true;
+            delete: function(productId, callback) {
+                if (Auth.isLoggedIn()) {
+                    user = Auth.getCurrentUser();
+                    $http.put('/api/users/' + user._id + '/cart', {
+                    				action: 'remove',
+                            _id: productId
+                        })
+                        .success(function(user) {
+                            get(function(err,user){
+                            	callback(err, user);
+                            });
+                        })
+                        .error(function(err) {
+                            console.log(err);
+                            callback(err);
+                        });
+                } else {
+                    console.log(cart.ids);
+                    cart.ids.splice(cart.ids.lastIndexOf(productId),1);
+                    localStorageService.set('cart', cart.ids);
+                    get(function(err,data){
+                    	callback(err,data);
+                    });
+                }
             }
         };
     });

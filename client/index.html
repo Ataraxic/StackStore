@@ -18,6 +18,14 @@
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
+      <link rel="stylesheet" href="app/theme/css/bootstrap.css">
+      <link rel="stylesheet" href="app/theme/css/style-responsive.css">
+      <link rel="stylesheet" href="app/theme/css/style.css">
+      <link rel="stylesheet" href="app/theme/css/table-responsive.css">
+      <link rel="stylesheet" href="app/theme/css/to-do.css">
+      <link rel="stylesheet" href="app/theme/css/zabuto_calendar.css">
+      <link rel="stylesheet" href="app/theme/font-awesome/css/font-awesome.css">
+      <link rel="stylesheet" href="app/theme/lineicons/style.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
@@ -27,7 +35,9 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ui-view=""></div>
+    <section id="container">
+    	<div ui-view=""></div>
+    </section>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -55,8 +65,17 @@
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+      <script src="bower_components/angular-payments/lib/angular-payments.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
+
+      <script src="https://js.stripe.com/v2/"></script>
+      <script type="text/javascript"
+        src="bower_components/angular-payments/lib/angular-payments.js">
+      </script>
+      <!--<script type='text/javascript'>
+        Stripe.setPublishableKey('pk_test_D5vWHkz0NEx0wAP2eut3LZxm');
+      </script>-->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,client}) app/app.js -->
@@ -64,12 +83,19 @@
           <!-- injector:js -->
           <script src="app/account/account.js"></script>
           <script src="app/account/login/login.controller.js"></script>
+          <script src="app/account/profile/favorites/favorites.directive.js"></script>
+          <script src="app/account/profile/profile.controller.js"></script>
+          <script src="app/account/profile/profile.js"></script>
           <script src="app/account/settings/settings.controller.js"></script>
           <script src="app/account/signup/signup.controller.js"></script>
           <script src="app/admin/admin.controller.js"></script>
           <script src="app/admin/admin.js"></script>
+          <script src="app/cart/cart.controller.js"></script>
+          <script src="app/cart/cart.js"></script>
           <script src="app/checkout/checkout.controller.js"></script>
           <script src="app/checkout/checkout.js"></script>
+          <script src="app/directive/reviewPanel/reviewPanel.directive.js"></script>
+          <script src="app/directive/tags/tags.directive.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="app/store-temp/create_store/create_store.controller.js"></script>
@@ -77,13 +103,16 @@
           <script src="app/store-temp/store.controller.js"></script>
           <script src="app/store-temp/store.js"></script>
           <script src="app/store-temp/store_admin/admin_store.controller.js"></script>
+          <script src="app/theme/lineicons/lte-ie7.js"></script>
           <script src="components/Product/Product.service.js"></script>
           <script src="components/Store/Store.service.js"></script>
+          <script src="components/Tags/Tags.service.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
           <script src="components/cart/cart.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
+          <script src="components/s3_upload.js"></script>
           <script src="components/socket/socket.service.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->

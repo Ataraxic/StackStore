@@ -3,23 +3,28 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var statuses = 'Created Processing Cancelled Complete'.split(' ');
+
 var OrderSchema = new Schema({
-    name: String,
-    info: String,
-    active: Boolean,
-    user: {
+    name: {type: String },
+    buyer: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
-    products: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Products'
-    }],
-    status: String,
-    owner: {
+    buyerOrder : {
+      type: Schema.Types.ObjectId,
+      ref: 'Order',
+      default: null
+    },
+    products: [],
+    status: { type: String },
+    createdTime: { type: Date, default: Date.now },
+    storeOwner: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    }],
+    chargeId: String
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
