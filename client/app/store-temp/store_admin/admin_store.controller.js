@@ -57,7 +57,7 @@ angular.module('stackStoreApp')
         .then(function(products) {
             $scope.products = products;
         })
-        // Adding tags to scope 
+        // Adding tags to scope
     $scope.addTag = function(tag) {
         $scope.tags.push(tag);
     }
@@ -117,6 +117,7 @@ angular.module('stackStoreApp')
                 description: $scope.description,
                 price: $scope.price,
                 tags: $scope.tagObjects,
+                owner: $scope.ownerId,
                 storeId: $scope.storeId,
                 media: $scope.product_images,
             }, function(err, product) {
