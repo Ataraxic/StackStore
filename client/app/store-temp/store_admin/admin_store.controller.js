@@ -2,7 +2,7 @@
 
 angular.module('stackStoreApp')
 
-.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {
+.controller('StoreAdminCtrl', function($q, $scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {
 
     $scope.owner = false;
     $scope.storeName = $stateParams.name;
@@ -15,8 +15,8 @@ angular.module('stackStoreApp')
     $scope.tag = '';
     $scope.tags = [];
     $scope.product_images = [];
-    $scope.currentPromos = [];
 
+    $scope.currentPromos = [];
 
 
     //Get Owner ID and storeId of current store
@@ -49,22 +49,34 @@ angular.module('stackStoreApp')
             $location.path('/store/' + $stateParams.name);
         })
 
-    //Get all products in store
+    //Retrieve all products in store and put them in scope
     Store.getProducts({
             name: $scope.storeName
         }).$promise
         .then(function(products) {
             $scope.products = products;
         })
-
+        // Adding tags to scope 
     $scope.addTag = function(tag) {
         $scope.tags.push(tag);
-
     }
+
+    // Deleting tags from scope
+    $scope.deleteTag = function(tag) {
+        angular.forEach($scope.tags, function(t, i) {
+            if (t === tag) {
+                $scope.tags.splice(i, 1);
+            }
+        });
+    }
+
+
+
 
     //Add a new product
     $scope.addProduct = function() {
 
+        $scope.tagObjects = [];
         $scope.products = [];
 
         if ($scope.name === '') {
@@ -77,39 +89,51 @@ angular.module('stackStoreApp')
             return;
         }
 
-        console.log('Adding product.. params are: ', $scope.name, $scope.description, $scope.price,  $scope.storeId);
+
+
         //CREATING NEW TAG OBJECTS
 
-        // for (var k = 0; k<$scope.tags.length; k++)
-        // {
-        //     console.log('$scope.tag is...', $scope.tags[k]);
-        //   Tags.save({name: $scope.tags[k]}, function(tag) {
-        //     console.log('pushing into tagscollection')
-        //     $scope.tags.push(tag)
-        // })
-        // }
 
-        Product.save({
-            name: $scope.name,
-            description: $scope.description,
-            price: $scope.price,
-            // tags: $scope.tags,
-            storeId: $scope.storeId,
-            media: $scope.product_images
-        }, function() {
-            // if (err) {console.log(err)};
-            console.log('Hitting Product.save callback..');
-            // $scope.products.push(product);
-            //  socket.syncUpdates('Product', $scope.products);
-            // Get all products in store
-            Store.getProducts({
-                    name: $scope.storeName
-                }).$promise
-                .then(function(products) {
-                    $scope.products = products;
-                    console.log('PRODUCTS HSOULD BE LOADING', $scope.products)
-                })
+        //For each tag in scope, call Tags.save and create an array of $q promises.
+        var promises = [];
+        angular.forEach($scope.tags, function(tag) {
+            var promise = Tags.save({
+                name: tag
+            });
+            promises.push(promise.$promise);
+        });
+        var tagsPromise = $q.all(promises);
+
+        tagsPromise.then(function(tags) {
+
+            $scope.tagObjects = tags.map(function(tag) {
+                return tag._id
+            });
+
+            //Saving new product in DB
+            Product.save({
+                name: $scope.name,
+                description: $scope.description,
+                price: $scope.price,
+                tags: $scope.tagObjects,
+                storeId: $scope.storeId,
+                media: $scope.product_images,
+            }, function(err, product) {
+                if (err) {
+                    console.log(err)
+                };
+
+                Store.getProducts({
+                        name: $scope.storeName
+                    }).$promise
+                    .then(function(products) {
+                        $scope.products = products;
+                    })
+            })
+
         })
+
+
     }
 
     $scope.deleteProduct = function(id) {
@@ -173,6 +197,8 @@ angular.module('stackStoreApp')
         });
     }
 
+
+
     $scope.createPromo = function() {
       if(!$scope.promoCode || !$scope.promoExpiry || !$scope.promoDiscount || !$scope.promoDescription) {
         window.alert('Fill out all categories!');
@@ -203,3 +229,4 @@ angular.module('stackStoreApp')
       })
     }
 });
+
