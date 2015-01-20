@@ -14,6 +14,7 @@ angular.module('stackStoreApp')
     $scope.price = null;
     $scope.tag = '';
     $scope.tags = [];
+
     $scope.product_images = [];
 
     $scope.currentPromos = [];
@@ -93,9 +94,9 @@ angular.module('stackStoreApp')
 
         //CREATING NEW TAG OBJECTS
 
-
         //For each tag in scope, call Tags.save and create an array of $q promises.
         var promises = [];
+    
         angular.forEach($scope.tags, function(tag) {
             var promise = Tags.save({
                 name: tag
@@ -128,6 +129,7 @@ angular.module('stackStoreApp')
                     }).$promise
                     .then(function(products) {
                         $scope.products = products;
+                    
                     })
             })
 
