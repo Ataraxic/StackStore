@@ -41,6 +41,7 @@ exports.create = function(req, res) {
         newOrder.products = [];
         newOrder.status = "Processing";
         newOrder.chargeId = req.body.chargeId;
+        if(req.body.promo) newOrder.promoApplied = req.body.promo;
 
         //build hash of storeowners key: storeOwnerId, obj { products: [] }
         var storeHash = {};
@@ -56,6 +57,7 @@ exports.create = function(req, res) {
         }
 
         newOrder.save(function(err, order){
+          console.log('saved buyer order', order)
           user.orders.push(order._id);
           user.cart = []; //empty cart after order is fulfilled
           for(var owner in storeHash) {
@@ -66,6 +68,7 @@ exports.create = function(req, res) {
             tempOrder.status = "Processing";
             tempOrder.chargeId = req.body.chargeId;
             tempOrder.buyerOrder = order._id;
+            if(req.body.promo) tempOrder.promoApplied = req.body.promo;
             storeOwnerOrders.push(tempOrder);
           }
           user.save(function(err, user) {
@@ -79,6 +82,7 @@ exports.create = function(req, res) {
         var makeOrder = function(oneOrder, doneOneOrder) {
           oneOrder.save(function(err, order) {
             var id = (order['storeOwner'])[0];
+            console.log('saved owner order', id, order)
             User.findById(id)
               .populate('cart')
               .exec(function(err, owner){

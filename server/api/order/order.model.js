@@ -24,7 +24,8 @@ var OrderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    chargeId: String
+    chargeId: String,
+    promoApplied: { type: Schema.Types.ObjectId, ref: 'Promo', default: null }
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

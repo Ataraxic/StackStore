@@ -13,12 +13,10 @@ exports.index = function(req, res) {
 
 // Get a single promo
 exports.show = function(req, res) {
-  console.log("ISJDJFIDJFIJDIF store id?", req.params.id)
   var storeId = req.params.id;
   Promo.find({store: storeId}, function(err, promos){
     if(err) return handleError(res, err);
     if(!promos) return res.send(404);
-    console.log('promos!?!?!?!?..', promos)
     return res.json(promos);
   })
 };
