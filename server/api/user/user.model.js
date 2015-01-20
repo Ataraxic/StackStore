@@ -20,9 +20,9 @@ var UserSchema = new Schema({
         lowercase: true,
         required: true
     },
-    hashedPassword: String,
+    hashedPassword:{type: String, select: false},
     provider: String,
-    salt: String,
+    salt: {type: String, select: false},
     favorites: [{
         type: Schema.Types.ObjectId,
         ref: 'Product'
