@@ -20,19 +20,22 @@ angular.module('stackStoreApp')
             });
             $scope.addReview = function(){
               var userId = Auth.getCurrentUser()._id;
-              console.log($scope.reviewStars);
-              var review = {
-                title: $scope.reviewTitle,
-                body: $scope.reviewBody,
-                owner: userId,
-                product: product._id,
-                upvotes: 0,
-                stars: $scope.reviewStars
-              };
-              Comment.create({},review,function(response){
-                console.log('this is the response from creating a commment',response);
-                $scope.comments.push(response);
-              });
+              if (userId){
+                var review = {
+                  title: $scope.reviewTitle,
+                  body: $scope.reviewBody,
+                  owner: userId,
+                  product: product._id,
+                  upvotes: 0,
+                  stars: $scope.reviewStars
+                };
+                Comment.create({},review,function(response){
+                  console.log('this is the response from creating a commment',response);
+                  $scope.comments.push(response);
+                });
+              } else {
+                $scope.isNotLoggedIn = true;
+              }
             };
 
             //Upvote Logic

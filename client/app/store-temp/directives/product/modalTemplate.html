@@ -8,7 +8,7 @@
   </div>
   <button class="btn btn-default" ng-click="addToCart(product._id)">Add to cart</button>
 </div>
-
+  <div ng-show="isNotLoggedIn">Only logged in users can add a review</div>
   <form ng-show="canAddReview" class="reviewFormClass" name="reviewForm" ng-submit="addReview()">
     <div class="form-group">
       <label>Review Title</label>

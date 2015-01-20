@@ -20,4 +20,5 @@ var CommentSchema = new Schema({
   stars: {type:Number, min: 0, max: 5, required: true}
   });
 
+
 module.exports = mongoose.model('Comment', CommentSchema);

@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 var Comment = require('./comment.model');
+var User = require('../user/user.model');
+var Product = require('../product/product.model');
 
 // Get list of comments
 exports.index = function(req, res) {
@@ -22,13 +24,26 @@ exports.show = function(req, res) {
 
 // Creates a new comment in the DB.
 exports.create = function(req, res) {
-  console.log("creating");
-  Comment.create(req.body, function(err, comment) {
-    console.log(err)
-    console.log('comment',comment);
-    if(err) { return handleError(res, err); }
-    return res.json(201, comment);
-  });
+  console.log("creating",req.canWrite);
+  if (req.canWrite===true){
+    Comment.create(req.body, function(err, comment) {
+      console.log(err)
+      console.log('comment',comment);
+      if(err) { return handleError(res, err); }
+        User.findOne({_id:req.body.owner},function(err,user){
+          if (err) { return handleError(res,err);}
+            user.comments.push(comment._id);
+            user.save();
+            Product.findOne({_id:req.body.product},function(err,product){
+              product.comments.push(comment._id);
+              product.save();
+              return res.json(201, comment);
+            })
+          })
+        });
+  } else {
+    return handleError(res,"unauthorized");
+  }
 };
 
 // Updates an existing comment in the DB.
