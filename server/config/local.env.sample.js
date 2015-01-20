@@ -6,9 +6,18 @@
 // You will need to set these on the server you deploy to.
 
 module.exports = {
-  DOMAIN:           'http://localhost:9000',
-  SESSION_SECRET:   'stackstore-secret',
+    DOMAIN:           'http://localhost:9000',
+    SESSION_SECRET:   'stackstore-secret',
 
-  // Control debug level for modules using visionmedia/debug
-  DEBUG: ''
+    FACEBOOK_ID:      '929270933764800',
+    FACEBOOK_SECRET:  '5c3582bd69c6e45b098e58ed82aff3f0',
+
+    TWITTER_ID:       'app-id',
+    TWITTER_SECRET:   'secret',
+
+    GOOGLE_ID:        'app-id',
+    GOOGLE_SECRET:    'secret',
+
+    // Control debug level for modules using visionmedia/debug
+    DEBUG: ''
 };
