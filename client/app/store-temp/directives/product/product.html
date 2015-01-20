@@ -18,12 +18,12 @@
     <button class="btn btn-default" ng-click="addToCart(product._id)">Add to cart</button>
 </div> -->
 
-<div class="col-md-4 col-sm-4 mb" ng-click="toggleDialog(product)">
+<div class="col-md-4 col-sm-4 mb">
     <div class="white-panel pn">
         <div class="white-header">
             <h5>{{product.name}}</h5>
         </div>
-        <div class="row">
+        <div class="row" ng-click="toggleDialog(product)">
             <div class="col-sm-6 col-xs-6 goleft">
                 <p><i class="fa fa-level-up"></i> {{product.upvotes}}</p>
             </div>
@@ -32,5 +32,6 @@
         <div class="centered">
             <img src="{{product.media[0]}}" width="120">
         </div>
+        <button type="button" class="btn btn-theme" ng-click="addToCart(product._id)">Add to Cart</button>
     </div>
 </div>
