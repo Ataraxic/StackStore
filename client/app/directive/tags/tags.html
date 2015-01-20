@@ -1,16 +1,13 @@
 <div>
-  <div class="box">
-    THIS IS THE TAGS DIRECTIVE VIEW
-    <h2 class="PanelTitle">
-      
-    </h2>
-    <div ng-repeat="tag in tagobjects">
-      <h4>
-        <a href='/'>{{tag.name}}</a>
-      </h4>
-      <div>
-        {{tag.info}}
-      </div>
-  </div>
+   <h1> Tag: {{currentTagName}} </h1>
+    <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
+        <li ng-repeat="product in products">Name:{{product.name}}
+            <br> Price:{{product.price}}
+            <br>
+        </li>
+    </ul>
+
+
+
 </div>
 </div>

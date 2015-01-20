@@ -3,10 +3,17 @@
 angular.module('stackStoreApp')
   .factory('Tags', function ($resource) {
 
-    return $resource("/api/tags/:id", { id: '@id'}, {
+    return $resource("/api/tags/:id/:option", { id: '@id'}, {
       update: {
         method: 'put'
-      }
+      },
+      search: {
+                method: 'GET',
+                isArray: true,
+                params: {
+                  option: 'byname'
+                }
+            }
     });
   });
 
