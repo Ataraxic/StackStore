@@ -5,7 +5,6 @@ angular.module('stackStoreApp')
     $scope.name = $stateParams.username;
     User.getUserByName({id: $stateParams.username},function(user){
       $scope.isProfilePage = true;
-      console.log("this is the user Object",user);
       $scope.favorites = user.favorites;
       $scope.comments = user.comments;
       $scope.toggleDialog = function(product){

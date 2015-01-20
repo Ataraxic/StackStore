@@ -75,6 +75,14 @@ exports.destroy = function(req, res) {
   });
 };
 
+exports.reviewAuth = function(req,res){
+  if (req.canWrite===true){
+    res.json(200,true);
+  } else {
+    res.json(200,false);
+  }
+}
+
 function handleError(res, err) {
   return res.send(500, err);
 }
