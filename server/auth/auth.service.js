@@ -42,8 +42,75 @@ function isAuthenticated() {
 }
 
 function isStoreOwner() {
+        return compose()
+            // Validate jwt
+            .use(function(req, res, next) {
+                // allow access_token to be passed through query parameter as well
+                if (req.query && req.query.hasOwnProperty('access_token')) {
+                    req.headers.authorization = 'Bearer ' + req.query.access_token;
+                }
+                validateJwt(req, res, next);
+            })
+            // Attach user to request
+            .use(function(req, res, next) {
+                if (req.user) {
+                    User.findById(req.user._id, function(err, user) {
+                        if (err) return next(err);
+                        if (!user) return next();
+
+                        Store.findOne({
+                            name: req.params.name
+                        }, function(err, store) {
+                            if (err) return next(err);
+                            if (!store) return next();
+                            console.log('isStoreOwner:')
+                            console.log(store.owner.equals(req.user._id));
+                            if (store.owner.equals(req.user._id)) {
+                                req.user = user;
+                                req.owner = true;
+                                next();
+                            } else {
+                                req.user = user;
+                                next();
+                            }
+                        });
+                    });
+                } else {
+                    next();
+                }
+            });
+    }
+    //Utility Function for reviewAuth
+function hasProp(comments, productId) {
+    for (var i = 0; i < comments.length; i++) {
+        // console.log("comments vs productId",comments[i].product.toString(),productId);
+        if (comments[i].product.toString() === productId) { //User has made a comment on this product already
+            return true;
+        }
+    }
+    return false; //user has not made a comment on this product already
+}
+
+function ownsProduct(orders, productId) {
+        for (var i = 0; i < orders.length; i++) { //Loop through orders
+            console.log("the order ", orders);
+            for (var n = 0; n < orders[i].products.length; n++) { //Loop through products in each order
+                // console.log("orders",orders[i]);
+                console.log(orders[i].products[n])
+                if (orders[i].products[n]) {
+                    if (orders[i].products[n]._id.toString() === productId) {
+                        return true; //User has ordered this product
+                    }
+                }
+            }
+        }
+        return false; //User has not ordered this product
+    }
+    //Checks if the user has bought the product
+function canAddReview() {
+    // console.log("inside CanAddReview");
     return compose()
-        // Validate jwt
+        //validate jwt
         .use(function(req, res, next) {
             // allow access_token to be passed through query parameter as well
             if (req.query && req.query.hasOwnProperty('access_token')) {
@@ -51,122 +118,61 @@ function isStoreOwner() {
             }
             validateJwt(req, res, next);
         })
-        // Attach user to request
+        //
         .use(function(req, res, next) {
-            if (req.user) {
-                User.findById(req.user._id, function(err, user) {
-                    if (err) return next(err);
-                    if (!user) return next();
-
-                    Store.findOne({
-                        name: req.params.name
-                    }, function(err, store) {
-                        if (err) return next(err);
-                        if (!store) return next();
-                        console.log('isStoreOwner:')
-                        console.log(store.owner.equals(req.user._id));
-                        if (store.owner.equals(req.user._id)) {
-                            req.user = user;
-                            req.owner = true;
-                            next();
+            async.waterfall([function(callback) {
+                    User.findById(req.body.owner)
+                        .populate('comments')
+                        .exec(function(err, results) {
+                            console.log("results", results);
+                            if (err) console.log('err', err);
+                            if (hasProp(results.comments, req.body.product)) {
+                                console.log("user has already written a review");
+                                callback(null, true); //Has the user already written a review on this product;
+                            } else {
+                                console.log("user has not written a review");
+                                callback(null, false); //User has not already written a review;
+                            }
+                        });
+                },
+                function(already, callback) {
+                    if (already) {
+                        callback(null, true, null);
+                    } else {
+                        Order.find({
+                                buyer: req.body.owner
+                            })
+                            .populate('products')
+                            .exec(function(err, orders) {
+                                if (err) console.log('err', err)
+                                callback(null, false, orders);
+                            })
+                    }
+                },
+                function(already, orders, callback) {
+                    if (already) {
+                        callback(null, true);
+                    } else {
+                        if (ownsProduct(orders, req.body.product)) {
+                            console.log("user has ordered this product");
+                            callback(null, false);
                         } else {
-                            req.user = user;
-                            next();
+                            console.log("user has not ordered this product");
+                            callback(null, true);
                         }
-                    });
-                });
-            }
-            else{
-            	next();
-            }
+                    }
+                },
+                function(finalRes, callback) {
+                    if (finalRes) {
+                        req.canWrite = false;
+                        next();
+                    } else {
+                        req.canWrite = true;
+                        next();
+                    }
+                }
+            ])
         });
-}
-//Utility Function for reviewAuth
-function hasProp(comments,productId){
-  for (var i=0;i<comments.length;i++){
-    // console.log("comments vs productId",comments[i].product.toString(),productId);
-    if (comments[i].product.toString()===productId){ //User has made a comment on this product already
-      return true;
-    }
-  }
-  return false; //user has not made a comment on this product already
-}
-
-function ownsProduct(orders,productId){
-  for (var i=0;i<orders.length;i++){ //Loop through orders
-    for (var n=0;n<orders[i].products.length;n++){ //Loop through products in each order
-      if (orders[i].products[n]._id.toString()===productId){
-        return true; //User has ordered this product
-      }
-    }
-  }
-  return false; //User has not ordered this product
-}
-//Checks if the user has bought the product
-function canAddReview(){
-  // console.log("inside CanAddReview");
-  return compose()
-    //validate jwt
-    .use(function(req,res,next){
-      // allow access_token to be passed through query parameter as well
-      if (req.query && req.query.hasOwnProperty('access_token')) {
-        req.headers.authorization = 'Bearer ' + req.query.access_token;
-      }
-      validateJwt(req, res, next);
-    })
-    //
-    .use(function(req,res,next){
-      async.waterfall([function(callback){
-        console.log("inside review auth");
-        User.findById(req.body.owner)
-            .populate('comments')
-            .exec(function(err,results){
-              if (err) console.log('err',err);
-              if (hasProp(results.comments,req.body.product)){
-                console.log("user has already written a review");
-                callback(null,true); //Has the user already written a review on this product;
-              } else {
-                console.log("user has not written a review");
-                callback(null,false); //User has not already written a review;
-              }
-        });
-      },
-      function(already,callback){
-        if (already){
-          callback(null,true,null);
-        } else {
-          Order.find({buyer: req.body.owner})
-               .populate('products')
-               .exec(function(err,orders){
-                 if (err) console.log('err',err)
-                 callback(null,false,orders);
-               })
-        }
-      },
-      function(already,orders,callback){
-        if (already){
-          callback(null,true);
-        } else {
-          if (ownsProduct(orders,req.body.product)){
-            // res.json(220,orders);
-            console.log("user has ordered this product");
-            callback(null,false);
-          } else {
-            console.log("user has not ordered this product");
-            callback(null,true);
-          }
-        }
-      },
-      function(finalRes,callback){
-          if (finalRes){
-            req.canWrite=false;
-            next();
-          } else {
-            req.canWrite = true;
-            next();
-          }
-      }])
-    });
 }
 
 /**
