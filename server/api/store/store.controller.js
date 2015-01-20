@@ -143,6 +143,21 @@ exports.search = function(req,res){
   });
 }
 
+exports.searchall = function(req, res) {
+  var searchText = req.body.searchtext;
+  Product.find({$text: {$search:searchText}},{score: {$meta:"textScore"}})
+   .sort({score: {$meta: 'textScore'}})
+   // .where({owner:storeId})
+   .populate('storeId')
+   .exec(function(err,results){
+     if (err) return console.err(err);
+     if (!results) return res.send(440);
+     var sendObj = {};
+     sendObj.data = results;
+     res.json(sendObj);
+   })
+}
+
 function handleError(res, err) {
     return res.send(500, err);
 }

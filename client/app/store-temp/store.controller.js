@@ -58,7 +58,7 @@ angular.module('stackStoreApp')
                   if(product.storeId == $scope.store._id && !(exist(product))) $scope.store.products.push(product);
                 })
                 // $scope.store.products = productsArray;
-                $scope.noProds = false;
+                $scope.store.products.length == 0 ? $scope.noProds = true : $scope.noProds = false;
               } else {
                 $scope.noProds = true;
               }
