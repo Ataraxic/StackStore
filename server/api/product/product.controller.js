@@ -33,23 +33,24 @@ exports.show = function(req, res) {
 // Creates a new product in the DB.
 exports.create = function(req, res) {
 
+    console.log('In the backend, req.body.tags is -->', req.body)
     var product = new Product({
         name: req.body.name,
         description: req.body.description,
+        tags: req.body.tags,
         storeId: req.body.storeId,
         price: req.body.price,
-        media: req.body.media,
-        tags: req.body.tags
+        media: req.body.media
     });
 
 
     product.save(
         function(err, product) {
             if (err) {
-                return handleError(res, err);
+                return console.log(err);
             }
-    res.json(product);
-});
+            res.json(product);
+        });
 
 };
 
