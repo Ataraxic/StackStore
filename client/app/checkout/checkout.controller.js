@@ -34,7 +34,6 @@ angular.module('stackStoreApp')
             if(promo.code == $scope.promo) {
               discount = promo.discount / 100;
               $scope.total = $scope.total - ($scope.total * discount);
-              $scope.total = $scope.total.toFixed(2);
               whichPromoApplied = promo._id;
             }
           })
@@ -54,6 +53,8 @@ angular.module('stackStoreApp')
       if (result.error) {
         window.alert("Error: please enter valid credit card info!")
       } else {
+        $scope.total = $scope.total.toFixed(2);
+        console.log('amountincents before', $scope.total)
         var amountInCents = ((($scope.total).toString()).split('.')).join('');
         console.log('amountInCents', amountInCents)
         $http.post("/api/stripes", {
