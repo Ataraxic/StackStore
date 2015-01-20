@@ -2,7 +2,7 @@
 
 angular.module('stackStoreApp')
 
-.controller('StoreAdminCtrl', function($scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {
+.controller('StoreAdminCtrl', function($q, $scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {
 
     $scope.owner = false;
     $scope.storeName = $stateParams.name;
@@ -15,8 +15,8 @@ angular.module('stackStoreApp')
     $scope.tag = '';
     $scope.tags = [];
     $scope.product_images = [];
-    $scope.currentPromos = [];
 
+    $scope.currentPromos = [];
 
 
     //Get Owner ID and storeId of current store
@@ -49,22 +49,34 @@ angular.module('stackStoreApp')
             $location.path('/store/' + $stateParams.name);
         })
 
-    //Get all products in store
+    //Retrieve all products in store and put them in scope
     Store.getProducts({
             name: $scope.storeName
         }).$promise
         .then(function(products) {
             $scope.products = products;
         })
-
+        // Adding tags to scope 
     $scope.addTag = function(tag) {
         $scope.tags.push(tag);
-
     }
+
+    // Deleting tags from scope
+    $scope.deleteTag = function(tag) {
+        angular.forEach($scope.tags, function(t, i) {
+            if (t === tag) {
+                $scope.tags.splice(i, 1);
+            }
+        });
+    }
+
+
+
 
     //Add a new product
     $scope.addProduct = function() {
 
+        $scope.tagObjects = [];
         $scope.products = [];
 
         if ($scope.name === '') {
@@ -77,9 +89,48 @@ angular.module('stackStoreApp')
             return;
         }
 
-        console.log('Adding product.. params are: ', $scope.name, $scope.description, $scope.price,  $scope.storeId);
+
+
         //CREATING NEW TAG OBJECTS
 
+<<<<<<< HEAD
+        //For each tag in scope, call Tags.save and create an array of $q promises.
+        var promises = [];
+        angular.forEach($scope.tags, function(tag) {
+            var promise = Tags.save({
+                name: tag
+            });
+            promises.push(promise.$promise);
+        });
+        var tagsPromise = $q.all(promises);
+
+        tagsPromise.then(function(tags) {
+
+            $scope.tagObjects = tags.map(function(tag) {
+                return tag._id
+            });
+
+            //Saving new product in DB
+            Product.save({
+                name: $scope.name,
+                description: $scope.description,
+                price: $scope.price,
+                tags: $scope.tagObjects,
+                storeId: $scope.storeId,
+                media: $scope.product_images,
+            }, function(err, product) {
+                if (err) {
+                    console.log(err)
+                };
+
+                Store.getProducts({
+                        name: $scope.storeName
+                    }).$promise
+                    .then(function(products) {
+                        $scope.products = products;
+                    })
+            })
+=======
         // for (var k = 0; k<$scope.tags.length; k++)
         // {
         //     console.log('$scope.tag is...', $scope.tags[k]);
@@ -109,7 +160,10 @@ angular.module('stackStoreApp')
                     $scope.products = products;
                     console.log('PRODUCTS HSOULD BE LOADING', $scope.products)
                 })
+>>>>>>> master
         })
+
+
     }
 
     $scope.deleteProduct = function(id) {
@@ -172,6 +226,9 @@ angular.module('stackStoreApp')
             }
         });
     }
+<<<<<<< HEAD
+});
+=======
 
     $scope.createPromo = function() {
       if(!$scope.promoCode || !$scope.promoExpiry || !$scope.promoDiscount || !$scope.promoDescription) {
@@ -203,3 +260,4 @@ angular.module('stackStoreApp')
       })
     }
 });
+>>>>>>> master

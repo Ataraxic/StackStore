@@ -9,9 +9,9 @@
                 </div>
 
                 <div class="col-md-12">
-                		<div ng-repeat="image_url in product_images">
-                			<img src="{{image_url}}">
-                		</div>
+                    <div ng-repeat="image_url in product_images">
+                        <img src="{{image_url}}">
+                    </div>
                     <form ng-submit='addProduct()'>
                         <h3>Add products to store</h3>
                         <input id="file-upload" type="file" class="form-control" onchange="angular.element(this).scope().upload()"></input>
@@ -19,28 +19,37 @@
                             <input type='text' class='form-control' placeholder='Name' ng-model="name"></input>
 
                             <input type='text' class='form-control' placeholder='Description' ng-model="description"></input>
-                            <input type='number'step="0.01" min="0"  class='form-control' placeholder='Price' ng-model="price"></input>
 
-                            <input type='text' placeholder='Tag' ng-model="tag"></input>
-                            <button type='submit' class='btn btn-primary' ng-click='addTag(tag)'>Add tag</button>
+                            <input type='number' class='form-control' placeholder='Price' ng-model="price"></input>
 
-                            <h1 class="page-header">Tags on Product:</h1>
-                            <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="tag in tags">
-                                <li><a href="#">{{tag}}<button type="button" class="close" ng-click="deleteTag(tag)">&times;</button></a>
-                                    <span><a href="tags/{{tag.name}}">More Info</a></span>
-                                </li>
-                            </ul>
                         </div>
 
                         <button type='submit' class='btn btn-primary'>Add Product</button>
                     </form>
+
+                    <!-- Form to add tags to product -->
+                    <form ng-submit='addTag(tag)'>
+                        <input type='text' placeholder='Tag' ng-model="tag"></input>
+                        <button type='submit' class='btn btn-primary' ng-click=>Add tag</button>
+                    </form>
+
+                    <h3 class="page-header">Tags on Product:</h1>
+                    <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="tag in tags">
+                        <li><a href="#">{{tag}}<button type="button" class="close" ng-click="deleteTag(tag)">&times;</button></a>
+                            <span><a href="tags/{{tag.name}}">More Info</a></span>
+                        </li>
+                    </ul>
+
+
                     <div class="col-md-12">
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <h1 class="page-header">Products in Store:</h1>
                                 <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
-                                    <li ng-repeat="product in products"><a href="#">{{product.name}}<button type="button" class="close" ng-click="deleteProduct(product._id)">&times;</button></a>
+                                    <li ng-repeat="product in products"><a href="#">Name:{{product.name}}<br>
+                                    Price:{{product.price}}<br>
+                                    Tags: {{product.tags}}<button type="button" class="close" ng-click="deleteProduct(product._id)">&times;</button></a>
                                         <span><a href="/products/{{product._id}}">More Info on Product</a></span>
                                     </li>
                                 </ul>
