@@ -181,7 +181,7 @@ exports.getUserByName = function(req, res, next) {
         .populate('favorites', '-inventory')
         .populate('comments')
         .exec(function(err, user) {
-            Comment.populate(user, 'product', function(err, user) {
+            Comment.populate(user,{path: 'comments.product', model: 'Product'}, function(err, user) {
                 if (err) return next(err);
                 if (!user) return res.json(401);
                 res.json(user);

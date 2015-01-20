@@ -6,8 +6,19 @@ angular.module('stackStoreApp')
       Product.getReviews({id: productId},function(productWithReviews){
         $scope.modalProduct = productWithReviews;
         $scope.comments = productWithReviews.comments;
-        console.log("do they have a name",productWithReviews.comments);
       });
+      var user = Auth.getCurrentUser();
+      if (user._id){
+        Comment.reviewAuth({id:productId},{owner:user._id,product: productId},function(res){
+          if (res){
+            $scope.canAddReview=true;
+          } else {
+            $scope.canAddReview=false;
+          }
+        });
+      } else {
+        $scope.canAddReview=false;
+      }
 
     //This contains the route that posts to server
     $scope.addReview = function(){
