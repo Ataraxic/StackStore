@@ -8,6 +8,12 @@ angular.module('stackStoreApp')
     {
       create: {
         method: 'POST'
+      },
+      reviewAuth: {
+        method: 'POST',
+        params: {
+          option: 'reviewAuth'
+        }
       }
     });
   });
