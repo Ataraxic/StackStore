@@ -4,14 +4,18 @@ var _ = require('lodash');
 var Order = require('./order.model');
 var User = require('../user/user.model');
 var Product = require('../product/product.model');
+var Promo = require('../promo/promo.model');
 var async = require('async');
 
 // Get list of orders
 exports.index = function(req, res) {
-  Order.find(function (err, orders) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, orders);
-  });
+  Order.find()
+    .populate({path: 'promoApplied', model:'Promo'})
+    .exec(function(err, orders){
+      if(err) { return handleError(res, err); }
+      if(!orders) return res.send(404);
+      return res.json(200, orders);
+    })
 };
 
 // Get a single order
@@ -46,7 +50,19 @@ exports.create = function(req, res) {
         //build hash of storeowners key: storeOwnerId, obj { products: [] }
         var storeHash = {};
         cart.forEach(function(item){
-          newOrder.products.push(item); //need flat version of products instead of references so we know the price at which the item was bought
+          newOrder.products.push({
+            _id: item._id,
+            name: item.name,
+            active: item.active,
+            upvotes: item.upvotes,
+            storeId: item.storeId,
+            owner: item.owner,
+            price: item.price,
+            description: item.description,
+            inventory: item.inventory,
+            tags: item.tags,
+            comments: item.comments
+          }); //need flat version of products instead of references so we know the price at which the item was bought
           if(!storeHash.hasOwnProperty(item.owner)) storeHash[item.owner] = { products: [] };
           storeHash[item.owner].products.push(item);
         })
@@ -64,7 +80,21 @@ exports.create = function(req, res) {
             var tempOrder = new Order();
             tempOrder.buyer = req.user._id;
             tempOrder.storeOwner.push(owner); //him/herself
-            tempOrder.products = storeHash[owner].products;
+            storeHash[owner].products.forEach(function(item){
+              tempOrder.products.push({
+                _id: item._id,
+                name: item.name,
+                active: item.active,
+                upvotes: item.upvotes,
+                storeId: item.storeId,
+                owner: item.owner,
+                price: item.price,
+                description: item.description,
+                inventory: item.inventory,
+                tags: item.tags,
+                comments: item.comments
+              })
+            })
             tempOrder.status = "Processing";
             tempOrder.chargeId = req.body.chargeId;
             tempOrder.buyerOrder = order._id;

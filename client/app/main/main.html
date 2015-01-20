@@ -38,9 +38,12 @@
               <div ng-show="noProds">No Products Found</div>
               <div ng-hide="noProds">
                 <p>Search Results:</p>
-                <ul>
-                  <li ng-repeat="product in products"><a href="/store/{{product.storeId.name}}">Name: {{product.name}}</a></li>
+                <ul class="nav nav-tabs nav-stacked col-md-8 col-lg-12 col-sm-4">
+                  <product class="col-lg-4 col-md-4 col-sm-4" ng-repeat="product in products track by $index"></product>
                 </ul>
+                <!-- <ul>
+                  <li ng-repeat="product in products"><a href="/store/{{product.storeId.name}}">Name: {{product.name}}</a></li>
+                </ul> -->
               </div>
             </div>
           </div>

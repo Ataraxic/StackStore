@@ -25,13 +25,6 @@ angular.module('stackStoreApp')
                 params: {
                     option: 'reviews'
                 }
-            },
-            bytag: {
-                method: 'GET',
-                isArray: true,
-                params: {
-                    option: 'tags'
-                }
             }
         });
     });

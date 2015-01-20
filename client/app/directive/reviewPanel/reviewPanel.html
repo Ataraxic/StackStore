@@ -14,12 +14,13 @@
       </div>
       <div class="media-body">
         <h4 class="media-heading">
-          {{review.title}}
+          <strong>{{review.title}} </strong>
+           <span ng-show="isProfilePage"> about <strong><a ng-click="toggleDialog(review.product)">{{review.product.name}}</a></strong></span>
         </h4>
         <p class="reviewText">{{review.body}}</p>
-        <div>By: {{review.owner.name}} </div>
+        <div ng-show="!isProfilePage">By: {{review.owner.name}} </div>
       </div>
-      <div ng-show="review.product.name">{{review.product.name}}</div>
+      <!-- <div ng-show="review.product.name">{{review.product.name}}</div> -->
   </div>
 </div>
 </div>

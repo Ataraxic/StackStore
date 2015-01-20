@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-    .controller('NavbarCtrl', function($scope, $location, Auth, Store,Cart) {
+    .controller('NavbarCtrl', function($scope, $location, Auth, Store,Cart,$stateParams) {
 
         $scope.menu = [{
             'title': 'Home',
@@ -43,7 +43,9 @@ angular.module('stackStoreApp')
             $location.path('/login');
         };
 
-        $scope.isActive = function(route) {
-            return route === $location.path();
+        $scope.isActive = function(param) {
+        		var name = param.split('/')[1] === 'store' ? param.split('/')[2] : '';
+        		console.log(name === $stateParams.name);
+            return $stateParams.name == name;
         };
     });

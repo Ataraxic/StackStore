@@ -3,23 +3,23 @@
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
 
-'use strict';
-var async = require('async');
-var Thing = require('../api/thing/thing.model');
-var Product = require('../api/product/product.model')
-var User = require('../api/user/user.model');
-var Order = require('../api/order/order.model')
+ 'use strict';
+ var async = require('async');
+ var Thing = require('../api/thing/thing.model');
+ var Product = require('../api/product/product.model')
+ var User = require('../api/user/user.model');
+ var Order = require('../api/order/order.model')
 
-var Promo = require('../api/promo/promo.model')
-var Store = require('../api/store/store.model')
-var Tag = require('../api/tag/tag.model')
-var Comment = require('../api/comment/comment.model');
+ var Promo = require('../api/promo/promo.model')
+ var Store = require('../api/store/store.model')
+ var Tag = require('../api/tag/tag.model')
+ var Comment = require('../api/comment/comment.model');
 
 
 
 async.waterfall([                       //create Users
-    function(callback){
-      User.find({}).remove(function() {
+  function(callback){
+    User.find({}).remove(function() {
       User.create({
         provider: 'local',
         name: 'lindsay',
@@ -41,53 +41,53 @@ async.waterfall([                       //create Users
           address: '5 Hanover Square'
         }
       }, function(err,users) {
-          callback();
-        }
+        callback();
+      }
       );
-    });
-    },
-    function(callback){
-      User.find({},function(err,users){ //Create Stores
-        var idOne = users[0]._id;
-        var idTwo = users[1]._id;
-          Store.find({}).remove(function(){
-            Store.create({
-              name: "StoreOne",
-              info: 'b',
-              active: true,
-              owner: idOne
-            }, {
-              name: "StoreTwo",
-              info: 'a',
-              active: true,
-              owner: idTwo
-            }, function(err,stores){
-              if (err) console.error(err);
-              callback();
-            }
-          );
-      });
     });
   },
   function(callback){
-    User.find({},function(err,users){
-      Store.find({},function(err,stores){
-        Product.find({}).remove(function(){
-          callback(null,users,stores);
+      User.find({},function(err,users){ //Create Stores
+        var idOne = users[0]._id;
+        var idTwo = users[1]._id;
+        Store.find({}).remove(function(){
+          Store.create({
+            name: "StoreOne",
+            info: 'b',
+            active: true,
+            owner: idOne
+          }, {
+            name: "StoreTwo",
+            info: 'a',
+            active: true,
+            owner: idTwo
+          }, function(err,stores){
+            if (err) console.error(err);
+            callback();
+          }
+          );
+        });
+      });
+    },
+    function(callback){
+      User.find({},function(err,users){
+        Store.find({},function(err,stores){
+          Product.find({}).remove(function(){
+            callback(null,users,stores);
+          })
         })
       })
-    })
-  },
+    },
   function(users,stores,callback){ //Create Users
     var lindsayStoreId = stores.filter(function(obj){
       if (obj.name==="storeone"){return obj._id;}
-      })[0];
+    })[0];
     var lindsayUserId = users.filter(function(obj){
       if (obj.name==="lindsay"){return obj._id;}
-      })[0];
+    })[0];
     var samsUserId = users.filter(function(obj){
       if (obj.name==="sam"){return obj._id;}
-      })[0];
+    })[0];
     var samsStoreId = stores.filter(function(obj){
       if (obj.name==="storetwo"){return obj._id;}
     })[0];
@@ -131,13 +131,13 @@ async.waterfall([                       //create Users
     Product.find({},function(err,products){
       var lindsayProductId = products.filter(function(obj){
         if (obj.name==='lindsay\'s Product') {return obj._id;}
-        })[0];
+      })[0];
       var samProductId = products.filter(function(obj){
         if (obj.name==='sam\'s Product') {return obj._id;}
-        })[0];
-        idObject.lindsayProductId = lindsayProductId;
-        idObject.samProductId = samProductId;
-        callback(null,idObject);
+      })[0];
+      idObject.lindsayProductId = lindsayProductId;
+      idObject.samProductId = samProductId;
+      callback(null,idObject);
     })
   },
   //   function(idObject,callback){
@@ -216,8 +216,8 @@ async.waterfall([                       //create Users
       })[0];
       idObject.lindsayProductId = lindsayProductId;
       idObject.samProductId = samProductId;
-      idObject.actualLindsayProduct = products[0]._id;
-      idObject.actualSamProduct = products[1]._id;
+      idObject.actualLindsayProduct = products[0];
+      idObject.actualSamProduct = products[1];
       Tag.find({}).remove(function(){
         callback(null,idObject);
       })
@@ -255,19 +255,28 @@ async.waterfall([                       //create Users
     Promo.find({}).remove(function(){
       Promo.create({
         description: 'lindsayPromo',
-        expiry: Date.now,
+        expiry: new Date(),
         code: 'TPTPTP',
         store: idObject.lindsayStoreId,
         discount: 10
       },{
         description: 'samPromo',
-        expiry: Date.now,
+        expiry: new Date(),
         code: 'coffee',
         store: idObject.samsStoreId,
-        discount: 10
+        discount: 20
       },function(){
         callback(null,idObject);
       })
+    })
+  },
+  function(idObject, callback) {
+    Promo.find({}, function(err,promos){
+      var samPromo = promos.filter(function(obj){
+        if(obj.code === 'coffee') { return obj._id };
+      })[0];
+      idObject.samPromo = samPromo;
+      callback(null, idObject);
     })
   },
   function(idObject,callback){
@@ -275,9 +284,16 @@ async.waterfall([                       //create Users
       Order.create({
         name: 'is this a UUID?',
         buyer: idObject.lindsayUserId,
-        products: [idObject.actualLindsayProduct],
+        products: [idObject.actualLindsayProduct, idObject.actualSamProduct],
         status: 'Created',
         storeOwner: [idObject.samsUserId]
+      },{
+        name: 'is this a UUID?',
+        buyer: idObject.lindsayUserId,
+        products: [idObject.actualLindsayProduct, idObject.actualSamProduct],
+        status: 'Processing',
+        storeOwner: [idObject.samsUserId],
+        promoApplied: idObject.samPromo
       },{
         name: 'necessary field?',
         buyer: idObject.samsUserId,
@@ -293,11 +309,11 @@ async.waterfall([                       //create Users
     Order.find({},function(err,orders){
       var lindsayOrderId = orders.filter(function(obj){
         if (obj.name==='is this a UUID?') {return obj._id;}
-        })[0];
+      })[0];
       console.log('orders', orders)
       var samOrderId = orders.filter(function(obj){
         if (obj.name==='necessary field?') {return obj._id;}
-        })[0];
+      })[0];
       idObject.lindsayOrderId = lindsayOrderId;
       idObject.samOrderId = samOrderId;
       callback(null,idObject);
@@ -352,5 +368,5 @@ async.waterfall([                       //create Users
     //     })
     //   })
     // })
-  }
+}
 ]);

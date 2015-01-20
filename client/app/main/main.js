@@ -10,7 +10,7 @@ angular.module('stackStoreApp')
       })
       .state('tags', {
         url: '/tags/{tagname}',
-        templateUrl: 'app/tags/tag.html',
+        templateUrl: 'app/directive/tags/tags.html',
         controller: 'TagsCtrl'
       });
   });

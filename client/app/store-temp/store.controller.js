@@ -72,7 +72,10 @@ angular.module('stackStoreApp')
           if ($scope.searchText){
             Store.search({'name':$stateParams.name},{searchtext:$scope.searchText},function(res){
               if (res.data){
+                $scope.products = res.data;
                 var productsArray = res.data;
+                // console.log("current store data",$scope.store.products);
+                // console.log("returned data", res.data);
                 productsArray.forEach(function(product){
                   if(product.storeId == $scope.store._id && !(exist(product))) $scope.store.products.push(product);
                 })

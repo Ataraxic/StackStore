@@ -17,18 +17,7 @@ exports.index = function(req, res) {
     });
 };
 
-//Get list of products by tag
-exports.bytag = function(req, res) {
-    console.log('HITTING BACK END GET PRODUCTS BY TAG');
-    var tagId = req.params.id;
-    Product.find({tags: {$elemMatch: tagId}})
-        .populate({path: 'tags', model:'Tag'})
-        .exec(function(err, products) {
-                if (err) return next(err);
-                if (!user) return res.json(401);
-                res.json(products);
-            });
-}
+
 
 // Get a single product
 exports.show = function(req, res) {
