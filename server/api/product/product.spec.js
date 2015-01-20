@@ -18,3 +18,13 @@ describe('GET /api/products', function() {
       });
   });
 });
+
+describe('POST /api/products', function() {
+
+  it('should respond with 500 validation error when not logged in', function(done) {
+    request(app)
+      .post('/api/products', { name: 'Name', description: 'Description', storeId: '54be77179ff3a5834bc0c124',
+                                price: 20, media: [], tags: []})
+      .expect(500, done)
+  });
+});

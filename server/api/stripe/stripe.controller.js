@@ -5,10 +5,10 @@ var stripe = require('stripe')('sk_test_AywCYPXSsCA4HtunikxZRYA6');
 
 // Get list of stripes
 exports.index = function(req, res) {
-  // Stripe.find(function (err, stripes) {
-  //   if(err) { return handleError(res, err); }
-  //   return res.json(200, stripes);
-  // });
+  Stripe.find(function (err, stripes) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, stripes);
+  });
 };
 
 // Get a single stripe
