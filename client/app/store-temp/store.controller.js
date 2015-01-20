@@ -38,16 +38,22 @@ angular.module('stackStoreApp')
         //Get all products in store
         Store.getProducts({name: $scope.storeName}).$promise
             .then(function(products) {
+              console.log("poplated Products?",products);
                 $scope.products = products;
                 // console.log('THERE SHOULD BE NO PRODS -->',$scope.products);
             })
 
         $scope.addToCart = function(id) {
             Cart.add(id,function(err,data){
-            	if(err) console.log(err);
-            	console.log(data);
-            })
-        }
+            	if(err) console.log(err)
+              // Cart.get(function(err, data) { This Still needs work. Not sure how to update cart
+              //   console.log("data",data);
+              //   console.log("formated objecT",Cart.formatCartObj(data.cart));
+              //   console.log($scope.cart_nav);
+              //   $scope.cart_nav = Cart.formatCartObj(data.cart);
+              // });
+            });
+        };
         $scope.searchStore = function(){
           $scope.store.products = []
           if ($scope.searchText){

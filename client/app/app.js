@@ -7,7 +7,8 @@ angular.module('stackStoreApp', [
   'btford.socket-io',
   'ui.router',
   'LocalStorageModule',
-  'angularPayments'
+  'angularPayments',
+  'ui.bootstrap'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,$resourceProvider, localStorageServiceProvider) {
     $urlRouterProvider

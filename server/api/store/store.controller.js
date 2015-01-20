@@ -12,7 +12,7 @@ exports.getproducts = function(req, res) {
     Store.getProducts(req.params.name, function(err, products) {
       if(err) { console.log(err) }
          if(!products) { console.log('No store found!') }
-
+           console.log("products",products,err)
       return res.json(200, products);
     });
 };

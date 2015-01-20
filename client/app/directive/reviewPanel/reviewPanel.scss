@@ -78,10 +78,13 @@ $red : #C15044;
 .PanelTitle {
   text-align:center;
 }
-.upvoteReviewPanel {
-  float: left;
+.media-left {
+  display:inline-block;
 }
-.reviewBox {
-  border: 10px;
-  clear: both;
+
+.media-body {
+  display: inline-block;
+}
+.reviewText {
+  font-size:50%;
 }

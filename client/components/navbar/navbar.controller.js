@@ -23,11 +23,11 @@ angular.module('stackStoreApp')
 
                 for (var i = 0; i < stores.length; i++) {
                     var storeName = stores[i].name;
-                    var navItem = { title: stores[i].name, link: '/store/'+ stores[i].name}
+                    var navItem = { title: stores[i].name, link: '/store/'+ stores[i].name};
 
                     $scope.menu.push(navItem);
                 }
-            })
+            });
 
         $scope.isCollapsed = true;
         $scope.isLoggedIn = Auth.isLoggedIn;
