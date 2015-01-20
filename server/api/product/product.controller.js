@@ -48,7 +48,7 @@ exports.create = function(req, res) {
             if (err) {
                 return handleError(res, err);
             }
-res.json(product);
+    res.json(product);
 });
 
 };

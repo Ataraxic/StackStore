@@ -18,3 +18,12 @@ describe('GET /api/orders', function() {
       });
   });
 });
+
+describe('POST /api/orders', function() {
+
+  it('should respond with 401 when not logged in', function(done) {
+    request(app)
+      .post('/api/orders',  { stripeToken: 'testToken', chargeId: 'testId', promo: null })
+      .expect(401, done)
+  });
+});
