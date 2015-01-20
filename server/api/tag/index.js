@@ -11,5 +11,6 @@ router.post('/', controller.create);
 router.put('/:name', controller.update);
 router.patch('/:name', controller.update);
 router.delete('/:name', controller.destroy);
+router.get('/:name/byname', controller.byname)
 
 module.exports = router;

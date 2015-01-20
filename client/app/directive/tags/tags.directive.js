@@ -8,10 +8,10 @@ angular.module('stackStoreApp')
       link: function (scope, element, attrs) {
         scope:true;
 
-        Tags.query().$promise
-        .then(function(tags) {
-            scope.tagobjects = tags;
-            });
+        // Tags.query().$promise
+        // .then(function(tags) {
+        //     scope.tagobjects = tags;
+        //     });
       
        
       }

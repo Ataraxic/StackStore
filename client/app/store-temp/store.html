@@ -28,6 +28,30 @@
                 <h1 class="page-header">Products in {{storeName}}</h1>
                 <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
 
+                    <li ng-repeat="product in products">Name:{{product.name}}<br>
+                                    Price:{{product.price}}<br>
+                                    Tags: 
+                                    <div ng-repeat="tag in product.tags">
+                              <a href="/tags/{{tag.name}}">{{tag.name}}</a>
+                                </div>
+        
+                                        <span><a href="/products/{{product._id}}">More Info on Product</a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div ng-show="noProds">No Products Found</div>
+                <div ng-hide="noProds">
+                    <p>Search Results:</p>
+                    <ul>
+                        <li ng-repeat="product in store.products"><a href="/product/{{product.name}}">Name: {{product.name}}</a>
+                        </li>
+                        <!-- still need to link this so that it opens modal, this is just a dumby href right now -->
+                    </ul>
+                </div>
+
+
                 </ul>
             </div>
             <div class="col-md-4">
@@ -36,18 +60,23 @@
             </div>
         </div>
         <div class="col-lg-12">
-          <p>Current active promotions:</p>
-          <li ng-repeat="promo in currentPromos">Code: {{promo.code}}<br>
-                                    Description: {{promo.description}}<br>
-                                    Discount: {{promo.discount}}<br>
-                                    Expiry: {{promo.expiry.toDateString()}}</li>
+            <p>Current active promotions:</p>
+            <li ng-repeat="promo in currentPromos">Code: {{promo.code}}
+                <br> Description: {{promo.description}}
+                <br> Discount: {{promo.discount}}
+                <br> Expiry: {{promo.expiry.toDateString()}}</li>
         </div>
     </section>
 
     <div ng-show="ownerPresent">
+
+
+        <a href="/store/{{storeName}}/admin">Edit your store</a>
+
             <a href="/store/{{storeName}}/orders">View {{storeName}}'s Orders</a>
             <br>
             <a href="/store/{{storeName}}/admin">Edit your store</a>
+
     </div>
     <center></center>
 </section>
