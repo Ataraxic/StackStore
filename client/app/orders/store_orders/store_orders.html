@@ -1,0 +1,44 @@
+<style>
+  .order { border-bottom: 2px solid #666;}
+  td { border: 1px solid #666; padding: 5px;}
+</style>
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<section id="main-content">
+    <section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{store.name}}'s orders:</h1>
+                    <ul class="nav nav-tabs nav-stacked col-md-6 col-lg-6 col-sm-6">
+                        <li>filter by either 'created', 'processing', 'cancelled', 'completed'</li>
+                        <li>
+                          <button class='btn' id="all" ng-class="{'btn-primary': status == ''}" ng-click="filterBy('')">All</button>
+                          <button id="created" ng-class="{'btn-primary': status == 'created'}" class='btn' ng-click="filterBy('created')">Created</button>
+                          <button id="processing" class='btn' ng-class="{'btn-primary': status == 'processing'}" ng-click="filterBy('processing')">Processing</button>
+                          <button id="cancelled" class='btn' ng-class="{'btn-primary': status == 'cancelled'}" ng-click="filterBy('cancelled')">Cancelled</button>
+                          <button id="completed" class='btn' ng-class="{'btn-primary': status == 'completed'}" ng-click="filterBy('completed')">Completed</button>
+                        </li>
+                        <li ng-repeat="order in orderList | filter:status" class='order'>
+                          Products:<table>
+                                    <tr>
+                                      <td>Product Name</td>
+                                      <td>Price</td>
+                                    </tr>
+                                    <tr ng-repeat="product in order.products">
+                                      <td>{{product.name}}</td>
+                                      <td>{{product.price}}</td>
+                                    </tr>
+                                  </table>
+                          Total: {{order.total}}<br>
+                          <span ng-show="order.promoApplied">Promo Applied: {{order.promoApplied.description}} at {{order.promoApplied.discount}}% off</span><br>
+                          Status: {{order.status}}<br>
+                          Created: {{order.createdTime.toDateString()}}<br>
+                          Change status to: <input type='text' ng-model="statusUpdate"></input><button class="btn btn-warning" ng-click="updateStatus()">Update</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
