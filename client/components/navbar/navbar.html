@@ -63,8 +63,8 @@
                     </ul>
                 </li>
                 <!-- inbox dropdown end -->
-               <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-                <a ng-href="{{item.link}}">{{item.title}} {{item.name}}</a>
+               <li ng-repeat="item in menu">
+                <a ng-href="{{item.link}}" ng-class="{btnActive: isActive(item.link)}">{{item.title}} {{item.name}}</a>
               </li>
             </li>
             </ul>

@@ -28,8 +28,12 @@ StoreSchema.statics.getProducts = function(name, cb) {
             console.log('its finding the store--> ', store);
         if (err) console.log('Error is', err);
         if(!store) { console.log('Store is null') }
-        Product.find({storeId: store._id},cb);
-      //  mongoose.model('Product').find({storeId: store._id}, cb);
+
+        Product.find({storeId: store._id},function(err, products){
+            //MONGOOSE POPULATE SYNTAX FOR POPULATING ARRAY
+            Product.populate(products, {path: 'tags', model:'Tag'}, cb)
+        });
+ 
     })
 
 }

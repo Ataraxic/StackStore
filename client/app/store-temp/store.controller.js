@@ -51,9 +51,9 @@ angular.module('stackStoreApp')
         //Get all products in store
         Store.getProducts({name: $scope.storeName}).$promise
             .then(function(products) {
-              console.log("poplated Products?",products);
+              
                 $scope.products = products;
-                // console.log('THERE SHOULD BE NO PRODS -->',$scope.products);
+                
             })
 
         $scope.addToCart = function(id) {
@@ -72,7 +72,10 @@ angular.module('stackStoreApp')
           if ($scope.searchText){
             Store.search({'name':$stateParams.name},{searchtext:$scope.searchText},function(res){
               if (res.data){
+                $scope.products = res.data;
                 var productsArray = res.data;
+                // console.log("current store data",$scope.store.products);
+                // console.log("returned data", res.data);
                 productsArray.forEach(function(product){
                   if(product.storeId == $scope.store._id && !(exist(product))) $scope.store.products.push(product);
                 })
