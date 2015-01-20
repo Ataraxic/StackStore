@@ -68,22 +68,6 @@ angular.module('stackStoreApp')
             return formatted;
         }
 
-        function formatCartObj(cart) {
-            var formatted;
-            if (user) {
-                formatted = cart.reduce(function(prev, curr, index, array) {
-                    if (!prev[curr._id]) {
-                        prev[curr._id] = curr;
-                        prev[curr._id].quantity = 1;
-                    } else {
-                        prev[curr._id].quantity += 1;
-                    }
-                    return prev;
-                }, {});
-            }
-            return formatted;
-        }
-
         function getProductsFromCache(callback) {
             $http.post('/api/products/cache', {
                     products: cart.ids
@@ -122,6 +106,16 @@ angular.module('stackStoreApp')
                                 callback(err);
                             });
                     }
+                }
+                else{
+			$http.get('/api/users/' + user._id + '/populate')
+                            .success(function(user) {
+                                callback(null, user);
+                            })
+                            .error(function(err) {
+                                console.log(err);
+                                callback(err);
+                            });
                 }
             } else {
                 getProductsFromCache(function(err, products) {
