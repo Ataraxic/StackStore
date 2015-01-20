@@ -3,6 +3,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+var authTypes = ['twitter', 'facebook', 'google'];
+
 
 var UserSchema = new Schema({
     name: {type: String, required: true},
@@ -44,7 +46,10 @@ var UserSchema = new Schema({
     orders: [{
       type: Schema.Types.ObjectId,
       ref: 'Order'
-    }]
+    }],
+    facebook: {},
+    google: {},
+    twitter: {}
 });
 
 /**
@@ -85,54 +90,53 @@ UserSchema
  * Validations
  */
 
-// Validate empty email
-UserSchema
-    .path('email')
-    .validate(function(email) {
-        return email.length;
-    }, 'Email cannot be blank');
+ // Validate empty email
+ UserSchema
+ .path('email')
+ .validate(function(email) {
+   if (authTypes.indexOf(this.provider) !== -1) return true;
+   return email.length;
+ }, 'Email cannot be blank');
 
-// Validate empty password
-UserSchema
-    .path('hashedPassword')
-    .validate(function(hashedPassword) {
-        return hashedPassword.length;
-    }, 'Password cannot be blank');
+ // Validate empty password
+ UserSchema
+ .path('hashedPassword')
+ .validate(function(hashedPassword) {
+   if (authTypes.indexOf(this.provider) !== -1) return true;
+   return hashedPassword.length;
+ }, 'Password cannot be blank');
 
-// Validate email is not taken
-UserSchema
-    .path('email')
-    .validate(function(value, respond) {
-        var self = this;
-        this.constructor.findOne({
-            email: value
-        }, function(err, user) {
-            if (err) throw err;
-            if (user) {
-                if (self.id === user.id) return respond(true);
-                return respond(false);
-            }
-            respond(true);
-        });
-    }, 'The specified email address is already in use.');
-
-var validatePresenceOf = function(value) {
-    return value && value.length;
-};
-
-/**
- * Pre-save hook : ADDED POPULATION OF CART
- */
-UserSchema
-       .pre('save', function(next) {
-       if (!this.isNew) return next();
-
-       if (!validatePresenceOf(this.hashedPassword))
-           next(new Error('Invalid password'));
-       else
-           next();
+ // Validate email is not taken
+ UserSchema
+ .path('email')
+ .validate(function(value, respond) {
+   var self = this;
+   this.constructor.findOne({email: value}, function(err, user) {
+     if(err) throw err;
+     if(user) {
+       if(self.id === user.id) return respond(true);
+       return respond(false);
+     }
+     respond(true);
    });
+ }, 'The specified email address is already in use.');
 
+ var validatePresenceOf = function(value) {
+   return value && value.length;
+ };
+
+ /**
+ * Pre-save hook
+ */
+ UserSchema
+ .pre('save', function(next) {
+   if (!this.isNew) return next();
+
+   if (!validatePresenceOf(this.hashedPassword) && authTypes.indexOf(this.provider) === -1)
+     next(new Error('Invalid password'));
+     else
+       next();
+     });
 /**
  * Methods
  */
