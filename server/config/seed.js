@@ -184,10 +184,10 @@ async.waterfall([                       //create Users
   },
   function(idObject,callback){
     Product.findOne({upvotes: 1200},function(err,product){
-      product.comments = [idObject.lindsayReviewId];
+      product.comments = [idObject.samReviewId];
       product.save();
       Product.findOne({upvotes:1010},function(err,product){
-        product.comments = [idObject.samReviewId];
+        product.comments = [idObject.lindsayReviewId];
         product.save();
         callback(null,idObject);
       })

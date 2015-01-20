@@ -37,7 +37,10 @@ exports.create = function(req, res) {
             Product.findOne({_id:req.body.product},function(err,product){
               product.comments.push(comment._id);
               product.save();
-              return res.json(201, comment);
+              comment.populate('owner','-salt -hashedPassword',function(err,result){
+                if (err) { return handleError(res,err);}
+                  return res.json(201, comment);
+              })
             })
           })
         });
