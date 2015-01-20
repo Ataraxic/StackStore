@@ -132,7 +132,7 @@ exports.search = function(req,res){
     var storeId = store._id;
     Product.find({$text: {$search:searchText}},{score: {$meta:"textScore"}})
            .sort({score: {$meta: 'textScore'}})
-           // .where({owner:storeId})
+           .where({storeId:storeId})
            .exec(function(err,results){
              if (err) return console.err(err);
              if (!results) return res.send(440);
