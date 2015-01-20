@@ -19,6 +19,7 @@ angular.module('stackStoreApp')
               $scope.comments = productWithReviews.comments;
               console.log("do they have a name",productWithReviews.comments)
             });
+            //This contains the route that posts to server
             $scope.addReview = function(){
               var userId = Auth.getCurrentUser()._id;
               if (userId){
