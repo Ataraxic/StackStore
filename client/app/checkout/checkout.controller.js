@@ -3,6 +3,7 @@
 angular.module('stackStoreApp')
   .controller('CheckoutCtrl', function ($scope, Cart, User, Auth, $http, $location) {
 
+    var originalTotal;
     $scope.paid = false;
     if(Auth.isLoggedIn()) {
       Cart.get(function(err, data){
@@ -13,11 +14,36 @@ angular.module('stackStoreApp')
           $scope.total += item.price;
         })
         console.log('Logged in! Cart: ', $scope.cart, $scope.total)
+        originalTotal = $scope.total;
       });
     } else {
       console.log('Not logged in.')
       $location.path('/');
     }
+
+    $scope.applyPromo = function() {
+      $scope.total = originalTotal;
+      console.log('$scope.promo', $scope.promo, $scope.total)
+      if($scope.promo) {
+        $http.get("/api/promos/")
+        .then(function(response){
+          var promoList = response.data;
+          var discount = 1;
+          promoList.forEach(function(promo){
+            if(promo.code == $scope.promo) {
+              discount = promo.discount / 100;
+              $scope.total = $scope.total - ($scope.total * discount);
+            }
+          })
+        })
+        .catch(function(err){
+          console.log('err in api promos get', err);
+        })
+      } else {
+        window.alert('No promo code entered.')
+      }
+    }
+
     $scope.onCheckout = function () {
       //this function will also run when pay btn is click, use it if needed
     }
@@ -25,11 +51,6 @@ angular.module('stackStoreApp')
       if (result.error) {
         window.alert("Error: please enter valid credit card info!")
       } else {
-        if($scope.promo !== '') {
-          //query the db for relevant promo, if it exists and they can use it,
-          //apply it $scope.total before posting to stripe and making the order
-          // $scope.total
-        }
         $http.post("/api/stripes", {
           token: result.id,
           name: Auth.getCurrentUser().name,

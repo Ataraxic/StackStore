@@ -14,9 +14,12 @@ router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 router.put('/:id/promote', auth.hasRole('admin'), controller.promote);
+router.put('/:id/demote', auth.hasRole('admin'), controller.demote);
 router.put('/:id', auth.hasRole('admin'), controller.adminChangePassword);
 router.put('/:id/email', auth.isAuthenticated(),controller.changeEmail);
 router.get('/:username/profile',controller.getUserByName);
+
+router.put('/:id/picture',auth.isAuthenticated(),controller.changeProfilePic);
 
 router.put('/:id/cart',auth.isAuthenticated(),controller.updateCart);
 

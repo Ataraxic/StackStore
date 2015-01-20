@@ -108,11 +108,16 @@ exports.destroy = function(req, res) {
 exports.getReviews = function(req,res){
   Product.findById(req.params.id)
          .populate('comments')
-         .exec(function(err,results){
-           if (err) console.log(err);
-           res.json(200,results);
+         .exec(function(err,product){
+           console.log('this is the populated product',product);
+           Product.populate(product,{path:'comments.owner',model:'User'},function(err,results){
+             if (err) console.log(err);
+              res.json(200,results);
+
+           })
          })
-}
+ }
+
 
 //Save reviews and authenticate
 exports.addReview = function(req,res){

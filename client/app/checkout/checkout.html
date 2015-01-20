@@ -11,6 +11,13 @@
     font-size: 18px;
     text-align: center;
   }
+  #applyPromo {
+    cursor: pointer;
+    background: yellow;
+    text-align: center;
+    margin: 5px 0 5px 0;
+    padding: 8px 0 8px 0;
+  }
   #blankSpace {
     height: 150px;
   }
@@ -73,12 +80,12 @@
 
       <div class="col-sm-12">
         <div class="input-group">
-          <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-          <input id="promo" ng-model="promo" class="form-control" type="text" placeholder="Promotion Code"/>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-gift"></span></span>
+          <input id="promo" ng-model="promo" class="form-control" type="text" placeholder="Promotion Code"/></input>
         </div>
+        <p id="applyPromo" ng-click="applyPromo()">Apply Code</p>
       </div>
 
-      <br>
 
       <button type="submit" class="btn btn-primary col-sm-12"
         data-progress-text="<span class='glyphicon glyphicon-refresh fa-spin'></span>"

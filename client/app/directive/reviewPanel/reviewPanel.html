@@ -17,6 +17,7 @@
           {{review.title}}
         </h4>
         <p class="reviewText">{{review.body}}</p>
+        <div>By: {{review.owner.name}} </div>
       </div>
       <div ng-show="review.product.name">{{review.product.name}}</div>
   </div>

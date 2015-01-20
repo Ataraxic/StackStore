@@ -17,6 +17,7 @@ angular.module('stackStoreApp')
             Product.getReviews({id: product._id},function(productWithReviews){
               $scope.modalProduct = productWithReviews;
               $scope.comments = productWithReviews.comments;
+              console.log("do they have a name",productWithReviews.comments)
             });
             $scope.addReview = function(){
               var userId = Auth.getCurrentUser()._id;

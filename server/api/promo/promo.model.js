@@ -4,22 +4,18 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var PromoSchema = new Schema({
-    name: String,
-    info: String,
-    active: Boolean,
-    user: [{
+    description: { type: String, required: true },
+    expiry: {type: Date, required: true},
+    tags: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Product'
     }],
-    product: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Products'
-    }],
-    code: {type: String, unique: true},
+    code: {type: String, unique: true, required: true},
     store: {
         type: Schema.Types.ObjectId,
         ref: 'Store'
-    }
+    },
+    discount: { type: Number, required: true }
 });
 
 module.exports = mongoose.model('Promo', PromoSchema);

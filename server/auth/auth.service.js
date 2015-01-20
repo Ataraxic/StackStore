@@ -95,8 +95,8 @@ function hasProp(comments,productId){
 function ownsProduct(orders,productId){
   for (var i=0;orders.length;i++){ //Loop through orders
     for (var n=0;orders[i].products.length;n++){ //Loop through products in each order
-      console.log("orders",orders[i]);
-      console.log(orders[i].products[n])
+      // console.log("orders",orders[i]);
+      // console.log(orders[i].products[n])
       if (orders[i].products[n]._id.toString()===productId){
         return true; //User has ordered this product
       }
@@ -106,7 +106,7 @@ function ownsProduct(orders,productId){
 }
 //Checks if the user has bought the product
 function canAddReview(){
-  console.log("inside CanAddReview");
+  // console.log("inside CanAddReview");
   return compose()
     //validate jwt
     .use(function(req,res,next){
