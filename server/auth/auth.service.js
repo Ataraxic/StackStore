@@ -93,11 +93,8 @@ function hasProp(comments,productId){
 }
 
 function ownsProduct(orders,productId){
-  for (var i=0;orders.length;i++){ //Loop through orders
-    console.log("the order ",orders);
-    for (var n=0;orders[i].products.length;n++){ //Loop through products in each order
-      // console.log("orders",orders[i]);
-      // console.log(orders[i].products[n])
+  for (var i=0;i<orders.length;i++){ //Loop through orders
+    for (var n=0;n<orders[i].products.length;n++){ //Loop through products in each order
       if (orders[i].products[n]._id.toString()===productId){
         return true; //User has ordered this product
       }
@@ -123,7 +120,6 @@ function canAddReview(){
         User.findById(req.body.owner)
             .populate('comments')
             .exec(function(err,results){
-              console.log("results",results);
               if (err) console.log('err',err);
               if (hasProp(results.comments,req.body.product)){
                 console.log("user has already written a review");
@@ -151,6 +147,7 @@ function canAddReview(){
           callback(null,true);
         } else {
           if (ownsProduct(orders,req.body.product)){
+            // res.json(220,orders);
             console.log("user has ordered this product");
             callback(null,false);
           } else {
