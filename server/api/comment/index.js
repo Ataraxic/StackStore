@@ -12,5 +12,5 @@ router.post('/', auth.canAddReview(),controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
-
+router.post('/:id/reviewAuth',auth.canAddReview(),controller.reviewAuth)
 module.exports = router;
