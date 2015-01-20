@@ -19,6 +19,7 @@ router.get('/:id/reviews', controller.getReviews);
 router.post('/:id/canAddReview',controller.reviewAuth)
 router.post('/:id/reviews', auth.canAddReview(),controller.addReview);
 router.post('/cache', controller.populateFromCache);
+router.get('/:id/tags',controller.bytag);
 
 
 module.exports = router;
