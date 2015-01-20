@@ -110,6 +110,22 @@ exports.promote = function(req, res, next) {
         })
     });
 };
+
+/**
+ * admin can demote any user from site admin
+ **/
+exports.demote = function(req, res, next) {
+    console.log('are we inside promote');
+    User.findById(req.params.id, function(err, user) {
+        user.role = 'user';
+        user.save(function(err, user) {
+            if (err) console.log(err);
+            if (!user) res.send(401);
+            res.send(200, user);
+        })
+    });
+};
+
 /**
  * Admin change a user's password
  */
@@ -128,6 +144,20 @@ exports.adminChangePassword = function(req, res, next) {
 /**
  * change User Email
  */
+
+ exports.changeProfilePic = function(req, res, next) {
+        var newPic = req.body.profilePic;
+        var userId = req.user._id;
+        User.findById(userId, function(err, user) {
+            user.profilePic = newPic;
+            user.save(function(err, user) {
+                if (err) console.log(err);
+                if (!user) res.send(401);
+                res.send(200);
+            })
+        })
+    }
+
 exports.changeEmail = function(req, res, next) {
         var newEmail = req.body.newEmail;
         var userId = req.user._id;
@@ -202,7 +232,11 @@ exports.updateCart = function(req, res) {
             	})
             	user.cart = cart;
             }
-        } else {
+            else if(req.body.action === "update"){
+            	user.cart = req.body.cart;
+            }
+        }
+        else {
         	if (user.cart) user.cart.push(req.body._id);
         }
 
@@ -227,7 +261,6 @@ exports.populate = function(req, res) {
                 console.log('no user')
                 return res.send(404);
             }
-         
             return res.json(user);
         })
 }

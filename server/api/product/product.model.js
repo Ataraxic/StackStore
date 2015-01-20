@@ -11,6 +11,7 @@ var ProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Store'
     },
+    owner: { type: Schema.Types.ObjectId, ref: 'User'},
     price:{type: Number, required: true} ,
     description:{type: String},
     comments: [{
@@ -28,6 +29,6 @@ var ProductSchema = new Schema({
     media: [String]
 });
 
-ProductSchema.index({name: 'text',info: 'text',description: 'text'});
+ProductSchema.index({name: 'text', description: 'text'});
 
 module.exports = mongoose.model('Product', ProductSchema);

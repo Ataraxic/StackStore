@@ -2,70 +2,66 @@
 
 <section id="main-content">
     <section class="wrapper">
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
-      <h1>Change Password</h1>
-      <form class="form" name="form" ng-submit="changePassword(form)" novalidate>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <h1>Change Password</h1>
 
-        <div class="form-group">
-          <label>Current Password</label>
+                    <img src="{{user.profilePic}}">
 
-          <input type="password" name="password" class="form-control" ng-model="user.oldPassword"
-                 mongoose-error/>
-          <p class="help-block" ng-show="form.password.$error.mongoose">
-              {{ errors.other }}
-          </p>
+                    <input id="file-upload" type="file" class="form-control" onchange="angular.element(this).scope().upload()"></input>
+                    <form class="form" name="form" ng-submit="changePassword(form)" novalidate>
+
+                        <div class="form-group">
+                            <label>Current Password</label>
+
+                            <input type="password" name="password" class="form-control" ng-model="user.oldPassword" mongoose-error/>
+                            <p class="help-block" ng-show="form.password.$error.mongoose">
+                                {{ errors.other }}
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>New Password</label>
+
+                            <input type="password" name="newPassword" class="form-control" ng-model="user.newPassword" ng-minlength="3" required/>
+                            <p class="help-block" ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">
+                                Password must be at least 3 characters.
+                            </p>
+                        </div>
+
+                        <p class="help-block"> {{ message }} </p>
+
+                        <button class="btn btn-lg btn-primary" type="submit">Save New Password</button>
+                    </form>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <h1>Change E-Mail</h1>
+                    <form class="emailForm" name="emailForm" ng-submit="changeEmail(emailForm)" novalidate>
+                        <div class="form-group">
+                            <label>New Email</label>
+
+                            <input type="email" name="email" class="form-control" ng-model="user.newEmail" mongoose-error/>
+                            <p class="help-block" ng-show="emailForm.email.$error.mongoose">
+                                {{ errors.password }}
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password</label>
+
+                            <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="3" required/>
+                            <p class="help-block" ng-show="(emailForm.password.$error.minlength || emailForm.password.$error.required) && (emailFor.password.$dirty || submitted)">
+                                Password must be at least 3 characters.
+                            </p>
+                        </div>
+
+                        <p class="help-block"> {{ emailMessage }} </p>
+
+                        <button class="btn btn-lg btn-primary" type="submit">Save E-Mail</button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-          <label>New Password</label>
-
-          <input type="password" name="newPassword" class="form-control" ng-model="user.newPassword"
-                 ng-minlength="3"
-                 required/>
-          <p class="help-block"
-             ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">
-            Password must be at least 3 characters.
-          </p>
-        </div>
-
-        <p class="help-block"> {{ message }} </p>
-
-        <button class="btn btn-lg btn-primary" type="submit">Save New Password</button>
-      </form>
-    </div>
-    <div class="col-sm-12 col-md-6">
-      <h1>Change E-Mail</h1>
-      <form class="emailForm" name="emailForm" ng-submit="changeEmail(emailForm)" novalidate>
-        <div class="form-group">
-          <label>New Email</label>
-
-          <input type="email" name="email" class="form-control" ng-model="user.newEmail"
-          mongoose-error/>
-          <p class="help-block" ng-show="emailForm.email.$error.mongoose">
-            {{ errors.password }}
-          </p>
-        </div>
-
-        <div class="form-group">
-          <label>Password</label>
-
-          <input type="password" name="password" class="form-control" ng-model="user.password"
-          ng-minlength="3"
-          required/>
-          <p class="help-block"
-          ng-show="(emailForm.password.$error.minlength || emailForm.password.$error.required) && (emailFor.password.$dirty || submitted)">
-          Password must be at least 3 characters.
-        </p>
-      </div>
-
-      <p class="help-block"> {{ emailMessage }} </p>
-
-      <button class="btn btn-lg btn-primary" type="submit">Save E-Mail</button>
-    </form>
-    </div>
-  </div>
-</div>
-</section>
+    </section>
 </section>

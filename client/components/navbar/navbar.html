@@ -48,7 +48,7 @@
                         <span class="badge bg-theme" ng-show="getCurrentUser().cart.length > 0">{{getCurrentUser().cart.length}}</span>
                     </a>
                     <ul class="dropdown-menu extended inbox">
-                        <li ng-repeat="product in cart_nav">
+                        <li ng-repeat="product in cart_nav track by $index">
                             <a href="/">
                                 <span class="photo"><img alt="avatar" ng-src="{{product.media[0]}}"></span>
                                 <span class="subject">
@@ -115,7 +115,7 @@
 
                 <div ng-show="isLoggedIn()">
                     <p class="centered">
-                        <a href="/profile/{{ getCurrentUser().name.toLowerCase() }}"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60">
+                        <a href="/profile/{{ getCurrentUser().name.toLowerCase() }}"><img src="{{getCurrentUser().profilePic}}" class="img-circle" width="60">
                         </a>
                     </p>
                     <h5 class="centered">{{ getCurrentUser().name }}</h5>

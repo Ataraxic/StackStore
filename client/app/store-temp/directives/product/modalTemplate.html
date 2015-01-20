@@ -1,0 +1,31 @@
+<div class="modal-body">
+  <div>
+    <h1>{{products}}</h1>
+    <h1><a>{{modalProduct.name}}</a></h1>
+    <img src="{{modalProduct.media[0]}}">
+    <h3>{{modalProduct.price}}</h3>
+    <p>{{modalProduct.description}}</p>
+  </div>
+  <button class="btn btn-default" ng-click="addToCart(product._id)">Add to cart</button>
+</div>
+  <div ng-show="isNotLoggedIn">Only logged in users can add a review</div>
+  <form ng-show="canAddReview" class="reviewFormClass" name="reviewForm" ng-submit="addReview()">
+    <div class="form-group">
+      <label>Review Title</label>
+      <input ng-model="reviewTitle" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Body</label>
+      <textarea ng-model="reviewBody" type="text" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Stars</label>
+      <input ng-model="reviewStars" type="number" max="5" min="0">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+
+<div>
+  <review-panel></review-panel>
+<div>

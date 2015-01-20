@@ -21,18 +21,15 @@ var StoreSchema = new Schema({
 });
 
 StoreSchema.statics.getProducts = function(name, cb) {
-    
+
     this.findOne({
         name: name
     }, function(err, store) {
-            // console.log('its finding the store--> ', store._id);
+            console.log('its finding the store--> ', store);
         if (err) console.log('Error is', err);
-           if(!store) { console.log('Store is null') }
-
-              Product.find({storeId: store._id},cb)
-
-        // mongoose.model('Product').find({storeId: store._id}, cb);
-
+        if(!store) { console.log('Store is null') }
+        Product.find({storeId: store._id},cb);
+      //  mongoose.model('Product').find({storeId: store._id}, cb);
     })
 
 }

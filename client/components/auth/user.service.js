@@ -12,6 +12,12 @@ angular.module('stackStoreApp')
           controller:'password'
         }
       },
+      changeProfilePic: {
+        method: 'PUT',
+        params: {
+          controller: 'picture'
+        }
+      },
       changeEmail: {
         method: 'PUT',
         params: {
@@ -25,6 +31,12 @@ angular.module('stackStoreApp')
         method: 'PUT',
         params: {
           controller:'promote'
+        }
+      },
+      demote: {
+        method: 'PUT',
+        params: {
+          controller:'demote'
         }
       },
       get: {

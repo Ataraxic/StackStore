@@ -14,6 +14,18 @@ angular.module('stackStoreApp')
         params: {
           option: 'reviews'
         }
+      },
+      getReviews: {
+        method: 'GET',
+        params: {
+          option: 'reviews'
+        }
+      },
+      addReview: {
+        method: 'POST',
+        params: {
+          option: 'reviews'
+        }
       }
     });
   });

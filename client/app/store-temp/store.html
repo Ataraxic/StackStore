@@ -15,15 +15,28 @@
 
 
         <div class="container">
-            <div class="col-md-12">
-
+            <div class="col-md-6">
                 <h1 class="page-header">Products in {{storeName}}</h1>
-                <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="product in products">
-                		<product ng-repeat="product in products"></product>
+                <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
+                		<product ng-repeat="product in products track by $index"></product>
                 </ul>
-
-                <div ng-show="'noProds'">No Products Found</div>
             </div>
+            <div class="col-md-4">
+              <div ng-show="noProds">No Products Found</div>
+                <div ng-hide="noProds">
+                  <p>Search Results:</p>
+                  <ul>
+                    <li ng-repeat="product in store.products"><a href="/product/{{product.name}}">Name: {{product.name}}</a></li> <!-- still need to link this so that it opens modal, this is just a dumby href right now -->
+                  </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+          <p>Current active promotions:</p>
+          <li ng-repeat="promo in currentPromos">Code: {{promo.code}}<br>
+                                    Description: {{promo.description}}<br>
+                                    Discount: {{promo.discount}}<br>
+                                    Expiry: {{promo.expiry.toDateString()}}</li>
         </div>
         <div ng-show='ownerPresent'>
 
@@ -31,9 +44,8 @@
     </section>
 
     <div ng-show="ownerPresent">
-        
+
             <a href="/store/{{storeName}}/admin">Edit your store</a>
-        
     </div>
     <center></center>
 </section>

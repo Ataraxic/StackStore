@@ -16,6 +16,9 @@ angular.module('stackStoreApp')
     $scope.tags = [];
     $scope.product_images = [];
 
+    $scope.currentPromos = [];
+
+
     //Get Owner ID and storeId of current store
     User.get().$promise
         .then(function(user) {
@@ -27,7 +30,16 @@ angular.module('stackStoreApp')
                     $scope.store = store;
                     $scope.storeId = store._id;
                     $scope.ownerId = store.owner;
-
+                    $http.get('/api/promos/' + $scope.store._id)
+                    .then(function(response){
+                      $scope.currentPromos = response.data;
+                      $scope.currentPromos.forEach(function(promo){
+                        promo.expiry = new Date(promo.expiry);
+                      })
+                    })
+                    .catch(function(err){
+                     console.log('err in promos get', err);
+                    })
                 } else {
                     $location.path('/store/' + $stateParams.name);
                 }
@@ -81,6 +93,7 @@ angular.module('stackStoreApp')
 
         //CREATING NEW TAG OBJECTS
 
+<<<<<<< HEAD
         //For each tag in scope, call Tags.save and create an array of $q promises.
         var promises = [];
         angular.forEach($scope.tags, function(tag) {
@@ -117,6 +130,37 @@ angular.module('stackStoreApp')
                         $scope.products = products;
                     })
             })
+=======
+        // for (var k = 0; k<$scope.tags.length; k++)
+        // {
+        //     console.log('$scope.tag is...', $scope.tags[k]);
+        //   Tags.save({name: $scope.tags[k]}, function(tag) {
+        //     console.log('pushing into tagscollection')
+        //     $scope.tags.push(tag)
+        // })
+        // }
+
+        Product.save({
+            name: $scope.name,
+            description: $scope.description,
+            price: $scope.price,
+            // tags: $scope.tags,
+            storeId: $scope.storeId,
+            media: $scope.product_images
+        }, function() {
+            // if (err) {console.log(err)};
+            console.log('Hitting Product.save callback..');
+            // $scope.products.push(product);
+            //  socket.syncUpdates('Product', $scope.products);
+            // Get all products in store
+            Store.getProducts({
+                    name: $scope.storeName
+                }).$promise
+                .then(function(products) {
+                    $scope.products = products;
+                    console.log('PRODUCTS HSOULD BE LOADING', $scope.products)
+                })
+>>>>>>> master
         })
 
 
@@ -182,4 +226,38 @@ angular.module('stackStoreApp')
             }
         });
     }
+<<<<<<< HEAD
 });
+=======
+
+    $scope.createPromo = function() {
+      if(!$scope.promoCode || !$scope.promoExpiry || !$scope.promoDiscount || !$scope.promoDescription) {
+        window.alert('Fill out all categories!');
+      } else {
+        $http.post('/api/promos', { description: $scope.promoDescription, code: $scope.promoCode, expiry: $scope.promoExpiry, discount: $scope.promoDiscount, store: $scope.store._id })
+        .then(function(response){
+          $scope.promoCode = $scope.prompExpiry = $scope.promoDiscount = $scope.promoDescription = '';
+          var promo = response.data;
+          promo.expiry = new Date(promo.expiry);
+          $scope.currentPromos.push(promo);
+        })
+        .catch(function(err){
+          console.log('oh snap:', err);
+        })
+      }
+    }
+
+    $scope.deletePromo = function(promoToRemove) {
+      $scope.currentPromos.forEach(function(promo, idx){
+        if(promo._id == promoToRemove._id) $scope.currentPromos.splice(idx, 1);
+      })
+      $http.delete('/api/promos/' + promoToRemove._id)
+      .then(function(response){
+        console.log("Deleted!");
+      })
+      .catch(function(err){
+        console.log("Error in deletion:", err);
+      })
+    }
+});
+>>>>>>> master
