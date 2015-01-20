@@ -6,6 +6,7 @@ angular.module('stackStoreApp')
       templateUrl: 'app/directive/tags/tags.html',
       restrict: 'E',
       link: function (scope, element, attrs) {
+        // this is wrong.
         scope:true;
         // this should be in the controller?
         //also you can just say
