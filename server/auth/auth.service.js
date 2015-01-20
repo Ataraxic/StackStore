@@ -117,6 +117,7 @@ function canAddReview(){
     //
     .use(function(req,res,next){
       async.waterfall([function(callback){
+        console.log("inside review auth");
         User.findById(req.body.owner)
             .populate('comments')
             .exec(function(err,results){

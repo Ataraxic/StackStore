@@ -19,7 +19,10 @@ angular.module('stackStoreApp')
               productId: function (){
                 return product._id;
               },
-              addToCart: $scope.addToCart,
+              addToCart: function (){
+                return $scope.addToCart;
+              }
+              // addToCart: $scope.addToCart,
             }
           };
           var productModal = $modal.open(options);
