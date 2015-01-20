@@ -216,8 +216,8 @@ async.waterfall([                       //create Users
       })[0];
       idObject.lindsayProductId = lindsayProductId;
       idObject.samProductId = samProductId;
-      idObject.actualLindsayProduct = products[0]._id;
-      idObject.actualSamProduct = products[1]._id;
+      idObject.actualLindsayProduct = products[0];
+      idObject.actualSamProduct = products[1];
       Tag.find({}).remove(function(){
         callback(null,idObject);
       })
