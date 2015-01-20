@@ -49,7 +49,11 @@
                                 <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
                                     <li ng-repeat="product in products"><a href="#">Name:{{product.name}}<br>
                                     Price:{{product.price}}<br>
-                                    Tags: {{product.tags}}<button type="button" class="close" ng-click="deleteProduct(product._id)">&times;</button></a>
+                                    Tags: 
+                                    <div ng-repeat="tag in product.tags">
+                                        {{tag.name}}
+                                </div>
+                                    <button type="button" class="close" ng-click="deleteProduct(product._id)">&times;</button></a>
                                         <span><a href="/products/{{product._id}}">More Info on Product</a></span>
                                     </li>
                                 </ul>

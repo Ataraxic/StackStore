@@ -51,9 +51,9 @@ angular.module('stackStoreApp')
         //Get all products in store
         Store.getProducts({name: $scope.storeName}).$promise
             .then(function(products) {
-              console.log("poplated Products?",products);
+              
                 $scope.products = products;
-                // console.log('THERE SHOULD BE NO PRODS -->',$scope.products);
+                
             })
 
         $scope.addToCart = function(id) {

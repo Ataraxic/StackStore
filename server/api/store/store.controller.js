@@ -13,6 +13,8 @@ exports.getproducts = function(req, res) {
       if(err) { console.log(err) }
          if(!products) { console.log('No store found!') }
            console.log("products",products,err)
+
+         
       return res.json(200, products);
     });
 };
