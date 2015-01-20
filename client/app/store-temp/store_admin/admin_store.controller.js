@@ -87,20 +87,16 @@ angular.module('stackStoreApp')
             var promise = Tags.save({
                 name: tag
             });
-            promises.push(promise);
+            promises.push(promise.$promise);
         });
-
         var tagsPromise = $q.all(promises);
 
         tagsPromise.then(function(tags) {
-            tags.forEach(function(tag) {
-                tag.$promise.then(function(tag) {
-                     console.log('*****tag._id is -->', tag._id);
-                    $scope.tagObjects.push(tag._id);
-                })
+
+            $scope.tagObjects = tags.map(function(tag) {
+                return tag._id
             });
-        }).then(function() {
-            console.log('**************tagObjects is', $scope.tagObjects);
+
             //Saving new product in DB
             Product.save({
                 name: $scope.name,
@@ -121,7 +117,7 @@ angular.module('stackStoreApp')
                         $scope.products = products;
                     })
             })
-        });
+        })
 
 
     }
