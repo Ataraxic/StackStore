@@ -38,6 +38,7 @@ exports.create = function(req, res) {
         name: req.body.name,
         description: req.body.description,
         tags: req.body.tags,
+        owner: req.body.owner,
         storeId: req.body.storeId,
         price: req.body.price,
         media: req.body.media
