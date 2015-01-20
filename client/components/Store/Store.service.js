@@ -14,6 +14,12 @@ angular.module('stackStoreApp')
                     controller: 'search'
                 }
             },
+            searchAll: {
+              method: 'POST',
+              params: {
+                controller: 'searchall'
+              }
+            },
             getProducts: {
                 method: 'GET',
                 params: {

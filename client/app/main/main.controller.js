@@ -4,6 +4,7 @@ angular.module('stackStoreApp')
     .controller('MainCtrl', function($scope, $http, socket, Store) {
 
         $scope.stores = [];
+        $scope.products = [];
 
         Store.query({}).$promise
             .then(function(stores) {
@@ -36,4 +37,32 @@ angular.module('stackStoreApp')
         $scope.$on('$destroy', function() {
             socket.unsyncUpdates('thing');
         });
+
+        $scope.searchStore = function(){
+          $scope.products = []
+          if ($scope.searchText){
+            Store.searchAll({name:'store'},{searchtext:$scope.searchText},function(res){
+              if (res.data){
+                var productsArray = res.data;
+                productsArray.forEach(function(product){
+                  console.log('product', product)
+                  if(!(exist(product))) $scope.products.push(product);
+                })
+                $scope.products.length == 0 ? $scope.noProds = true : $scope.noProds = false;
+              } else {
+                $scope.noProds = true;
+              }
+            });
+          }
+        };
+
+        function exist(prod) {
+          var exist = false;
+          $scope.products.forEach(function(product){
+            if(prod._id == product._id) {
+              exist = true;
+            }
+          });
+          return exist;
+        }
     });

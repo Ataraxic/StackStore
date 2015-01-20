@@ -28,6 +28,6 @@ var ProductSchema = new Schema({
     media: [String]
 });
 
-ProductSchema.index({name: 'text',info: 'text',description: 'text'});
+ProductSchema.index({name: 'text', description: 'text'});
 
 module.exports = mongoose.model('Product', ProductSchema);
