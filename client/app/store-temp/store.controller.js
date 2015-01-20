@@ -29,6 +29,7 @@ angular.module('stackStoreApp')
                             $scope.ownerPresent = true;
                         }
                     });
+                    //bad to make http calls in the controller
                 $http.get('/api/promos/' + $scope.store._id)
                     .then(function(response){
                       $scope.currentPromos = response.data;

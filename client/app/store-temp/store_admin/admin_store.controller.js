@@ -1,5 +1,7 @@
 'use strict';
 
+// MEGA CONTROLLER!
+
 angular.module('stackStoreApp')
 
 .controller('StoreAdminCtrl', function($q, $scope, $http, $location, Auth, $stateParams, User, Product, socket, Store, Tags) {

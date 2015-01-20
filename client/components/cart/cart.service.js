@@ -1,5 +1,7 @@
 'use strict';
 
+// awesome that you have all this in a factory and not all over controllers
+
 angular.module('stackStoreApp')
     .factory('Cart', function(socket, User, $http, Auth, localStorageService) {
 
@@ -141,6 +143,24 @@ angular.module('stackStoreApp')
                 })
             }
         }
+
+        // what some people do is they return an object like
+        /*
+            return {
+                mergeCarts: mergeCarts,
+                formatCartObj: formatCartObj,
+                getProductsFromCache: getProductsFromCache,
+                ...
+            }
+        Up top, and then they defined the functions below like
+        functoin mergeCarts
+        function formatCartObj
+
+        and it works because of hoisting. 
+
+        That way anyone can take a look at the factory and quickly understand
+        the public api
+        */
 
         // Public API here
         return {

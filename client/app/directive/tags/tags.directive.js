@@ -7,6 +7,12 @@ angular.module('stackStoreApp')
       restrict: 'E',
       link: function (scope, element, attrs) {
         scope:true;
+        // this should be in the controller?
+        //also you can just say
+
+        /*
+          scope.tagobjects = Tags.query()
+        */
 
         Tags.query().$promise
         .then(function(tags) {

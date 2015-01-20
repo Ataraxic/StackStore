@@ -4,6 +4,7 @@ angular.module('stackStoreApp')
   .controller('CreateStoreCtrl', function ($scope,$http,$location,Auth) {
     $scope.message = 'Hello';
     $scope.submit = function () {
+    	//bad to do http calls in the controller
     	$http.post('/api/stores', {name:$scope.name}).
 		  success(function(data, status, headers, config) {
 		    // this callback will be called asynchronously

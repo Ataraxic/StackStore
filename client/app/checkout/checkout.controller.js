@@ -26,6 +26,8 @@ angular.module('stackStoreApp')
       $scope.total = originalTotal;
       console.log('$scope.promo', $scope.promo, $scope.total)
       if($scope.promo) {
+
+        // bad to put http calls in the controller
         $http.get("/api/promos/")
         .then(function(response){
           var promoList = response.data;
@@ -56,6 +58,7 @@ angular.module('stackStoreApp')
       } else {
         var amountInCents = ((($scope.total).toString()).split('.')).join('');
         console.log('amountInCents', amountInCents)
+        // bad to put http calls in the controller
         $http.post("/api/stripes", {
           token: result.id,
           name: Auth.getCurrentUser().name,

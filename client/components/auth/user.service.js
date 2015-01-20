@@ -1,5 +1,7 @@
 'use strict';
 
+// cool modifications to this file
+
 angular.module('stackStoreApp')
   .factory('User', function ($resource) {
     return $resource('/api/users/:id/:controller', {
