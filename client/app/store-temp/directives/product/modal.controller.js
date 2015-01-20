@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('modalController', function($scope,$modal,Auth,Product,User,Comment,productId){
+  .controller('modalController', function($scope,$modal,Auth,Product,User,Comment,productId,addToCart){
     $scope.canAddReview=true; //this still needs work
+    $scope.addToCart = addToCart;
+    $scope.thisProductId = productId;
       Product.getReviews({id: productId},function(productWithReviews){
         $scope.modalProduct = productWithReviews;
         $scope.comments = productWithReviews.comments;
