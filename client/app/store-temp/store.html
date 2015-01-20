@@ -38,13 +38,11 @@
                                     Discount: {{promo.discount}}<br>
                                     Expiry: {{promo.expiry.toDateString()}}</li>
         </div>
-        <div ng-show='ownerPresent'>
-
-        </div>
     </section>
 
     <div ng-show="ownerPresent">
-
+            <a href="/store/{{storeName}}/orders">View {{storeName}}'s Orders</a>
+            <br>
             <a href="/store/{{storeName}}/admin">Edit your store</a>
     </div>
     <center></center>
