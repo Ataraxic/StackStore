@@ -66,7 +66,7 @@ angular.module('stackStoreApp')
     $scope.addProduct = function() {
 
         $scope.products = [];
-        
+
         if ($scope.name === '') {
             return;
         }
@@ -90,7 +90,7 @@ angular.module('stackStoreApp')
         // }
 
         Product.save({
-            name: $scope.name, 
+            name: $scope.name,
             description: $scope.description,
             price: $scope.price,
             // tags: $scope.tags,
@@ -188,5 +188,18 @@ angular.module('stackStoreApp')
           console.log('oh snap:', err);
         })
       }
+    }
+
+    $scope.deletePromo = function(promoToRemove) {
+      $scope.currentPromos.forEach(function(promo, idx){
+        if(promo._id == promoToRemove._id) $scope.currentPromos.splice(idx, 1);
+      })
+      $http.delete('/api/promos/' + promoToRemove._id)
+      .then(function(response){
+        console.log("Deleted!");
+      })
+      .catch(function(err){
+        console.log("Error in deletion:", err);
+      })
     }
 });

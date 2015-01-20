@@ -31,6 +31,13 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-12">
+          <p>Current active promotions:</p>
+          <li ng-repeat="promo in currentPromos">Code: {{promo.code}}<br>
+                                    Description: {{promo.description}}<br>
+                                    Discount: {{promo.discount}}<br>
+                                    Expiry: {{promo.expiry.toDateString()}}</li>
+        </div>
         <div ng-show='ownerPresent'>
 
         </div>

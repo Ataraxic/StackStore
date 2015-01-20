@@ -24,7 +24,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   console.log('testing the stripe call', req.body)
   stripe.charges.create({
-    amount: req.body.amount + "00", // amount in cents, again
+    amount: req.body.amount, // amount in cents, again
     currency: "usd",
     card: req.body.token,
     description: "User making order: " + req.body.name + ". UUID: " + req.body.userId + "."
@@ -32,6 +32,7 @@ exports.create = function(req, res) {
     if (err && err.type === 'StripeCardError') {
       res.json(404)
     }
+    console.log('charged?', charge)
     res.json(200, charge);
   });
 };

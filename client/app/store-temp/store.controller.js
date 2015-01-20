@@ -8,7 +8,7 @@ angular.module('stackStoreApp')
         $scope.storeName = $stateParams.name;
         $scope.currentUser = Auth.getCurrentUser();
         $scope.products = {};
-
+        $scope.currentPromos = [];
         $scope.ownerPresent = false;
 
         Cart.get(function(err,data){
@@ -29,6 +29,19 @@ angular.module('stackStoreApp')
                             $scope.ownerPresent = true;
                         }
                     });
+                $http.get('/api/promos/' + $scope.store._id)
+                    .then(function(response){
+                      $scope.currentPromos = response.data;
+                      $scope.currentPromosCopy = $scope.currentPromos.map(function(promo){ return promo; })
+                      $scope.currentPromosCopy.forEach(function(promo,idx){
+                        promo.expiry = new Date(promo.expiry);
+                        var now = new Date();
+                        if(now.getTime() > promo.expiry.getTime()) $scope.currentPromos.splice(idx, 1);
+                      })
+                    })
+                    .catch(function(err){
+                     console.log('err in promos get', err);
+                    })
             })
             .then(null, function(err) {
                 $location.path('/');

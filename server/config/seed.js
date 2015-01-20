@@ -104,6 +104,7 @@ async.waterfall([                       //create Users
       active: true,
       upvotes: 1200,
       storeId: lindsayStoreId,
+      owner: lindsayUserId,
       price: 19.99,
       description: 'tp is love',
       inventory: {
@@ -115,6 +116,7 @@ async.waterfall([                       //create Users
       active: true,
       upvotes: 1010,
       storeId: samsStoreId,
+      owner: samsUserId,
       price: 23.36,
       description: 'sams description',
       inventory: {
