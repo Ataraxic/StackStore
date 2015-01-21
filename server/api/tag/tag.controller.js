@@ -23,7 +23,7 @@ exports.byname = function(req,res) {
         if (!tag) {
             return res.send(404);
         }
-        console.log('XXX', tag)
+ 
         Product.find({tags: tag._id})
         .exec(function(err, products){
               if (err) {
@@ -32,7 +32,7 @@ exports.byname = function(req,res) {
         if (!products) {
             return res.send(404);
         }
-        console.log('PRODUCSTS IS  ', products)
+  
         return res.json(products);
         })
 
@@ -56,7 +56,7 @@ exports.show = function(req, res) {
 
 // Creates a new tag in the DB.
 exports.create = function(req, res) {
-
+console.log('hitting backend?');
     Tag.findOne({
         'name': req.body.name
     }, function(err, tag) {
@@ -122,7 +122,8 @@ exports.update = function(req, res) {
 
 // Deletes a tag from the DB.
 exports.destroy = function(req, res) {
-    Tag.findById(req.params.id, function(err, tag) {
+    console.log('backend tags  tagid is -->]', req.params.name);
+    Tag.findById(req.params.name, function(err, tag) {
         if (err) {
             return handleError(res, err);
         }
@@ -133,7 +134,7 @@ exports.destroy = function(req, res) {
             if (err) {
                 return handleError(res, err);
             }
-            return res.send(204);
+            res.json(200, true)
         });
     });
 };
