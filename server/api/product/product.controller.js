@@ -97,17 +97,7 @@ exports.destroy = function(req, res) {
             if (err) {
                 return handleError(res, err);
             }
-
-            Store.findOne({
-                name: req.query.storeName
-            }, function(err, store) {
-                if (err) {
-                    return handleError(res, err);
-                }
-                if (!store) {
-                    return res.send(404);
-                };
-            });
+        res.json(200, true)
 
         });
     });

@@ -8,6 +8,9 @@ angular.module('stackStoreApp')
             update: {
                 method: 'PUT'
             },
+            remove: {
+                method: 'DELETE'
+            },
             getUserByName: {
                 method: 'GET',
                 params: {
