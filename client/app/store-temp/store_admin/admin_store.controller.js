@@ -145,24 +145,23 @@ angular.module('stackStoreApp')
 
     //EDIT PRODUCT FUNCTION
     $scope.editRedirect = function(name) {
-        $location.path('/store/' + $stateParams.name+'/admin/edit/'+name);
+        $location.path('/store/' + $stateParams.name + '/admin/edit/' + name);
     }
 
     $scope.deleteProduct = function(id) {
         Product.remove({
-            id: id,
-            storeName: $scope.storeName
-        }, function(product) {
-            console.log(product);
-            Store.get({
-                name: $stateParams.name
-            }, function(store) {
-                console.log(store);
-                $scope.store = store;
-
-            });
+            id: id
+        }, function(deleted) {
+            if (deleted) {
+                var index = 0;
+                for (var i = 0; i < $scope.products.length; i++) {
+                    if ($scope.products[i]._id == id) {
+                        index = i;
+                    } //end of inner if
+                } //end of for loop
+                $scope.products.splice(index, 1);
+            } //end of outer if
         })
-
     }
 
     $scope.upload = function(thing) {
@@ -246,4 +245,7 @@ angular.module('stackStoreApp')
                 console.log("Error in deletion:", err);
             })
     }
+
+
+
 });
