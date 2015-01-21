@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('modalController', function($scope,$modal,Auth,Product,User,Comment,productId){
+  .controller('modalController', function($scope,$modal,Auth,Product,User,Comment,productId,$http){
     $scope.canAddReview=true; //this still needs work
       Product.getReviews({id: productId},function(productWithReviews){
         $scope.modalProduct = productWithReviews;
@@ -19,6 +19,19 @@ angular.module('stackStoreApp')
       } else {
         $scope.canAddReview=false;
       }
+
+      $http.get('http://localhost:3000/recommendations/'+productId)
+      .then(function(object){
+        if (object.data){
+          $scope.recItems = [];
+          // console.log("this should be the array",array,typeof array);
+          object.data.forEach(function(id){
+            Product.showRec({id: id},function(product){
+              $scope.recItems.push(product);
+            });
+          });
+        }
+      });
 
     //This contains the route that posts to server
     $scope.addReview = function(){

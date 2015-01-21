@@ -25,6 +25,9 @@ angular.module('stackStoreApp')
                 params: {
                     option: 'reviews'
                 }
+            },
+            showRec: {
+              method: 'GET'
             }
         });
     });
