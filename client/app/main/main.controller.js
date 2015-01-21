@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('stackStoreApp')
-    .controller('MainCtrl', function($scope, $http, socket, Store) {
+    .controller('MainCtrl', function($scope, $http, socket, Store, Tags) {
 
         $scope.stores = [];
         $scope.products = [];
+        $scope.tags = [];
 
+        //Get all stores
         Store.query({}).$promise
             .then(function(stores) {
 
@@ -17,6 +19,21 @@ angular.module('stackStoreApp')
                     }
                     $scope.stores.push(store);
                     socket.syncUpdates('stores', $scope.stores);
+                }
+            })
+
+          //Get all tags
+        Tags.query({}).$promise
+            .then(function(tags) {
+
+                for (var i = 0; i < tags.length; i++) {
+
+                    var tag = {
+                        title: tags[i].name,
+                        link: '/tags/' + tags[i].name
+                    }
+                    $scope.tags.push(tag);
+                    socket.syncUpdates('tags', $scope.tags);
                 }
             })
 
