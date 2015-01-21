@@ -83,7 +83,7 @@
                                         <p><i class="fa fa-usd">{{product.price}}</i> {{product.upvotes}}</p>
                                         <p><i class="fa fa-level-up">{{product.description}}</i> {{product.upvotes}}</p>
                                         <div ng-repeat="tag in product.tags">
-                                            <h6>Tags</h6>
+                                            <h3>Tags</h3>
                                             <p><a href='/tags/{{tag.name}}'>{{tag.name}}</a>
                                             </p>
                                         </div>
@@ -94,6 +94,7 @@
                                     <img src="{{product.media[0]}}" width="120">
                                 </div>
                                 <button class="btn btn-warning" type="button" ng-click="editRedirect(product._id)">Edit</button>
+                                <button class="btn btn-warning" type="button" ng-click="deleteProduct(product._id)">Delete Product</button>
                             </div>
                         </div>
                     </div>
