@@ -38,12 +38,11 @@ angular.module('stackStoreApp')
         .then(function(response){
           var orderList = response.data;
           function isUserOrder(order) {
-            return order.buyer == $scope.currentUser._id;
+            return order.buyer == $scope.currentUser._id && order.buyerOrder == null;
           }
           function calculateTotal(products) {
             var sum = 0;
             products.forEach(function(product){
-              console.log('product curr', product)
               sum += product.price;
             })
             return sum.toFixed(2);
@@ -52,11 +51,8 @@ angular.module('stackStoreApp')
           $scope.orderList.forEach(function(order){
             order.createdTime = new Date(order.createdTime);
             order.total = calculateTotal(order.products); //need to apply promo discount if promo
-            // if(order.promoApplied) console.log('order total with promo applied?', (order.total - (order.total * (order.promoApplied.discount/100))).toFixed(2))
             if(order.promoApplied) order.total = (order.total - (order.total * (order.promoApplied.discount/100))).toFixed(2);
-            console.log('order.total after', order.total)
           })
-          console.log('orderList', $scope.orderList)
         })
         .catch(function(err){
           console.log('oh noooo:', err)

@@ -30,11 +30,11 @@
 
                     <li ng-repeat="product in products">Name:{{product.name}}<br>
                                     Price:{{product.price}}<br>
-                                    Tags: 
+                                    Tags:
                                     <div ng-repeat="tag in product.tags">
                               <a href="/tags/{{tag.name}}">{{tag.name}}</a>
                                 </div>
-        
+
                                         <span><a href="/products/{{product._id}}">More Info on Product</a>
                         </span>
                     </li>
@@ -69,9 +69,6 @@
     </section>
 
     <div ng-show="ownerPresent">
-
-
-        <a href="/store/{{storeName}}/admin">Edit your store</a>
 
             <a href="/store/{{storeName}}/orders">View {{storeName}}'s Orders</a>
             <br>
