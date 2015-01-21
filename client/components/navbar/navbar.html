@@ -72,6 +72,8 @@
         </div>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
+            		<li ng-show="isLoggedIn()"><a class="logout" href="/create_store">Create a Store</a>
+                </li>
                 <li ng-show="!isLoggedIn()"><a class="logout" href="/login">Login</a>
                 </li>
                 <li ng-show="isLoggedIn()"><a class="logout" ng-click="logout()">Logout</a>
