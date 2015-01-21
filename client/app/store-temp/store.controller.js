@@ -19,6 +19,7 @@ angular.module('stackStoreApp')
                 name: $stateParams.name
             }).$promise
             .then(function(store) {
+            		console.log(store);
                 $scope.store = store;
                 $scope.store.products = [];
                 User.get().$promise
@@ -54,7 +55,7 @@ angular.module('stackStoreApp')
                 name: $scope.storeName
             }).$promise
             .then(function(products) {
-
+            	console.log($scope.products);
                 $scope.products = products;
 
             })
