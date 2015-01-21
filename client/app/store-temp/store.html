@@ -3,6 +3,39 @@
 <section id="main-content">
     <section class="wrapper">
         <div class="row">
+        	<div class="col-lg-9 main-chart">
+        		<div class="row">
+        			<product ng-repeat="product in products track by $index"></product>
+        		</div>
+        	</div>
+        </div>
+
+        <div class="container">
+            <div class="col-md-6">
+                <h1 class="page-header">Products in {{storeName}}</h1>
+                <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
+
+                    <li ng-repeat="product in products">Name:{{product.name}}<br>
+                                    Price:{{product.price}}<br>
+                                    Tags:
+                                    <div ng-repeat="tag in product.tags">
+                              <a href="/tags/{{tag.name}}">{{tag.name}}</a>
+                                </div>
+
+                                        <span><a href="/products/{{product._id}}">More Info on Product</a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div ng-show="noProds">No Products Found</div>
+                <div ng-hide="noProds">
+                    <p>Search Results:</p>
+                    <ul>
+                        <li ng-repeat="product in store.products"><a href="/product/{{product.name}}">Name: {{product.name}}</a>
+                        </li>
+                        <!-- still need to link this so that it opens modal, this is just a dumby href right now -->
+                    </ul>
             <div class="col-lg-9 main-chart">
                 <div class="row">
                     <product ng-repeat="product in products | filter:searchText"></product>
@@ -48,4 +81,5 @@
                 </div>
             </div>
     </section>
+    <center></center>
 </section>

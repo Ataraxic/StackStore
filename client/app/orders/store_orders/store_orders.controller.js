@@ -42,24 +42,23 @@ angular.module('stackStoreApp')
       .then(function(response){
         var orderList = response.data;
         function isOwnerOrder(order) {
-          return order.storeOwner[0] == $scope.currentUser._id;
+          return order.storeOwner[0] == $scope.currentUser._id && order.buyerOrder; //buyerOrder not null on storeOwner orders, except in seed data
         }
         function calculateTotal(products) {
           var sum = 0;
           products.forEach(function(product){
-            console.log('product curr', product)
             sum += product.price;
           })
           return sum.toFixed(2);
         }
+        console.log('$scope.orderList pre filter', orderList)
         $scope.orderList = orderList.filter(isOwnerOrder);
+        console.log('$scope.orderList after', $scope.orderList);
         $scope.orderList.forEach(function(order){
           order.createdTime = new Date(order.createdTime);
           order.total = calculateTotal(order.products); //need to apply promo discount if promo
           if(order.promoApplied) order.total = (order.total - (order.total * (order.promoApplied.discount/100))).toFixed(2);
-          console.log('order.total after', order.total)
         })
-        console.log('orderList', $scope.orderList)
       })
       .catch(function(err){
         console.log('oh noooo:', err)
@@ -70,10 +69,26 @@ angular.module('stackStoreApp')
       $scope.status = keyword;
     }
     var statuses = ['created', 'processing', 'cancelled', 'completed'];
-    $scope.updateStatus = function() {
-      // if(statuses.indexOf($scope.statusUpdate.toLowerCase())) {
-      //   console.log('statusUpdate', $scope.statusUpdate);
-      // }
+    $scope.updateStatus = function(order) {
+        if(order.statusUpdate && order.statusUpdate.toLowerCase() !== order.status.toLowerCase()) {
+          if(statuses.indexOf(order.statusUpdate.toLowerCase()) < 0) {
+            window.alert('Please enter either Created, Processing, Cancelled, or Completed');
+          } else {
+            order.status = order.statusUpdate.charAt(0).toUpperCase() + order.statusUpdate.slice(1);
+            $http.put('/api/orders/' + order._id, order)
+              .then(function(response){
+                console.log('response.........', response.data)
+                response.data.buyerOrder.status = order.statusUpdate;
+                return $http.put('/api/orders/' + response.data.buyerOrder._id, response.data.buyerOrder)
+              })
+              .then(function(response){ //lol letting one storeowner update the buyerorder even if there might be more than one storeowner per order....
+                console.log('response after updating buyerorder...', response.data)
+              })
+              .catch(function(err){
+                console.log('err.........', err)
+              })
+          }
+      }
     }
 
 });
