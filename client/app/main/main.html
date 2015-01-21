@@ -32,6 +32,18 @@
                         </p>
                     </div>
                 </div>
+                <h3>TAGS</h3>
+                <!-- First Action -->
+                <div class="desc">
+                	<div ng-repeat="tag in tags">
+                	<div class="thumb">
+                            <span class="badge bg-theme"><i class="fa fa-tag"></i></span>
+                        </div>
+                    <div class="details">
+                        <p><a href='{{tag.link}}'>{{tag.title}}</a>
+                        </p>
+                    </div>
+                    </div>
             </div>
         </div>
 

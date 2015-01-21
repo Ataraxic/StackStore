@@ -1,13 +1,11 @@
 <style>
-.order {
-    border-bottom: 2px solid #666;
-}
-td {
-    border: 1px solid #666;
-    padding: 5px;
+table{
+	border:none;
 }
 </style>
-<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div ng-include="'components/navbar/navbar.html'">
+</div>
 
 <section id="main-content">
     <section class="wrapper">
@@ -15,27 +13,35 @@ td {
             <div class="row">
                 <div class="col-lg-12">
                     <div class="content-panel">
+
+
                         <h1 class="page-header">My orders:</h1>
-                        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
-                            <li ng-repeat="order in orderList" class='order'>
-                                Products:
-                                <table>
-                                    <tr>
-                                        <td>Product Name</td>
-                                        <td>Price</td>
-                                    </tr>
-                                    <tr ng-repeat="product in order.products">
-                                        <td>{{product.name}}</td>
-                                        <td>{{product.price}}</td>
-                                    </tr>
-                                </table>
-                                Total: {{order.total}}
-                                <br>
-                                <span ng-show="order.promoApplied">Promo Applied: {{order.promoApplied.description}} at {{order.promoApplied.discount}}% off</span>
-                                <br> Status: {{order.status}}
-                                <br> Created: {{order.createdTime.toDateString()}}
-                            </li>
-                        </ul>
+                        <div class="container">
+                            <div class="col-xs-9">
+                                <div ng-repeat="order in orderList | filter:status" class='order mb mt'>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product Name</th>
+                                                <th>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="product in order.products">
+                                                <td>{{product.name}}</td>
+                                                <td>{{product.price}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    Total: {{order.total}}
+                                    <br>
+                                    <span ng-show="order.promoApplied">Promo Applied: {{order.promoApplied.description}} at {{order.promoApplied.discount}}% off</span>
+                                    <br> Status: {{order.status}}
+                                    <br> Created: {{order.createdTime.toDateString()}}
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
