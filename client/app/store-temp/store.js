@@ -17,5 +17,10 @@ angular.module('stackStoreApp')
         url: '/create_store',
         templateUrl: 'app/store-temp/create_store/create_store.html',
         controller: 'CreateStoreCtrl'
-      });
+      })
+      .state('edit_product', {
+        url: '/store/{name}/admin/edit/{product}',
+        templateUrl: 'app/store-temp/product_edit.html',
+        controller: 'ProducteditCtrl'
+      })
   });
