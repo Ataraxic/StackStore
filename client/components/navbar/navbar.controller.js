@@ -45,7 +45,6 @@ angular.module('stackStoreApp')
 
         $scope.isActive = function(param) {
         		var name = param.split('/')[1] === 'store' ? param.split('/')[2] : '';
-        		console.log(name === $stateParams.name);
             return $stateParams.name == name;
         };
     });
