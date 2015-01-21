@@ -43,7 +43,7 @@ exports.create = function(req, res) {
         var newOrder = new Order();
         newOrder.buyer = req.user._id;
         newOrder.products = [];
-        newOrder.status = "Processing";
+        newOrder.status = "Created";
         newOrder.chargeId = req.body.chargeId;
         if(req.body.promo) newOrder.promoApplied = req.body.promo;
 
@@ -95,7 +95,7 @@ exports.create = function(req, res) {
                 comments: item.comments
               })
             })
-            tempOrder.status = "Processing";
+            tempOrder.status = "Created";
             tempOrder.chargeId = req.body.chargeId;
             tempOrder.buyerOrder = order._id;
             if(req.body.promo) tempOrder.promoApplied = req.body.promo;
@@ -138,16 +138,27 @@ exports.create = function(req, res) {
 
 // Updates an existing order in the DB.
 exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Order.findById(req.params.id, function (err, order) {
-    if (err) { return handleError(res, err); }
-    if(!order) { return res.send(404); }
-    var updated = _.merge(order, req.body);
-    updated.save(function (err) {
+  // if(req.body._id) { delete req.body._id; }
+  console.log('req.params.id', req.params.id)
+  console.log('req.body', req.body)
+  Order.findById(req.params.id)
+    .populate('buyerOrder')
+    .exec(function(err, order){
       if (err) { return handleError(res, err); }
-      return res.json(200, order);
-    });
-  });
+      if(!order) { return res.send(404); }
+      console.log('order', order)
+      if(req.body.promoApplied) req.body.promoApplied = req.body.promoApplied._id;
+      if(req.body.buyerOrder) req.body.buyerOrder = req.body.buyerOrder._id;
+      var updated = _.merge(order, req.body);
+      updated.save(function (err, updatedOrder) {
+        if (err) { return handleError(res, err); }
+        Order.findOne({_id: updatedOrder._id})
+        .populate('buyerOrder')
+        .exec(function(err, finalOrder){
+          return res.json(200, finalOrder);
+        })
+      });
+    })
 };
 
 // Deletes a order from the DB.

@@ -6,7 +6,10 @@ angular.module('stackStoreApp')
             id: '@_id'
         }, {
             update: {
-                method: 'put'
+                method: 'PUT'
+            },
+            remove: {
+                method: 'DELETE'
             },
             getUserByName: {
                 method: 'GET',

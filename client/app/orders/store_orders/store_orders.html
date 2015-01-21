@@ -34,7 +34,7 @@
                           <span ng-show="order.promoApplied">Promo Applied: {{order.promoApplied.description}} at {{order.promoApplied.discount}}% off</span><br>
                           Status: {{order.status}}<br>
                           Created: {{order.createdTime.toDateString()}}<br>
-                          Change status to: <input type='text' ng-model="statusUpdate"></input><button class="btn btn-warning" ng-click="updateStatus()">Update</button>
+                          Change status to: <input type='text' ng-model="order.statusUpdate"></input><button class="btn btn-warning" ng-click="updateStatus(order)">Update</button>
                         </li>
                     </ul>
                 </div>
