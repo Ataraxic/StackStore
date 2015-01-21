@@ -17,6 +17,8 @@ exports.index = function(req, res) {
     });
 };
 
+
+
 // Get a single product
 exports.show = function(req, res) {
     Product.findById(req.params.id, function(err, product) {

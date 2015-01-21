@@ -17,7 +17,7 @@ var OrderSchema = new Schema({
       ref: 'Order',
       default: null
     },
-    products: [],
+    products: [ Schema.Types.Mixed ],
     status: { type: String },
     createdTime: { type: Date, default: Date.now },
     storeOwner: [{

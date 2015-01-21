@@ -2,16 +2,43 @@
 
 var _ = require('lodash');
 var Tag = require('./tag.model');
+var Product = require('../product/product.model');
 
 // Get list of tags
 exports.index = function(req, res) {
-    Tag.findOne(function(err, tags) {
+    Tag.find(function(err, tags) {
         if (err) {
             return handleError(res, err);
         }
         return res.json(200, tags);
     });
 };
+
+exports.byname = function(req,res) {
+
+    Tag.findOne({'name': req.params.name}, function(err, tag) {
+        if (err) {
+            return handleError(res, err);
+        }
+        if (!tag) {
+            return res.send(404);
+        }
+        console.log('XXX', tag)
+        Product.find({tags: tag._id})
+        .exec(function(err, products){
+              if (err) {
+            console.log(err);
+        }
+        if (!products) {
+            return res.send(404);
+        }
+        console.log('PRODUCSTS IS  ', products)
+        return res.json(products);
+        })
+
+    })
+}
+
 
 // Get a single tag
 exports.show = function(req, res) {
@@ -22,6 +49,7 @@ exports.show = function(req, res) {
         if (!tag) {
             return res.send(404);
         }
+        console.log('TAG IS ', tag)
         return res.json(tag);
     });
 };
@@ -51,6 +79,7 @@ exports.create = function(req, res) {
         }
         else {
         console.log('Tag already exists', tag.name)
+        res.json(tag);
       }
     })
 
