@@ -14,8 +14,9 @@ angular.module('stackStoreApp')
         $scope.toggleMsgDropdown = function (){
         	angular.element('#header_inbox_bar').toggleClass('open');
         }
-        $scope.toggleCartDropdown = function (){
-        	angular.element('#header_cart_bar').toggleClass('open');
+        $scope.redirectToCart = function (){
+        	console.log('hey')
+        	$location.path('/cart');
         }
 
         Store.query({}).$promise
