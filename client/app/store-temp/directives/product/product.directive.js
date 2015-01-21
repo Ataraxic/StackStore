@@ -18,7 +18,11 @@ angular.module('stackStoreApp')
             resolve: {
               productId: function (){
                 return product._id;
+              },
+              addToCart: function (){
+                return $scope.addToCart;
               }
+              // addToCart: $scope.addToCart,
             }
           };
           var productModal = $modal.open(options);
