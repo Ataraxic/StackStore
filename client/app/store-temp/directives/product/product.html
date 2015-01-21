@@ -24,15 +24,28 @@
             <h5>{{product.name}}</h5>
         </div>
         <div class="row" ng-click="toggleDialog(product)">
-            <div class="col-sm-6 col-xs-6 goleft">
-                <p><i class="fa fa-usd"></i> {{product.price}}</p>
-                <p><i class="fa fa-level-up"></i> {{product.upvotes}}</p>
+
+                  <div class="col-sm-6 col-xs-6 goleft">
+                                        <h6>Price</h6>
+                                        <p><i class="fa fa-usd">{{product.price}}</i></p>
+                                         <h6>Description</h6>
+                                        <p><i class="fa ">{{product.description}}</i> 
+                                                   <h6>Upvotes</h6>
+                                             <p><i class="fa fa-level-up"> {{product.upvotes}}</p></i>
+                                             
             </div>
+            <h3>Tags</h3>
+            <div ng-repeat="tag in product.tags">
+                                            <p><a href='/tags/{{tag.name}}'>{{tag.name}}</a>
+                                            </p>
+                                        </div>
             <div class="col-sm-6 col-xs-6"></div>
         </div>
         <div class="centered">
+            <button type="button" class="btn btn-theme" ng-click="addToCart(product._id)">Add to Cart</button>
             <img src="{{product.media[0]}}" width="120">
+
         </div>
-        <button type="button" class="btn btn-theme" ng-click="addToCart(product._id)">Add to Cart</button>
+   
     </div>
 </div>

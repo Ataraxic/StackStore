@@ -4,50 +4,130 @@
     <section class="wrapper">
         <div class="container">
             <div class="col-xs-8">
-                </div>
+
+                <!-- 
+
+   <form class="form-horizontal style-form" method="get" ng-submit='addProduct()'>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Upload File</label>
+                            <div class="col-sm-10">
+                                <input id="file-upload" type="file" class="form-control" onchange="angular.element(this).scope().upload()"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" ng-model="name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" ng-model="description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Price</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="number" placeholder="$100" ng-model="price">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label"></label>
+                            <div class="col-sm-10">
+                                <button type='submit' class='btn btn-primary'>Add Product</button>
+                            </div>
+                        </div>
+                    </form>
+ -->
+
+
+
+
+
+
+
+
 
                 <div class="col-md-12">
 
                     <form ng-submit='editProduct(product._id)'>
-                        <h1>You are editing {{product.name}} </h1>
-                        <input id="file-upload" type="file" class="form-control" onchange="angular.element(this).scope().upload()"></input>
-                        <div class='form-group'>
-                            <input type='text' class='form-control' placeholder='{{product.name}}' ng-model="name"></input>
+                        <h1>You are editing '{{product.name}}'' </h1>
 
-                            <input type='text' class='form-control' placeholder='{{product.description}}' ng-model="description"></input>
-
-                            <input type='number' class='form-control' placeholder='{{product.price}}' ng-model="price"></input>
-
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" ng-model="name">
+                            </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" ng-model="description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Price</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="number" placeholder="$100" ng-model="price">
+                            </div>
+                        </div>
+                        
 
+                                    <div class="col-sm-6">
+                                        <button ng-repeat="tag in tags" type="button" class="btn btn-round btn-default"><a href='/tags/{{tag.name}}'>{{tag.name}}</a></button>
+                                        <button ng-repeat="tag in tags" type='close' class='close' ng-click="deleteTag(tag._id)">&times</button>
+                                    </div>
+
+                               
+
+                </div>
+                <div class="col-sm-10">
+                    <center>
+                        <br>
                         <button type='submit' class='btn btn-primary'>Save Changes</button>
-                    </form>
 
-                      <div class="col-md-12">
+                        </form>
 
-                     <div class="col-md-4 col-sm-4 mb">
-                        <div class="white-panel pn">
-                            <div class="white-header">
-                                <h5>{{product.name}}</h5>
+                        <button type='submit' class='btn btn-primary' ng-click="deleteProduct(product._id)">Delete Product</button>
+                    </center>
+                </div>
+         
+
+
+
+                <div class="col-md-4 col-sm-4 mb">
+                    <br>
+                    <div class="white-panel pn">
+                        <div class="white-header">
+                            <h5>{{product.name}}</h5>
+                        </div>
+                        <div class="row" ng-click="toggleDialog(product)">
+                            <div class="col-sm-6 col-xs-6 goleft">
+                                <p><i class="fa fa-level-up"></i> {{product.upvotes}}</p>
                             </div>
-                            <div class="row" ng-click="toggleDialog(product)">
-                                <div class="col-sm-6 col-xs-6 goleft">
-                                    <p><i class="fa fa-level-up"></i> {{product.upvotes}}</p>
-                                </div>
-                                <div class="col-sm-6 col-xs-6">{{product.price}}</div>
-                                <div class="col-sm-6 col-xs-6">{{product.description}}</div>
+                            <div class="col-sm-6 col-xs-6">{{product.price}}</div>
+                            <div class="col-sm-6 col-xs-6">{{product.description}}</div>
+                            <div ng-repeat="tag in product.tags">
+                                <p><a href='/tags/{{tag.name}}'>{{tag.name}}</a>
+                                </p>
                             </div>
-                            <div class="centered">
-                                <img src="{{product.media[0]}}" width="120">
-                            </div>
+                        </div>
+                        <div class="centered">
+                            <img src="{{product.media[0]}}" width="120">
                         </div>
                     </div>
+                </div>
 
-                  </div>
 
-  </div>
-</div>
+            </div>
+
         </div>
+
+        </div>
+
     </section>
+
 </section>
+
 </div>

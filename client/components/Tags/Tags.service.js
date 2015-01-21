@@ -13,6 +13,9 @@ angular.module('stackStoreApp')
                 params: {
                   option: 'byname'
                 }
+            },
+       remove: {
+                method: 'DELETE'
             }
     });
   });
