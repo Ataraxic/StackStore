@@ -26,6 +26,7 @@
 
                         <button type='submit' class='btn btn-primary'>Add Product</button>
                     </form>
+                   
 
                     <!-- Form to add tags to product -->
                     <form ng-submit='addTag(tag)'>
@@ -54,6 +55,7 @@
                                                 <a href="/tags/{{tag.name}}">{{tag.name}}</a>
                                 </div>
                                     <button type="button" class="close" ng-click="deleteProduct(product._id)">&times;</button></a>
+                                    <button type="button" ng-click="editRedirect(product._id)">Edit</button></a>
                                         <span><a href="/products/{{product._id}}">More Info on Product</a></span>
                                     </li>
                                 </ul>
