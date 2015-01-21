@@ -1,72 +1,87 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div id="blankSpace"></div>
-<div ng-hide="paid || cartEmpty" class="col-md-4 col-md-offset-4">
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <td style="font-style:italic">Item</td>
-            <td style="font-style:italic">Price</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="item in cart">
-            <td>{{item.name}}</td>
-            <td>{{item.price | currency : $ : 2}}</td>
-          </tr>
-          <tr>
-            <td style="font-style:italic">Total</td>
-            <td style="font-weight:bold">{{total | currency : $ : 2}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <br>
+<section id="main-content">
+    <section class="wrapper">
 
-    <form stripe-form="stripeCallback" name="checkoutForm" ng-submit="onCheckout()" id="form" class="form-horizontal">
-      <div class="form-group">
-        <div class="col-sm-12">
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-credit-card"></span></span>
-            <input payments-format="card" payments-validate="card" id="card-num" ng-model="number" class="form-control" type="text" size="16" placeholder="Card number" autofocus="autofocus" />
-          </div>
+        <div class="row">
+            <div class="col-lg-9 main-chart">
+                <div class="row mt">
+                    <div class="form-panel" ng-show='cartEmpty'>
+                        <h1>Your cart's empty! No checkin' out for you.</h1>
+                    </div>
+
+                    <div class="form-panel" ng-show='paid'>
+                        <h1>Thanks for your payment! Your order is being processed.</h1>
+                    </div>
+                    <div ng-show='!cartEmpty && !paid' class="form-panel">
+                        <form id="form" class="form-horizontal style-form" name="checkoutForm" stripe-form="stripeCallback" ng-submit="stripeCallback()" method="get">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-credit-card"></span></span>
+                                        <input payments-format="card" payments-validate="card" id="card-num" ng-model="number" class="form-control" type="text" size="16" placeholder="Card number" autofocus="autofocus" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <input payments-validate="expiry" payments-format="expiry" id="card-exp" ng-model="expiry" class="form-control" size="5" placeholder="MM/YY" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                                        <input payments-validate="cvc" id="card-cvc" payments-format="cvc" ng-model="cvc" class="form-control" type="text" size="4" placeholder="CVC" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-gift"></span></span>
+                                        <input id="promo" ng-model="promo" class="form-control" type="text" placeholder="Promotion Code" /></input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-success btn-lg btn-block" data-progress-text="<i class='fa fa-circle-o-notch'></i>" data-success-text="<i class='fa fa-check'></i>">Checkout</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-panel" ng-show='!paid'>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-gift"></span></span>
+                                    <input id="promo" ng-model="promo" class="form-control mb" type="text" placeholder="Promotion Code" /></input>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="applyPromo()">Apply Code</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 ds" ng-hide="cart.length === 0">
+                <h3>Cart</h3>
+                <!-- First Action -->
+                <div class="desc" ng-repeat="item in cart">
+                    <div class="thumb">
+                        <span class="badge bg-theme"><i class="fa fa-shopping-cart"></i></span>
+                    </div>
+                    <div class="details">
+                        <p>
+                            <muted>{{item.name}}</muted>
+                            <br>
+                            <b>{{item.price}}</b>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-6">
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-            <input payments-validate="expiry" payments-format="expiry" id="card-exp" ng-model="expiry" class="form-control" size="5" placeholder="MM/YY"/>
-          </div>
-        </div>
-
-        <div class="col-sm-6">
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-            <input payments-validate="cvc" id="card-cvc" payments-format="cvc" ng-model="cvc" class="form-control" type="text" size="4" placeholder="CVC" />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-12">
-        <div class="input-group">
-          <span class="input-group-addon"><span class="glyphicon glyphicon-gift"></span></span>
-          <input id="promo" ng-model="promo" class="form-control" type="text" placeholder="Promotion Code"/></input>
-        </div>
-        <p id="applyPromo" ng-click="applyPromo()">Apply Code</p>
-      </div>
-
-
-      <button type="submit" class="btn btn-primary col-sm-12"
-        data-progress-text="<span class='glyphicon glyphicon-refresh fa-spin'></span>"
-        data-success-text="<span class='glyphicon glyphicon-ok'></span>">
-        Pay
-      </button>
-    </form>
-
-</div>
-<p id="thanks" ng-show='cartEmpty'>Your cart's empty! No checkin' out for you.</p>
-
-<p id="thanks" ng-show='paid'>Thanks for your payment! Your order is being processed.</p>
+    </section>
+</section>

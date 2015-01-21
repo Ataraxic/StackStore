@@ -43,7 +43,7 @@
             <ul class="nav top-menu">
                 <!-- inbox dropdown start-->
                 <li id="header_cart_bar" class="dropdown" ng-show="getCurrentUser()">
-                    <a data-toggle="dropdown" class="dropdown-toggle" ng-click="toggleCartDropdown()">
+                    <a data-toggle="dropdown" class="dropdown-toggle" ng-click="redirectToCart()">
                         <i class="fa fa-shopping-cart"></i>
                         <span class="badge bg-theme" ng-show="getCurrentUser().cart.length > 0">{{getCurrentUser().cart.length}}</span>
                     </a>

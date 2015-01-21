@@ -1,6 +1,11 @@
 <style>
-  .order { border-bottom: 2px solid #666;}
-  td { border: 1px solid #666; padding: 5px;}
+.order {
+    border-bottom: 2px solid #666;
+}
+td {
+    border: 1px solid #666;
+    padding: 5px;
+}
 </style>
 <div ng-include="'components/navbar/navbar.html'"></div>
 
@@ -9,25 +14,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">My orders:</h1>
-                    <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
-                        <li ng-repeat="order in orderList" class='order'>
-                          Products:<table>
+                    <div class="content-panel">
+                        <h1 class="page-header">My orders:</h1>
+                        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6">
+                            <li ng-repeat="order in orderList" class='order'>
+                                Products:
+                                <table>
                                     <tr>
-                                      <td>Product Name</td>
-                                      <td>Price</td>
+                                        <td>Product Name</td>
+                                        <td>Price</td>
                                     </tr>
                                     <tr ng-repeat="product in order.products">
-                                      <td>{{product.name}}</td>
-                                      <td>{{product.price}}</td>
+                                        <td>{{product.name}}</td>
+                                        <td>{{product.price}}</td>
                                     </tr>
-                                  </table>
-                          Total: {{order.total}}<br>
-                          <span ng-show="order.promoApplied">Promo Applied: {{order.promoApplied.description}} at {{order.promoApplied.discount}}% off</span><br>
-                          Status: {{order.status}}<br>
-                          Created: {{order.createdTime.toDateString()}}
-                        </li>
-                    </ul>
+                                </table>
+                                Total: {{order.total}}
+                                <br>
+                                <span ng-show="order.promoApplied">Promo Applied: {{order.promoApplied.description}} at {{order.promoApplied.discount}}% off</span>
+                                <br> Status: {{order.status}}
+                                <br> Created: {{order.createdTime.toDateString()}}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

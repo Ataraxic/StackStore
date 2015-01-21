@@ -2,51 +2,38 @@
 
 <section id="main-content">
     <section class="wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Featured Stores:</h1>
-                    <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="store in stores">
-                        <li><a href='/store/{{store.title}}'>{{store.title}}<button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a>
-                        </li>
-                    </ul>
+
+        <div class="row">
+            <div class="col-lg-9 main-chart">
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 mb" ng-repeat="store in stores | filter:searchText">
+                        <div class="white-panel pn">
+                            <div class="white-header">
+                                <h5>{{store.title}}</h5>
+                            </div>
+                            <a href="/store/{{store.title}}" type="button" class="btn btn-theme">View Store</a>
+                        </div>
+                    </div>
+                    <product ng-repeat="product in products | filter:searchText"></product>
                 </div>
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <form method="get" action="/create_store">
-                            <button type="submit" class="btn btn-primary">Create Your Own Store!</button>
-                        </form>
+            <div class="col-lg-3 ds">
+                <h3>SEARCH</h3>
+                <!-- First Action -->
+                <div class="desc">
+                    <div class="details">
+                        <p>
+
+                            <form class="form" role="form">
+                                <div class="form-group">
+                                    <input type="text" ng-model="searchText" class="form-control btn-block" id="exampleInputEmail2" placeholder="Enter term">
+                                </div>
+                            </form>
+                        </p>
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Popular Tags:</h1>
-                   <!-- FILL THIS IN -->
-                </div>
-            </div>
-
-          <div class="row">
-            <div class="col-lg-12">
-              <label> Search:
-                <input type="text" ng-model="searchText"></input>
-              </label>
-              <button class="btn btn-primary" ng-click="searchStore()">Search</button>
-              <div ng-show="noProds">No Products Found</div>
-              <div ng-hide="noProds">
-                <p>Search Results:</p>
-                <ul class="nav nav-tabs nav-stacked col-md-8 col-lg-12 col-sm-4">
-                  <product class="col-lg-4 col-md-4 col-sm-4" ng-repeat="product in products track by $index"></product>
-                </ul>
-                <!-- <ul>
-                  <li ng-repeat="product in products"><a href="/store/{{product.storeId.name}}">Name: {{product.name}}</a></li>
-                </ul> -->
-              </div>
-            </div>
-          </div>
+        </div>
 
 
 
