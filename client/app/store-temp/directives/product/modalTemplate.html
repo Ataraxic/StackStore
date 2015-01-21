@@ -48,7 +48,16 @@
     <p>{{modalProduct.description}}</p>
 </div>
 <div class="modal-footer">
-    <div ng-show="isNotLoggedIn">Only logged in users can add a review</div>
+<button class="btn btn-default" ng-click="addToCart(thisProductId)">Add to cart</button>
+<div class="row">
+	<div class="col-lg-4 col-md-6 col-sm-12" ng-repeat="rec in recItems">
+ <img src="{{rec.media[0]}}">
+ <h3>{{rec.name}}</h3>
+ <h5>{{rec.price}}</h5>
+ <p>{{rec.description}}</p>
+</div>
+</div>
+<div ng-show="isNotLoggedIn">Only logged in users can add a review</div>
     <form ng-show="canAddReview" class="reviewFormClass" name="reviewForm" ng-submit="addReview()">
         <div class="form-group">
             <label>Review Title</label>
