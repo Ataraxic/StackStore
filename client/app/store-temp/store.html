@@ -7,21 +7,8 @@
         		<div class="row">
         			<product ng-repeat="product in products track by $index"></product>
         		</div>
-        		<div class="row mt" ng-hide="noProds">
-                  <p>Search Results:</p>
-                  <ul>
-                    <li ng-repeat="product in store.products"><a href="/product/{{product.name}}">Name: {{product.name}}</a></li> <!-- still need to link this so that it opens modal, this is just a dumby href right now -->
-                  </ul>
-        		</div>
         	</div>
         </div>
-
-
-        <label> Search:
-            <input type="text" ng-model="searchText"></input>
-        </label>
-        <button class="btn btn-primary" ng-click="searchStore()">Search</button>
-
 
         <div class="container">
             <div class="col-md-6">
@@ -49,31 +36,50 @@
                         </li>
                         <!-- still need to link this so that it opens modal, this is just a dumby href right now -->
                     </ul>
+            <div class="col-lg-9 main-chart">
+                <div class="row">
+                    <product ng-repeat="product in products | filter:searchText"></product>
                 </div>
-
-
-                </ul>
             </div>
-            <div class="col-md-4">
-              <div ng-show="noProds">No Products Found</div>
+            <div class="col-lg-3 ds">
 
+                <div ng-show="ownerPresent" class="mb">
+                		<a type="button" class="btn btn-primary btn-lg btn-block" href="/store/{{storeName}}/admin">Edit Store</a>
+                		<a type="button" class="btn btn-primary btn-lg btn-block" href="/store/{{storeName}}/orders">View Store Orders</a>
+                </div>
+                <h3>SEARCH</h3>
+                <!-- First Action -->
+                <div class="desc">
+                    <div class="details">
+                        <p>
+
+                            <form class="form" role="form">
+                                <div class="form-group">
+                                    <input type="text" ng-model="searchText" class="form-control btn-block" id="exampleInputEmail2" placeholder="Enter term">
+                                </div>
+                            </form>
+                        </p>
+                    </div>
+                </div>
+                <!--COMPLETED ACTIONS DONUTS CHART-->
+                <div class="mb" ng-show="currentPromos.length > 0">
+                <h3>PROMOS</h3>
+                <!-- First Action -->
+                <div class="desc" ng-repeat="promo in currentPromos">
+                    <div class="thumb">
+                        <span class="badge bg-theme"><i class="fa fa-tag"></i></span>
+                    </div>
+                    <div class="details">
+                        <p>
+                            <muted>{{promo.discount}}</muted>
+                            <br> {{promo.description}}, expires: {{promo.expiry.toDateString()}}
+                            <br>
+                            <b>{{promo.code}}</b>
+                        </p>
+                    </div>
+                </div>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-12">
-            <p>Current active promotions:</p>
-            <li ng-repeat="promo in currentPromos">Code: {{promo.code}}
-                <br> Description: {{promo.description}}
-                <br> Discount: {{promo.discount}}
-                <br> Expiry: {{promo.expiry.toDateString()}}</li>
-        </div>
     </section>
-
-    <div ng-show="ownerPresent">
-
-            <a href="/store/{{storeName}}/orders">View {{storeName}}'s Orders</a>
-            <br>
-            <a href="/store/{{storeName}}/admin">Edit your store</a>
-
-    </div>
     <center></center>
 </section>
