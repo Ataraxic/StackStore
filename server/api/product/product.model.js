@@ -11,6 +11,10 @@ var ProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Store'
     },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     price:{type: Number, required: true} ,
     description:{type: String},
     comments: [{
