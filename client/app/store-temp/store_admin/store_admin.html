@@ -48,6 +48,28 @@
                         </div>
                     </form>
                 </div>
+                <div class="form-panel">
+                	<div class="row">
+                    <div class="col-md-4 col-sm-4 mb" ng-repeat="product in products">
+                        <div class="white-panel pn">
+                            <div class="white-header">
+                                <h5>{{product.name}}</h5>
+                            </div>
+                            <div class="row" ng-click="toggleDialog(product)">
+                                <div class="col-sm-6 col-xs-6 goleft">
+                                    <p><i class="fa fa-usd"></i> {{product.upvotes}}</p>
+                                    <p><i class="fa fa-level-up"></i> {{product.upvotes}}</p>
+                                </div>
+                                <div class="col-sm-6 col-xs-6"></div>
+                            </div>
+                            <div class="centered">
+                                <img src="{{product.media[0]}}" width="120">
+                            </div>
+                            <button class="btn btn-warning" type="button" ng-click="editRedirect(product._id)">Edit</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
             <!-- col-lg-12-->
         </div>
