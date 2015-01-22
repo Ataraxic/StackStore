@@ -1,55 +1,26 @@
-<style>
-.media-left {
-    float: left;
-}
-</style>
-
-<div class="row media" ng-repeat="review in comments">
-		<div class="col-xs-3 col-xs-offset-1">
-    <div class="media-left">
+<div class="jumbotron">
+  <div class="box">
+    <h2 class="PanelTitle">
+      Reviews
+    </h2>
+    <hr>
+    <div class="media" ng-repeat="review in comments">
+      <div class="media-left">
         <div class="vote circle">
-            <div ng-click="addUpvote(review)" class="increment up"></div>
-            <div ng-click="minusUpvote(review)" class="increment down"></div>
-            <div class="count">{{review.upvotes}}</div>
+          <div ng-click="addUpvote(review)" class="increment up"></div>
+          <div ng-click="minusUpvote(review)" class="increment down"></div>
+          <div class="count">{{review.upvotes}}</div>
         </div>
-    </div>
-    </div>
-    <div class="col-xs-7">
-    	<div class="media-body">
+      </div>
+      <div class="media-body">
         <h4 class="media-heading">
           <strong>{{review.title}} </strong>
            <span ng-show="isProfilePage"> about <strong><a ng-click="toggleDialog(review.product)">{{review.product.name}}</a></strong></span>
         </h4>
-        <h5 class="reviewText">{{review.body}}</h5>
-        <div ng-show="!isProfilePage"><h4>By: {{review.owner.name}} </h4></div>
-    </div>
-    <div ng-show="review.product.name">{{review.product.name}}</div>
-    </div>
+        <p class="reviewText">{{review.body}}</p>
+        <div ng-show="!isProfilePage">By: {{review.owner.name}} </div>
+      </div>
+      <!-- <div ng-show="review.product.name">{{review.product.name}}</div> -->
+  </div>
 </div>
-
-<!-- <div class="jumbotron">
-    <div class="box">
-        <h2 class="PanelTitle">
-      Reviews
-    </h2>
-        <hr>
-        <div class="row media" ng-repeat="review in comments">
-            <div class="media-left">
-                <div class="vote circle">
-                    <div ng-click="addUpvote(review)" class="increment up"></div>
-                    <div ng-click="minusUpvote(review)" class="increment down"></div>
-                    <div class="count">{{review.upvotes}}</div>
-                </div>
-            </div>
-            <div class="media-body">
-                <h4 class="media-heading">
-          <strong>{{review.title}} </strong>
-           <span ng-show="isProfilePage"> about <strong><a ng-click="toggleDialog(review.product)">{{review.product.name}}</a></strong></span>
-        </h4>
-                <p class="reviewText">{{review.body}}</p>
-                <div ng-show="!isProfilePage">By: {{review.owner.name}} </div>
-            </div>
-            <!-- <div ng-show="review.product.name">{{review.product.name}}</div> -->
-<!--         </div>
-    </div>
-</div> -->
+</div>
