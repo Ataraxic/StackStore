@@ -57,6 +57,9 @@
  <p>{{rec.description}}</p>
 </div>
 </div>
+<div class="row">
+	<review-panel></review-panel>
+</div>
 <div ng-show="isNotLoggedIn">Only logged in users can add a review</div>
     <form ng-show="canAddReview" class="reviewFormClass" name="reviewForm" ng-submit="addReview()">
         <div class="form-group">
